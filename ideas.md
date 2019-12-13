@@ -1,2 +1,15 @@
 ### Best practices
  - Prima di un filtro di edge, aplicare filtri di smooothing
+
+## Processing
+ - Unire gli edge con transofrmata di Hugh
+ - Edge detection
+ - laplaciano gaussiano
+ - trasformata di Hugh
+ - Spazi colore
+ - Texture per riconoscere il tipo di scatola
+
+## Idee
+ - Per cercare la scatola si usa il pattern della scatola e rapporto lati
+ - Per guardare se c'è il bollino sul ferrero rocher, basta guardare gli istogrammi dei cioccolatini sullo spazio colore hsv e prendendo solo il canale S
+ - 
