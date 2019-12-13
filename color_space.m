@@ -1,8 +1,10 @@
 images = readlist('data/images.list');
-path = 'images/' + string(images{1});
+path = 'images/' + string(images{14});
 
 scale_factor = 0.2;
+% Read image
 target_image = imread(path);
+% Scale image
 target_image = imresize(target_image, scale_factor);
 
 rgb = target_image;
@@ -10,6 +12,7 @@ hsv = rgb2hsv(target_image);
 lab = rgb2lab(target_image);
 ntsc = rgb2ntsc(target_image);
 xyz = rgb2xyz(target_image);
+ycbcr = rgb2ycbcr(target_image);
 
 r = 4;
 c = 3;
