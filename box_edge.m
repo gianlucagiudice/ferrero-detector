@@ -16,14 +16,26 @@ imshow(hsv_s);
 I filtri di edge, essendo delle derivate, sono molto sensibili al rimore,pertanto applico prima di tutto un filtro di smoothing 
 %}
 
-%{
 bw1 = edge(hsv_s, 'Canny');
-bw2 = edge(hsv_s, 'Prewitt');
-bw3 = edge(hsv_s, 'log');
+bw2 = edge(hsv_s, 'log');
+bw3 = edge(hsv_s, 'Sobel');
+bw4 = edge(hsv_s, 'Prewitt');
 
 figure(2);
-imshowpair(bw1, bw2, bw3, 'montage');
- 
+subplot(2,2,1);imshow(bw1);title('Canny edge');
+subplot(2,2,2);imshow(bw2);title('Log edge');
+subplot(2,2,3);imshow(bw3);title('Sobel edge');
+subplot(2,2,4);imshow(bw4);title('Prewitt edge');
+
+% Sobel e prewitt funzionano meglio
+
+%{
+Applico un fltro mediano per miglirare edge di sobel 
 %}
 
-bw = edge(hsv_s, 'Canny');
+
+%{
+bw = edge(hsv_s, 'Prewitt');
+figure(2);
+imshow(bw); 
+%}
