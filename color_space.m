@@ -1,5 +1,5 @@
 images = readlist('data/images.list');
-path = 'images/' + string(images{14});
+path = 'images/original/' + string(images{14});
 
 scale_factor = 0.2;
 % Read image
