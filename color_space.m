@@ -14,7 +14,7 @@ ntsc = rgb2ntsc(target_image);
 xyz = rgb2xyz(target_image);
 ycbcr = rgb2ycbcr(target_image);
 
-r = 4;
+r = 6;
 c = 3;
 figure(1);
 subplot(r,c,1); imshow(rgb(:,:,1)), title('RGB R');
@@ -33,12 +33,11 @@ subplot(r,c,10); imshow(ycbcr(:,:,1)), title('YCbCr Y');
 subplot(r,c,11); imshow(ycbcr(:,:,2)), title('YCbCr Cb');
 subplot(r,c,12); imshow(ycbcr(:,:,3)), title('YCbCr Cr');
 
-%{
-subplot(r,c,10); imshow(ntsc(:,:,1)), title('NTSC 1');
-subplot(r,c,11); imshow(ntsc(:,:,2)), title('NTSC 2');
-subplot(r,c,12); imshow(ntsc(:,:,3)), title('NTSC 3');
+subplot(r,c,13); imshow(ntsc(:,:,1)), title('NTSC 1');
+subplot(r,c,14); imshow(ntsc(:,:,2)), title('NTSC 2');
+subplot(r,c,15); imshow(ntsc(:,:,3)), title('NTSC 3');
 
-subplot(r,c,13); imshow(xyz(:,:,1)), title('XYZ 1');
-subplot(r,c,14); imshow(xyz(:,:,2)), title('XYZ 2');
-subplot(r,c,15); imshow(xyz(:,:,3)), title('XYZ 3');
-%}
+subplot(r,c,16); imshow(xyz(:,:,1)), title('XYZ 1');
+subplot(r,c,17); imshow(xyz(:,:,2)), title('XYZ 2');
+subplot(r,c,18); imshow(xyz(:,:,3)), title('XYZ 3');
+

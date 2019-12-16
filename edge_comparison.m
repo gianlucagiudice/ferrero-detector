@@ -1,8 +1,11 @@
 
 
 images = readlist('data/images.list');
-path = 'images/original/'+string(images{15});
+%path = 'images/extended/background_test/dots_background_04.jpg';
 %path = 'images/extended/background_test/table_background_07.jpg';
+%path = 'images/extended/background_test/white_background_01.jpg';
+path = 'images/original/'+string(images{19});
+
 
 scale_factor = 0.2;
 % Read image
@@ -14,20 +17,27 @@ target_image = imresize(target_image, scale_factor);
 hsv = rgb2hsv(target_image);
 hsv_s = hsv(:, :, 2);
 hsv_s_eq = hsv_s;
+
 hsv_s_eq_filtered = hsv_s;
 
+hsv_s_eq_filtered = medfilt2(hsv_s_eq_filtered, [15 15]); 
 
-% Non so se sia utile usare questi filtri
-
-%{
- N = 100;
+N = 10;
 opt_sigma = ((N-1) / 2) / 2.5;
 F11 = fspecial('gaussian', N , opt_sigma);
 hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
- 
-%}
 
-hsv_s_eq_filtered = medfilt2(hsv_s_eq_filtered, [15 15]); 
+N = 30;
+opt_sigma = ((N-1) / 2) / 2.5;
+F11 = fspecial('gaussian', N , opt_sigma);
+hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
+
+N = 30;
+opt_sigma = ((N-1) / 2) / 2.5;
+F11 = fspecial('gaussian', N , opt_sigma);
+hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
+
+
 
 
 figure(1);
@@ -58,17 +68,6 @@ subplot(2,2,1);imshow(bw1);title('Canny edge');
 subplot(2,2,2);imshow(bw2);title('Log edge');
 subplot(2,2,3);imshow(bw3);title('Sobel edge');
 subplot(2,2,4);imshow(bw4);title('Prewitt edge');
-
-% Sobel e prewitt funzionano meglio
-figure(3)
-imshow(bw3);title('Sobel edge');
-figure(4)
-imshow(bw4);title('Prewitt edge');
-
-% Filtro mediano per eliminare punti isolati 
-figure(5);
-imshow(bw4_median);
- 
 
 %{
 Applico un fltro mediano per miglirare edge di sobel 
