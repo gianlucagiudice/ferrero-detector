@@ -1,11 +1,12 @@
+%% Import functions
+addpath(genpath('functions/'));
 
-
-images = readlist('data/images.list');
+images = readlist('../data/images.list');
 %path = 'images/extended/background_test/dots_background_04.jpg';
 %path = 'images/extended/background_test/table_background_07.jpg';
 %path = 'images/extended/background_test/white_background_01.jpg';
 %path = 'images/original/'+string(images{18});
-path = 'images/original/'+string(images{5});
+path = '../images/original/'+string(images{5});
 
 
 scale_factor = 0.01;
@@ -19,7 +20,7 @@ target_image = imresize(target_image, scale_factor);
 
 
 % Change color space
-im = rgb2hsv(target_image);
+hsv = rgb2hsv(target_image);
 hsv_s = hsv(:, :, 2);
 hsv_s_eq = hsv_s;
 

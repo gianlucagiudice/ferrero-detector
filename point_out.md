@@ -3,5 +3,7 @@
   - "color_space.m"
 - Differrenze nei vari algoritmi di edge per la scatola
   - "edge_comparison.m"
-- Edge scatola usando algortimo più adeguato
-  - "edge_box.m"
+- Il canale Cr funziona meglio di Cb per edge Canny
+  - Mettere esempi
+- Spazio colore YCbCr funziona meglio per riconoscimento edge Canny
+  - Mettere Esempi

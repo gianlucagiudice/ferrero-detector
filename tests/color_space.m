@@ -1,5 +1,8 @@
-images = readlist('data/images.list');
-path = 'images/original/' + string(images{14});
+% Change directory
+cd('../functions');
+% Read images list
+images = readlist('../data/images.list');
+path = '../images/original/' + string(images{14});
 
 scale_factor = 0.2;
 % Read image

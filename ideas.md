@@ -12,4 +12,8 @@
 ## Idee
  - Per cercare la scatola si usa il pattern della scatola e rapporto lati
  - Per guardare se c'è il bollino sul ferrero rocher, basta guardare gli istogrammi dei cioccolatini sullo spazio colore hsv e prendendo solo il canale S
- - 
+
+## Pipeline
+ - Convertire in spazio colore YCbCr
+ - Segmentare con edge Canny
+ - Labeling delle componenti kkmeans sulla media dei colori di edge Canny
