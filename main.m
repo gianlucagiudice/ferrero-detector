@@ -18,8 +18,10 @@ parfor i = 1:limit_num
 end
 toc
 
+figure(1);
 %% Show results
 for i = 1:limit_num
-    figure(i);
+    %figure(i);
+    subplot(6,5,i);
     imshow(bws{i}); 
 end
