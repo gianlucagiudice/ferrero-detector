@@ -9,7 +9,6 @@ path = 'images/original/'+string(images{9});
 scale_factor = 0.2;
 
 %% Image Binarization
-%bw = image_to_edge(path, scale_factor);
 limit_num = 30;
 bws = {};
 tic
@@ -19,7 +18,6 @@ end
 toc
 
 %% Show results
-
 for i = 1:limit_num
     figure(i);
     imshow(bws{i}); 
