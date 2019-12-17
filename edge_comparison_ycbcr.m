@@ -1,10 +1,8 @@
-
-
 images = readlist('data/images.list');
 %path = 'images/extended/background_test/dots_background_04.jpg';
 %path = 'images/extended/background_test/table_background_07.jpg';
 %path = 'images/extended/background_test/white_background_01.jpg';
-path = 'images/original/'+string(images{19});
+path = 'images/original/'+string(images{7});
 
 
 scale_factor = 0.2;
@@ -14,29 +12,18 @@ target_image = imread(path);
 target_image = imresize(target_image, scale_factor);
 
 % Change color space
-hsv = rgb2hsv(target_image);
-hsv_s = hsv(:, :, 2);
+hsv = rgb2ycbcr(target_image);
+hsv_s = hsv(:, :, 3);
 hsv_s_eq = hsv_s;
 
 hsv_s_eq_filtered = hsv_s;
 
-hsv_s_eq_filtered = medfilt2(hsv_s_eq_filtered, [15 15]); 
+hsv_s_eq_filtered = medfilt2(hsv_s_eq_filtered, [3 3]);
 
-N = 10;
+N = 3;
 opt_sigma = ((N-1) / 2) / 2.5;
 F11 = fspecial('gaussian', N , opt_sigma);
 hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
-
-N = 30;
-opt_sigma = ((N-1) / 2) / 2.5;
-F11 = fspecial('gaussian', N , opt_sigma);
-hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
-
-N = 30;
-opt_sigma = ((N-1) / 2) / 2.5;
-F11 = fspecial('gaussian', N , opt_sigma);
-hsv_s_eq_filtered  = imfilter(hsv_s_eq_filtered , F11);
-
 
 
 
@@ -77,4 +64,20 @@ Applico un fltro mediano per miglirare edge di sobel
 bw = edge(hsv_s, 'Prewitt');
 figure(2);
 imshow(bw); 
+%}
+
+[H,T,R] = hough(bw1,'RhoResolution',0.5,'Theta',-90:0.5:89);
+figure(3);
+imshow(imadjust(rescale(H)),'XData',T,'YData',R,...
+      'InitialMagnification','fit');
+title('Hough transform of gantrycrane.png');
+xlabel('\theta'), ylabel('\rho'); axis on, axis normal, hold on;
+colormap(gca,hot);
+
+%{
+ figure(4);
+P = houghpeaks(H, 5, 'threshold', ceil(0.9*max(H(:))));
+x = T(P(:,2));
+y = R(P(:,1));
+plot(x,y,'s','color','white') 
 %}
