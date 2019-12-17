@@ -7,3 +7,7 @@
   - Mettere esempi
 - Spazio colore YCbCr funziona meglio per riconoscimento edge Canny
   - Mettere Esempi
+
+### Assunzioni
+- C'è la scatola
+- La scatola occupa la maggior parte dell'immagine
