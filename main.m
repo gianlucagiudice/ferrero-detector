@@ -24,4 +24,3 @@ for i = 1:limit_num
     figure(i);
     imshow(bws{i}); 
 end
-
