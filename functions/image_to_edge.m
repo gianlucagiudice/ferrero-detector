@@ -8,5 +8,6 @@ function out_edge = image_to_edge(path, scale_factor)
     F3 = fspecial('gaussian', N , opt_sigma);
     target_image_filtered  = imfilter(target_image_filtered , F3, 'replicate');
     %% Find edges 
+    %out_edge = edge(target_image_filtered, 'Sobel');
     out_edge = edge(target_image_filtered, 'Canny');
 end

@@ -44,6 +44,8 @@ subplot(2,2,3);imshow(bw_sobel);title('Sobel edge');
 subplot(2,2,4);imshow(bw_prewitt);title('Prewitt edge');
 
 figure(3);
+
+[H,T,R] = hough(bw_canny,'RhoResolution',0.5,'Theta',-90:0.5:89);
 imshow(imadjust(rescale(H)),'XData',T,'YData',R,...
       'InitialMagnification','fit');
 title('Hough transform of gantrycrane.png');

@@ -7,7 +7,7 @@ images = readlist('../data/images.list');
 %% Find Edges
 scale_factor = 0.3;
 % 9; 15; 21; 23; 24; 
-path = '../images/original/'+string(images{21}); %14; 21
+path = '../images/original/'+string(images{23}); %14; 21
 canny_edge = image_to_edge(path, scale_factor);
 
 %% Find box
@@ -27,20 +27,45 @@ end
 [~, bkg_label] = min(label_on_box);
 bkg_image = img_labels_out == bkg_label;
 
-%% Analisi componetni connesse ---> prendere area maggiore
-figure(2);
-imshow(img_labels_out == bkg_label);
+%% Analyze connected components of background to fill box
+bkg_labels = bwlabel(bkg_image);
+% Area of background components
+areas = histogram(bkg_labels(bkg_labels > 0));
+% Real background label 
+[~, real_bkg] = max(areas.Values);
+% Find backgournd in box
+bkg_mask = (bkg_labels ~= real_bkg) .* (bkg_labels > 0);
+real_non_bkg = abs(bkg_image-1) | bkg_mask;
+
+%% Find the box
+
+%% Enhancement
+%bkg_image_filtered = medfilt2(bkg_image, [50 50], 'symmetric');
+
 %% Morfologia matematica
 
-figure(1);
-subplot(2,2,1);imshow(canny_edge);title('Edges');
-subplot(2,2,2);imagesc(img_labels_out), axis image;title('Labels');
-subplot(2,2,3);imshow(img_labels_out == bkg_label);title('Background'); 
+%{
+ se = strel('disk', 50, 6);
+bkg_image_filtered_morph = imopen(bkg_image_filtered, se);
 
+bkg_image_morph = bkg_image_filtered;
+bkg_image_morph = imclose(bkg_image_morph, se);
+bkg_image_morph = imopen(bkg_image_morph, se);
+ 
+%}
+
+figure(1);
+subplot(3,2,1);imshow(canny_edge);title('Edges');
+subplot(3,2,2);imagesc(img_labels_out), axis image; title('Labels');
+subplot(3,2,3);imshow(bkg_image);title('Background'); 
+subplot(3,2,4);imagesc(bkg_labels), axis image;title('Background Labels');
+subplot(3,2,5);imshow(real_non_bkg);title('Background Filtered');
+subplot(3,2,5);imshow(real_box);title('Background Filtered');
 
 %{
  
-%% TEST TUTTI
+%% Test
+
 limit_num = 40;
 labels = {};
 tic
@@ -77,5 +102,5 @@ for i = 1:limit_num
     figure(i);
     imagesc(labels{i}), axis image;title('Labels');
 end
- 
+  
 %}
