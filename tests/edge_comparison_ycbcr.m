@@ -5,9 +5,6 @@ addpath(genpath('functions/'));
 images = readlist('../data/images.list');
 
 %% Read and manipulate the image
-%path = 'images/extended/background_test/dots_background_04.jpg';
-%path = 'images/extended/background_test/table_background_07.jpg';
-%path = 'images/extended/background_test/white_background_01.jpg';
 path = '../images/original/'+string(images{9});
 scale_factor = 0.2;
 color_space = @rgb2ycbcr;

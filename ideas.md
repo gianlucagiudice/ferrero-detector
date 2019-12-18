@@ -16,4 +16,8 @@
 ## Pipeline
  - Convertire in spazio colore YCbCr
  - Segmentare con edge Canny
- - Labeling delle componenti kkmeans sulla media dei colori di edge Canny
+ - Labeling delle componenti usando k-means clustering su media colore di edge Canny
+ - Eliminare il bordo della scatola
+   - Dilation su label relativa al background per trovare label del bordo
+ - Closing dei buchi della scatola
+ - Trovare vertici scatola
