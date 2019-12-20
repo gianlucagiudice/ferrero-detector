@@ -1,4 +1,4 @@
-function out_edge = image_to_edge(target_image, scale_factor)
+function out_edge = image_to_edge(target_image)
     %% Image enhancement
     target_image_filtered = medfilt2(target_image, [7 7]);
     N = 13;
