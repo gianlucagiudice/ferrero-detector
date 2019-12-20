@@ -1,6 +1,4 @@
-function out_edge = image_to_edge(path, scale_factor)
-    %% Read and manipulate
-    [~, target_image] = read_and_manipulate(path, scale_factor, @rgb2ycbcr, 3);
+function out_edge = image_to_edge(target_image, scale_factor)
     %% Image enhancement
     target_image_filtered = medfilt2(target_image, [7 7]);
     N = 13;
