@@ -5,16 +5,16 @@ addpath(genpath('functions/'));
 images = readlist('../data/images.list');
 
 %% Find Edges
-scale_factor = 0.3;
+scale_factor = 0.5;
 % 5, 6, 57
-img_path = '../images/original/'+string(images{5}); %14; 21
+img_path = '../images/original/'+string(images{14}); %14; 21
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 
 %% Label edges
 [r, c] = size(canny_edge);
 % 13px is the border size
-out = compute_local_descriptors(canny_edge, 10, 7, @compute_average_color);
+out = compute_local_descriptors(canny_edge, 11, 5, @compute_average_color);
 % Label the image using k-means clustering
 labels = kmeans(out.descriptors, 2);
 img_labels = reshape(labels, out.nt_rows, out.nt_cols);
@@ -34,6 +34,8 @@ objects = bwlabel(elements);
 box_label = mode(objects(objects > 0), 'all');
 box_mask = (objects == box_label);
 
+%% Box enhancement
+box_mask_enhancement = medfilt2(box_mask, [15 15]);
 
 figure(1);
 subplot(3,2,1);imshow(canny_edge);title('Edges');
@@ -41,4 +43,4 @@ subplot(3,2,2);imagesc(img_labels_out), axis image; title('2-Kmeans Labels');
 subplot(3,2,3);imshow(elements);title('All elements');
 subplot(3,2,4);imagesc(objects), axis image;title('Elements labels');
 subplot(3,2,5);imshow(box_mask);title('Box');
-
+subplot(3,2,6);imshow(box_mask_enhancement);title('Box enhancement');
