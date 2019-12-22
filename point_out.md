@@ -11,3 +11,4 @@
 ### Assunzioni
 - C'è la scatola
 - La scatola occupa la maggior parte dell'immagine
+- Non possono esserci oggetti attacati alla scatola
