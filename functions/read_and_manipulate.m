@@ -1,4 +1,5 @@
 function [original, out_image] = read_and_manipulate(path, scale_factor, change_col_spc, ch)
+    %imresize(original)
     % Read image
     original = im2double(imread(path));
     out_image = original;

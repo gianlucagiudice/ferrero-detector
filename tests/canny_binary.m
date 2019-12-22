@@ -6,9 +6,10 @@ images = readlist('../data/images.list');
 
 %% Find Edges
 scale_factor = 0.3;
-% 9; 15; 21; 23; 24; 
-img_path = '../images/original/'+string(images{23}); %14; 21
-[original, target_image] = read_and_manipulate(img_path, 0.3, @rgb2ycbcr, 3);
+% 9; 15; 21; 23; 24;
+% 5
+img_path = '../images/original/'+string(images{5}); %14; 21
+[original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 
 %% Find box

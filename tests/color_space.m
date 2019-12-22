@@ -4,7 +4,7 @@ cd('../functions');
 images = readlist('../data/images.list');
 path = '../images/original/' + string(images{14});
 
-scale_factor = 0.2;
+scale_factor = 0.3;
 % Read image
 target_image = imread(path);
 % Scale image
