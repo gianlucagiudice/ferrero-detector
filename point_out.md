@@ -10,11 +10,13 @@
 - Da canny a binarizzazione
   - Elimino oggetti che no sono la scatola
 - Trovo i vertici dell'immagine
+  - Vertice pivot è quello in verde 
   - Correggo gli errori prospettici, (Esempio vertici troppo vicini)
-  - 
+    - Le foto sono scattate dall'alto davanti alla scatolam non perfettamente sopra
  
 
 ### Assunzioni
 - C'è la scatola
 - La scatola occupa la maggior parte dell'immagine
 - Non possono esserci oggetti attacati alla scatola
+- 
