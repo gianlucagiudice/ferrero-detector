@@ -7,6 +7,12 @@
   - Mettere esempi
 - Spazio colore YCbCr funziona meglio per riconoscimento edge Canny
   - Mettere Esempi
+- Da canny a binarizzazione
+  - Elimino oggetti che no sono la scatola
+- Trovo i vertici dell'immagine
+  - Correggo gli errori prospettici, (Esempio vertici troppo vicini)
+  - 
+ 
 
 ### Assunzioni
 - C'è la scatola

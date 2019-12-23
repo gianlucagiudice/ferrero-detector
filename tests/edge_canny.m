@@ -3,7 +3,7 @@ addpath(genpath('functions/'));
 
 %% Get list of images
 images = readlist('../data/images.list');
-scale_factor = 0.2;
+scale_factor = 0.5;
 
 %% Find edges
 limit_num = 3;

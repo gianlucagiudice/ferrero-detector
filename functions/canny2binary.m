@@ -22,7 +22,7 @@ function box_binary = canny2binary(canny_edge)
     objects = bwlabel(elements);
     box_label = mode(objects(objects > 0), 'all');
     box_binary = (objects == box_label);
+
     %% Box enhancement
-    box_binary = medfilt2(box_binary, [15 15]);
     box_binary = medfilt2(box_binary, [15 15]);
 end
