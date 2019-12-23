@@ -24,4 +24,5 @@ function box_binary = canny2binary(canny_edge)
     box_binary = (objects == box_label);
     %% Box enhancement
     box_binary = medfilt2(box_binary, [15 15]);
+    box_binary = medfilt2(box_binary, [15 15]);
 end
