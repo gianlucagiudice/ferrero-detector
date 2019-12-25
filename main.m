@@ -50,5 +50,3 @@ for i = start_limit:end_limit
 end
  
 %}
-
-%% Su - sinistra - destra
