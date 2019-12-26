@@ -13,7 +13,7 @@ images = {};
 tic
 
 % 9; 15; 21; 23; 24;    5, 6 57
-img_path = '../images/original/'+string(images_list{8});
+img_path = '../images/original/'+string(images_list{60});
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);

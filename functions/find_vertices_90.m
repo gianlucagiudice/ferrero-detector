@@ -35,27 +35,6 @@ function out_vertices = find_vertices(box_bw)
             if vertex_is_valid(vertices(4), r, c) % W
                 % North pivot is valid
                 out_vertices = [vertices(4);vertices(1);vertices(2)];
-                %{
-                % Perspective error
-                tollerance = 0.15;
-                new_vertex = [];
-                % Check Perspective error W-S
-                difference = vertices(4).value - vertices(3).value;
-                if abs(difference(2)) / r < tollerance
-                    % Correct Perspective error
-                    new_vertex.value = vertices(3).value + difference;
-                    new_vertex.pivot = "w";
-                    out_vertices = [new_vertex;vertices(2);vertices(1)];
-                end
-                % Check Perspective error E-S
-                difference = vertices(2).value - vertices(3).value;
-                if abs(difference(2)) / r < tollerance
-                    % Correct Perspective error
-                    new_vertex.value = vertices(3).value + difference;
-                    new_vertex.pivot = "e";
-                    out_vertices = [vertices(1);vertices(4);new_vertex];
-                end
-                %}
             else
                 % Invalid West => take East
                 out_vertices = [vertices(1);vertices(2);vertices(3)];

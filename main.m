@@ -17,10 +17,10 @@ for i = start_limit:end_limit
     [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
     canny_edge = image_to_edge(target_image);
     bw = canny2binary(canny_edge);
-    vertices = find_vertices(bw);
+    vertices = find_vertices_45(bw);
     
     %% Plot vertices
-    figure(i);
+    figure(1);
     imshow(original);
     hold on;
 

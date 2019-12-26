@@ -9,7 +9,7 @@ images = readlist('../data/images.list');
 path = '../images/original/'+string(images{5});
 
 
-scale_factor = 0.01;
+scale_factor = 0.5;
 % Read image
 target_image = imread(path);
 % Scale the image

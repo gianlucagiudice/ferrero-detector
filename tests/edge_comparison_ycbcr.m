@@ -5,7 +5,7 @@ addpath(genpath('functions/'));
 images = readlist('../data/images.list');
 
 %% Read and manipulate the image
-path = '../images/original/'+string(images{9});
+path = '../images/original/'+string(images{47});
 scale_factor = 0.2;
 color_space = @rgb2ycbcr;
 channel = 3;

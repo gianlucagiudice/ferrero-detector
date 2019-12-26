@@ -7,7 +7,7 @@ images = readlist('../data/images.list');
 %% Find Edges
 scale_factor = 0.5;
 % 5, 6, 57
-img_path = '../images/original/'+string(images{8}); %14; 21
+img_path = '../images/original/'+string(images{17}); %14; 21
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 
