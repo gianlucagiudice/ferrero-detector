@@ -13,6 +13,8 @@
   - Vertice pivot è quello in verde 
   - Correggo gli errori prospettici, (Esempio vertici troppo vicini)
     - Le foto sono scattate dall'alto davanti alla scatolam non perfettamente sopra
+  - **NUOVA IDEA**
+    - Cercare i vertici "massimizando" e minimizzando" le funzioni f(x) = $\pm$x;
  
 
 ### Assunzioni

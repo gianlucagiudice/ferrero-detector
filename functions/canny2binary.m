@@ -1,8 +1,8 @@
 function box_binary = canny2binary(canny_edge)
     %% Label edges
     [r, c] = size(canny_edge);
-    % 13px is the border size
-    %% 10 7
+
+    % 11px is the border size
     out = compute_local_descriptors(canny_edge, 11, 5, @compute_average_color);
     % Label the image using k-means clustering
     labels = kmeans(out.descriptors, 2);
