@@ -5,7 +5,7 @@ images_list = readlist('data/images.list');
 scale_factor = 0.5;
 
 %% Processing
-start_limit = 1;
+start_limit = 34;
 end_limit = 64;
 bw_box = {};
 images = {};
@@ -22,6 +22,7 @@ for i = start_limit:end_limit
     %% Plot vertices
     figure(1);
     imshow(original);
+    disp(i);
     hold on;
 
     for j = 1:3

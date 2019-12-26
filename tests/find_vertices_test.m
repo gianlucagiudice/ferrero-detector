@@ -4,35 +4,33 @@ addpath(genpath('functions/'));
 images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 
-%% Processing
-start_limit = 14;
-end_limit = 60;
-bw_box = {};
-images = {};
+%{
+3; 7; 8; 16; 21; 22; 23; 24; 25; 27; 32; 34; 35; 36; 44; 51; 54 
+%}
 
-tic
-
-% 9; 15; 21; 23; 24;    5, 6 57
-img_path = '../images/original/'+string(images_list{60});
+img_path = '../images/original/'+string(images_list{22});
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);
-%vertices = find_vertices(bw);
-vertices = find_vertices_45(bw);
+vertices90 = find_vertices_90(bw);
+vertices45 = find_vertices_45(bw);
 
 figure(1);
-imshow(original);
-hold on;
-
-for j = 1:3
-    x_plot = vertices(j).value(1) / scale_factor;
-    y_plot = vertices(j).value(2) / scale_factor;
-    if j == 2
-        color = 'g+';
-    else
-        color = 'r+';
-    end
-    plot(x_plot, y_plot, color, 'MarkerSize',30, 'LineWidth', 2); 
-end 
-
-toc
+%% Show orignal image
+subplot(3,2,1)
+imshow(original);title("Original Image");
+%% Show binary image
+subplot(3,2,2)
+imshow(bw);title("Binary image Image");
+%% Show vertices 90
+subplot(3,2,3)
+imshow(original);title("Vertices 90 method");
+plot_vertices(vertices90, scale_factor);
+%% Show vertices 45
+subplot(3,2,4)
+imshow(original);title("Vertices 45 method");
+plot_vertices(vertices45, scale_factor);
+%% Show best vertices
+subplot(3,2,5)
+imshow(original);title("Best vertices method");
+plot_vertices(vertices45, scale_factor);
