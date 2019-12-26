@@ -8,7 +8,7 @@ scale_factor = 0.5;
 3; 7; 8; 16; 21; 22; 23; 24; 25; 27; 32; 34; 35; 36; 44; 51; 54 
 %}
 
-img_path = '../images/original/'+string(images_list{22});
+img_path = '../images/original/'+string(images_list{16});
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);
