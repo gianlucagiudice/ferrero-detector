@@ -5,15 +5,20 @@ images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 
 %{
-3; 7; 8; 16; 21; 22; 23; 24; 25; 27; 32; 34; 35; 36; 44; 51; 54 
+Alcuni vertici problemati
+3; 7; 8; 16; 21; 22; 23; 24; 25; 27; 32; 34; 35; 36; 44; 51; 54
+
+8, 3, 34, 35 = Caso esemplare
+34 caso particolare
 %}
 
-img_path = '../images/original/'+string(images_list{16});
+img_path = '../images/original/'+string(images_list{54});
 [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);
 vertices90 = find_vertices_90(bw);
 vertices45 = find_vertices_45(bw);
+best_vertices = decide_best_vertices(vertices45, vertices90);
 
 figure(1);
 %% Show orignal image
@@ -33,4 +38,4 @@ plot_vertices(vertices45, scale_factor);
 %% Show best vertices
 subplot(3,2,5)
 imshow(original);title("Best vertices method");
-plot_vertices(vertices45, scale_factor);
+plot_vertices(best_vertices, scale_factor);

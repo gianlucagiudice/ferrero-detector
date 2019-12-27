@@ -1,3 +1,26 @@
-function best_vertices = decide_best_vertices(vertices90, vertices45)
+function best_vertices = decide_best_vertices(vertices45, vertices90)
+    %% Assume 45 is the best method
+    best_vertices = vertices45;
     
+    tan_threshold = 0.30;
+    len_threshold = 0.30;
+
+    v1 = vertices45(1).value - vertices45(2).value;
+    v2 = vertices45(3).value - vertices45(2).value;
+    len1 = norm(v1);
+    len2 = norm(v2);
+    n1 = v1 / len1;
+    n2 = v2 / len2;
+    tan1 = abs(n1(1) / n1(2));
+    tan2 = abs(n2(1) / n2(2));
+
+    %% Check if len is not valid
+    if (min(len1, len2) / max(len1, len2) < len_threshold)
+        best_vertices = vertices90;
+    %% Check if tan is not valid
+    elseif (abs(1 - tan1) < tan_threshold || abs(1 - tan2) < tan_threshold)
+        best_vertices = vertices90;
+    end
+
+
 end

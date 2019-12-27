@@ -5,11 +5,11 @@ function valid = vertex_is_valid(vertex, r, c)
             valid = false;
         end
     elseif vertex.pivot == "e"
-        if vertex.value(1) == r
+        if vertex.value(1) == c
             valid = false;
         end
     elseif vertex.pivot == "s"
-        if vertex.value(2) == c
+        if vertex.value(2) == r
             valid = false;
         end
     elseif vertex.pivot == "w"
