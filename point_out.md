@@ -15,7 +15,8 @@
     - Le foto sono scattate dall'alto davanti alla scatolam non perfettamente sopra
   - **NUOVA IDEA**
     - Cercare i vertici "massimizando" e minimizzando" le funzioni f(x) = $\pm$x;
- 
+- ...
+- Per trovare i vertici uso come feature edge canny
 
 ### Assunzioni
 - C'è la scatola
