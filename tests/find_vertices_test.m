@@ -12,7 +12,7 @@ Alcuni vertici problemati
 %}
 
 img_path = '../images/original/'+string(images_list{32});
-[original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+[original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);
 vertices90 = find_vertices_90(bw);
@@ -22,19 +22,19 @@ best_vertices = decide_best_vertices(vertices45, vertices90);
 figure(1);
 %% Show orignal image
 subplot(3,2,1)
-imshow(original);title("Original Image");
+imshow(scaled_image);title("Original Image");
 %% Show binary image
 subplot(3,2,2)
 imshow(bw);title("Binary image Image");
 %% Show vertices 90
 subplot(3,2,3)
-imshow(original);title("Vertices 90 method");
-plot_vertices(vertices90, scale_factor);
+imshow(scaled_image);title("Vertices 90 method");
+plot_vertices(vertices90);
 %% Show vertices 45
 subplot(3,2,4)
-imshow(original);title("Vertices 45 method");
-plot_vertices(vertices45, scale_factor);
+imshow(scaled_image);title("Vertices 45 method");
+plot_vertices(vertices45);
 %% Show best vertices
 subplot(3,2,5)
-imshow(original);title("Best vertices method");
-plot_vertices(best_vertices, scale_factor);
+imshow(scaled_image);title("Best vertices method");
+plot_vertices(best_vertices);
