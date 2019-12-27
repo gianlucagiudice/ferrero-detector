@@ -1,8 +1,8 @@
-function plot_vertices(vertices, scale_factor)
+function plot_vertices(vertices)
     hold on;
     for j = 1:3
-        x_plot = vertices(j).value(1) / scale_factor;
-        y_plot = vertices(j).value(2) / scale_factor;
+        x_plot = vertices(j).value(1);
+        y_plot = vertices(j).value(2);
         if j == 2
             color = 'g+';
         else
