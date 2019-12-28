@@ -9,7 +9,7 @@ scale_factor = 0.5;
 limit_num = 3;
 canny_edge = {};
 tic
-parfor i = 1:limit_num
+for i = 1:limit_num
     path = '../images/original/'+string(images{i});
     canny_edge{i} =  image_to_edge(path, scale_factor);
 end

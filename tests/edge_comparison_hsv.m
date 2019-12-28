@@ -12,7 +12,7 @@ path = '../images/original/'+string(images{9});
 scale_factor = 0.2;
 color_space = @rgb2hsv;
 channel = 2;
-[original, target_image] = read_and_manipulate(path, scale_factor, color_space, channel);
+[original, scaled_image, target_image] = read_and_manipulate(path, scale_factor, color_space, channel);
 
 %% Image enhancement
 target_image_eq = histeq(target_image);

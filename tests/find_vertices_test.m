@@ -11,7 +11,7 @@ Alcuni vertici problemati
 8, 3, 34, 35 = Casi esemplare
 %}
 
-img_path = '../images/original/'+string(images_list{32});
+img_path = '../images/original/'+string(images_list{18});
 [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 bw = canny2binary(canny_edge);

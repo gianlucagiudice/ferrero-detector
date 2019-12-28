@@ -14,17 +14,17 @@ tic
 for i = start_limit:end_limit
     % 9; 15; 21; 23; 24;    5, 6 57
     img_path = 'images/original/'+string(images_list{i});
-    [original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+    [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
     canny_edge = image_to_edge(target_image);
     bw = canny2binary(canny_edge);
     vertices = decide_best_vertices(find_vertices_45(bw), find_vertices_90(bw));
     
     %% Plot vertices
     figure(1);
-    imshow(original);
+    imshow(scaled_image);
     disp(i);
     hold on;
-    plot_vertices(vertices, scale_factor);
+    plot_vertices(vertices);
     
 end
 toc

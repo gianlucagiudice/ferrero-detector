@@ -8,7 +8,7 @@ images = readlist('../data/images.list');
 scale_factor = 0.5;
 % 5, 6, 57
 img_path = '../images/original/'+string(images{18}); %14; 21
-[original, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+[original, scaled_image,  target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 canny_edge = image_to_edge(target_image);
 box_bw = canny2binary(canny_edge);
 [r, c] = size(box_bw);
