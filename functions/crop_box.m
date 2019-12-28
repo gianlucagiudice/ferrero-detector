@@ -10,6 +10,7 @@ function box_cropped = crop_box(box_image, vertices, crop_padding)
 
     R = makeresampler({'cubic','nearest'},'fill');
     
+    %% hardcoded image 32
     s_f = -0.06;
     T = maketform('affine', [1 0 0; s_f 1 0; 0 0 1]);
     shear_vertical = imtransform(box_image, T, R,'FillValues',0); 
