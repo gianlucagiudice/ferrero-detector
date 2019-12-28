@@ -10,15 +10,16 @@ limit_num = 3;
 canny_edge = {};
 tic
 for i = 1:limit_num
-    path = '../images/original/'+string(images{i});
-    canny_edge{i} =  image_to_edge(path, scale_factor);
+    img_path = '../images/original/'+string(images{i});
+    [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+    canny_edge{i} =  image_to_edge(target_image);
 end
 toc
 
 %% Show results
 figure(1);
 for i = 1:limit_num
-    %figure(i);
-    subplot(6,5,i);
+    figure(i);
+    subplot(1,1,1);
     imshow(canny_edge{i}); 
 end
