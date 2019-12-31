@@ -42,14 +42,17 @@ function [box_cropped, M] = crop_box(box_image, vertices, crop_padding)
     vec1 = round(M(1:2, 1:2) * vec1);
     vec2 = round(M(1:2, 1:2) * vec2);
 
-    v1 = vertices(1).value;
-    pivot = vertices(2).value;
-    v3 = vertices(3).value;
+    origin.pivot = 'origin';
+    origin.value = [1; 1];
+    v1 =    point_to_vector(origin, vertices(1));
+    pivot = point_to_vector(origin, vertices(2));
+    v3 =    point_to_vector(origin, vertices(3));
 
-    new_v1 = round(M(1:2, 1:2) * vertices(1).value);
-    new_pivot = round(M(1:2, 1:2) * vertices(2).value);
-    new_v3 = round(M(1:2, 1:2) * vertices(3).value);
-    
+    new_v1 =    round(M(1:2, 1:2) * v1);
+    new_pivot = round(M(1:2, 1:2) * pivot);
+    new_v3 =    round(M(1:2, 1:2) * v3);
+
+
     len_edge = max(abs(longest));
     len_edge = len_edge + len_edge * crop_padding;
 
