@@ -8,6 +8,7 @@ function [box_cropped, M] = crop_box(box_image, vertices, crop_padding)
     len1 = norm(vector1);
     len2 = norm(vector2);
     
+    %% Vec non mi serve
     
     vec1 = point_to_vector(vertices(2), vertices(1));
     vec2 = point_to_vector(vertices(2), vertices(3));
@@ -30,12 +31,24 @@ function [box_cropped, M] = crop_box(box_image, vertices, crop_padding)
     end
     T = maketform('affine', M);
     rotated_image = imtransform(box_image, T, R,'FillValues',0);
+    
+    figure(3);
+    imshow(rotated_image);
+    
 
     %% Evaluate vector after rotation
     vector1 = round(M(1:2, 1:2) * vector1);
     vector2 = round(M(1:2, 1:2) * vector2);
     vec1 = round(M(1:2, 1:2) * vec1);
     vec2 = round(M(1:2, 1:2) * vec2);
+
+    v1 = vertices(1).value;
+    pivot = vertices(2).value;
+    v3 = vertices(3).value;
+
+    new_v1 = round(M(1:2, 1:2) * vertices(1).value);
+    new_pivot = round(M(1:2, 1:2) * vertices(2).value);
+    new_v3 = round(M(1:2, 1:2) * vertices(3).value);
     
     len_edge = max(abs(longest));
     len_edge = len_edge + len_edge * crop_padding;
