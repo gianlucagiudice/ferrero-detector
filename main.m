@@ -12,6 +12,7 @@ images = {};
 
 tic
 for i = start_limit:end_limit
+    
     % 9; 15; 21; 23; 24;    5, 6 57
     img_path = 'images/original/'+string(images_list{i});
     [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
