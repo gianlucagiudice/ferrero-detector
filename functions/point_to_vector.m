@@ -1,16 +1,25 @@
 function vector = point_to_vector(pivot, vertex)
-    if (pivot.value(1) > vertex.value(1) && pivot.value(2) > vertex.value(2))
-        x = vertex.value(1) - pivot.value(1);
-        y = pivot.value(2) - vertex.value(2);
-    elseif(pivot.value(1) > vertex.value(1) && pivot.value(2) < vertex.value(2))
-        x = vertex.value(1) - pivot.value(1);
-        y = pivot.value(2) - vertex.value(2);
-    elseif(pivot.value(1) < vertex.value(1) && pivot.value(2) > vertex.value(2))
-        x = vertex.value(1) - pivot.value(1) ;
-        y = pivot.value(2)  - vertex.value(2);
-    elseif(pivot.value(1) < vertex.value(1) && pivot.value(2) < vertex.value(2))
-        x = vertex.value(1) - pivot.value(1);
-        y = pivot.value(2) - vertex.value(2);
+    if (isfield(pivot, 'value'))
+        pivot = pivot.value;
     end
+    if (isfield(vertex, 'value'))
+        vertex = vertex.value;
+    end
+    
+    if (pivot(1) >= vertex(1) && pivot(2) >= vertex(2))
+        x = vertex(1) - pivot(1);
+        y = pivot(2) - vertex(2);
+    elseif(pivot(1) >= vertex(1) && pivot(2) <= vertex(2))
+        x = vertex(1) - pivot(1);
+        y = pivot(2) - vertex(2);
+    elseif(pivot(1) <= vertex(1) && pivot(2) >= vertex(2))
+        x = vertex(1) - pivot(1) ;
+        y = pivot(2)  - vertex(2);
+    elseif(pivot(1) <= vertex(1) && pivot(2) <= vertex(2))
+        x = vertex(1) - pivot(1);
+        y = pivot(2) - vertex(2);
+    end
+
     vector = [x; y];
+
 end
