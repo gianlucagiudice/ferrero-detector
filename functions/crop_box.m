@@ -1,5 +1,4 @@
 function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
-
     %% Find vectors relative to pivot as origin
     box_edge1 = point_to_vector(vertices(2), vertices(1));
     box_edge2 = point_to_vector(vertices(2), vertices(3));
@@ -27,20 +26,18 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
     T = maketform('affine', M);
     rotated = imtransform(box_image, T, R,'FillValues',0);
     
-    %% Find vectors after rotation
-    rotated_v1    = round(M(1:2, 1:2) * origin_v1);
-    rotated_v2    = round(M(1:2, 1:2) * origin_v2);
-    rotated_pivot = round(M(1:2, 1:2) * origin_pivot);
-    
     %% Find new origin after rotation
-    rotated_origin = find_new_origin(rotated, M);
+    rotated_o = find_new_origin(rotated, M);
     
-
-    %% Da fare solo una volta alla fine
-    %% Evaluate new vertices
-    new_v1    = [rotated_origin(1) + rotated_v1(1);    rotated_origin(2) - rotated_v1(2)   ];
-    new_v2    = [rotated_origin(1) + rotated_v2(1);    rotated_origin(2) - rotated_v2(2)   ];
-    new_pivot = [rotated_origin(1) + rotated_pivot(1); rotated_origin(2) - rotated_pivot(2)];
+    %% Find vectors after rotation
+    rotated_o_v1    = (M(1:2, 1:2) * origin_v1);
+    rotated_o_v2    = (M(1:2, 1:2) * origin_v2);
+    rotated_o_pivot = (M(1:2, 1:2) * origin_pivot);
+    
+    %% Evaluate new vertices after rotation using rotated top-left as origin
+    new_v1    = [rotated_o(1) + rotated_o_v1(1);    rotated_o(2) - rotated_o_v1(2)   ];
+    new_v2    = [rotated_o(1) + rotated_o_v2(1);    rotated_o(2) - rotated_o_v2(2)   ];
+    new_pivot = [rotated_o(1) + rotated_o_pivot(1); rotated_o(2) - rotated_o_pivot(2)];
     
     %% Find vectors relative to pivot as origin
     box_edge1 = point_to_vector(new_pivot, new_v1);
@@ -51,24 +48,116 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         shortest = new_v2;
         longest_pivot = box_edge1;
     else
+        % Posso anche non farli e farli dopo
         shortest = new_v1;
         longest  = new_v2;
+
         longest_pivot = box_edge2;
     end
-
 
     %% Shear horizontal longest edge
     n_longest = longest_pivot / norm(longest_pivot);
     % M is the negative sine of the longest vector
+    %% Il sengo dipende dal coseno/seno di n_longest (?)
     m = - n_longest(2);
-    T = maketform('affine', [1 m 0; 0 1 0; 0 0 1]);
-    adjusted_image = imtransform(rotated, T, R,'FillValues',0); 
-
+    M = [1 m 0; 0 1 0; 0 0 1];
+    %M = [1 0 0; m 1 0; 0 0 1];
+    T = maketform('affine', M);
+    sheared = imtransform(rotated, T, R,'FillValues',0);
+    
+    M = [1 0 0; m 1 0 ; 0 0 1];
+    new_v1    = M(1:2, 1:2) * new_v1;
+    new_v2    = M(1:2, 1:2) * new_v2;
+    new_pivot = M(1:2, 1:2) * new_pivot;
+    
     figure(7);
-    imshow(adjusted_image);
+    imshow(sheared);
 
-    %
+%{
+ 
+    %% Find vectors before lineare transformation using top-left side as origin
+    origin.pivot = 'origin';
+    origin.value = [1; 1];
+    origin_v1 =    point_to_vector(origin, new_v1);
+    origin_v2 =    point_to_vector(origin, new_v2);
+    origin_pivot = point_to_vector(origin, new_pivot);
 
+    if (norm(box_edge1) > norm(box_edge2))
+        longest  = new_v1;
+        shortest = new_v2;
+        longest_pivot = box_edge1;
+    else
+        % Posso anche non farli e farli dopo
+        shortest = new_v1;
+        longest  = new_v2;
+
+        longest_pivot = box_edge2;
+    end
+
+
+ 
+%}
+
+
+
+    
+%{
+ 
+    %% Find new origin after shear
+    sheared_o = find_new_origin(sheared, save_M);
+    
+    %% Find vectors after rotation
+    shear_v1    = (M(1:2, 1:2) * origin_v1);
+    shear_v2    = (M(1:2, 1:2) * origin_v2);
+    shear_pivot = (M(1:2, 1:2) * origin_pivot);
+    
+    %% Evaluate new vertices after shear using top-left as origin
+    new_v1    = [sheared_o(1) + shear_v1(1);    sheared_o(2) - shear_v1(2)   ];
+    new_v2    = [sheared_o(1) + shear_v2(1);    sheared_o(2) - shear_v2(2)   ];
+    new_pivot = [sheared_o(1) + shear_pivot(1); sheared_o(2) - shear_pivot(2)];
+    
+    
+    %% Find vectors relative to pivot as origin
+    box_edge1 = point_to_vector(new_pivot, new_v1);
+    box_edge2 = point_to_vector(new_pivot, new_v2);
+    
+
+
+    %% ---------- Shear ----------
+    %%% Find new origin after rotation
+    %[n_rows_rotated, n_cols_rotated] = size(rotated);
+    
+    %% Non sono sicuro di questa cosa
+    sheared_o = rotated_o;
+    sheared_o = find_new_origin(sheared, save_M);
+    
+    %% Find vectors after rotation
+    shear_v1    = M(1:2, 1:2) * rotated_o_v1;
+    shear_v2    = M(1:2, 1:2) * rotated_o_v2;
+    shear_pivot = M(1:2, 1:2) * rotated_o_pivot;
+    
+    %% Evaluate new vertices after shear using top-left as origin
+    new_v1    = [sheared_o(1) + shear_v1(1);    sheared_o(2) - shear_v1(2)   ];
+    new_v2    = [sheared_o(1) + shear_v2(1);    sheared_o(2) - shear_v2(2)   ];
+    new_pivot = [sheared_o(1) + shear_pivot(1); sheared_o(2) - shear_pivot(2)];
+    
+    %% Find vectors relative to pivot as origin
+    box_edge1 = point_to_vector(new_pivot, new_v1);
+    box_edge2 = point_to_vector(new_pivot, new_v2); 
+%}
+
+    
+    if (norm(box_edge1) > norm(box_edge2))
+        longest  = new_v1;
+        shortest = new_v2;
+    else
+        % Posso anche non farli e farli dopo
+        shortest = new_v1;
+        longest  = new_v2;
+    end
+     
+
+    
     %% Consider all cases to figure out the orientation
     if(     (box_edge1(2) == 0 && box_edge1(1) > 0 && box_edge2(2) < 0) || ...
             (box_edge2(1) == 0 && box_edge2(2) < 0 && box_edge1(2) > 0) || ...
@@ -138,7 +227,7 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
 
     %% Crop box
     crop_rec = [rectangle_x, rectangle_y, rectangle_width, rectangle_height];
-    box_cropped = imcrop(rotated, crop_rec); 
+    box_cropped = imcrop(sheared, crop_rec); 
 
     figure(5);
     imshow(box_cropped);

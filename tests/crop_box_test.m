@@ -3,10 +3,10 @@ addpath(genpath('functions/'));
 %% Get list of images
 images_list = readlist('../data/images.list');
 scale_factor = 0.5;
-padding_crop = 0.10;
+padding_crop = 0;
 
-%% RUOTARE 42
-img_path = '../images/original/'+string(images_list{12});
+%% Errori: 34, 42
+img_path = '../images/original/'+string(images_list{18});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
