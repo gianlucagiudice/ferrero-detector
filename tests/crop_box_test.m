@@ -6,7 +6,7 @@ scale_factor = 0.5;
 padding_crop = 0.10;
 
 %% RUOTARE 42
-img_path = '../images/original/'+string(images_list{25});
+img_path = '../images/original/'+string(images_list{12});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
