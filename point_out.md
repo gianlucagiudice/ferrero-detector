@@ -1,4 +1,5 @@
 ### Elenco dei test effettuai
+- #### Ricerca della scatola
 - Differenze nei vari color space
   - "color_space.m"
 - Differrenze nei vari algoritmi di edge per la scatola
@@ -15,8 +16,15 @@
     - Le foto sono scattate dall'alto davanti alla scatolam non perfettamente sopra
   - **NUOVA IDEA**
     - Cercare i vertici "massimizando" e minimizzando" le funzioni f(x) = $\pm$x;
-- ...
-- Per trovare i vertici uso come feature edge canny
+- Crop immagine avendo i vertici
+  - Calcolo seno e coseno e poi altre cose
+  - Ruoto immagine
+  - Bisogna ri-calcolare tutti i vertici
+  - Calcolo coefficente per Lo shear
+  - Bisogna ri-calcolare tutti i vertici
+  - Faccio il crop
+    - Devo avere l'orientamento dei vertici per fare il crop
+- #### Classificatore
 
 ### Assunzioni
 - C'è la scatola

@@ -64,9 +64,7 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         rectangle_y = new_pivot(2);
         rectangle_width  = new_pivot(1) - longest(1);
         rectangle_height = new_pivot(2) - shortest(2);
-        % Add padding
-        rectangle_width  = rectangle_width + rectangle_width * crop_padding;
-        rectangle_height = rectangle_height + rectangle_height * crop_padding;
+
     elseif( (box_edge2(2) == 0 && box_edge2(1) < 0 && box_edge1(2) < 0) || ...
             (box_edge1(1) == 0 && box_edge1(2) < 0 && box_edge2(1) < 0) || ...
             (box_edge1(2) == 0 && box_edge1(1) < 0 && box_edge2(2) < 0) || ...
@@ -76,9 +74,7 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         rectangle_y = longest(2);
         rectangle_width  = new_pivot(1) - longest(1);
         rectangle_height = longest(2) - shortest(2);
-        % Add padding
-        rectangle_x = rectangle_x - rectangle_x * crop_padding;
-        rectangle_height = rectangle_height - rectangle_height * crop_padding;
+
     elseif( (box_edge1(1) == 0 && box_edge1(2) > 0 && box_edge2(1) > 0) || ...
             (box_edge2(2) == 0 && box_edge2(1) > 0 && box_edge1(2) > 0) || ...
             (box_edge2(1) == 0 && box_edge2(2) > 0 && box_edge1(1) > 0) || ...
@@ -88,9 +84,7 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         rectangle_y = shortest(2);
         rectangle_width  = longest(1) - new_pivot(1);
         rectangle_height = new_pivot(2) - shortest(2);
-        % Add padding
-        rectangle_y = rectangle_y - rectangle_y * crop_padding;
-        rectangle_width  = rectangle_width + rectangle_width * crop_padding;
+
     elseif( (box_edge1(2) == 0 && box_edge1(1) < 0 && box_edge2(2) > 0) || ...
             (box_edge2(1) == 0 && box_edge2(2) > 0 && box_ede1(1) < 0)  || ...
             (box_edge2(2) == 0 && box_edge2(1) < 0 && box_edge1(2) > 0) || ...
@@ -100,19 +94,37 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         rectangle_height = new_pivot(2) - shortest(2);
         rectangle_x = new_pivot(1) - rectangle_width;
         rectangle_y = longest(2) - rectangle_height;
+        
+        %{
         % Add padding
-
-         padding_horizontal = rectangle_width * crop_padding * 0.5;
+        padding_horizontal = rectangle_width * crop_padding * 0.5;
         padding_vertical = rectangle_height * crop_padding * 0.5;
         rectangle_x = rectangle_x - padding_horizontal;
         rectangle_y = rectangle_y - padding_vertical;
         rectangle_width  = rectangle_width  + padding_horizontal;
-        rectangle_height = rectangle_height + padding_vertical; 
+        rectangle_height = rectangle_height + padding_vertical;  
+        %}
+
 
     end
+
+    %% Add padding
+
+    %{
+    padding_horizontal = rectangle_width * crop_padding * 0.5;
+    padding_vertical = rectangle_height * crop_padding * 0.5;
+    
+    rectangle_x = rectangle_x - padding_horizontal;
+    rectangle_y = rectangle_y - padding_vertical;
+    rectangle_width  = rectangle_width  + padding_horizontal;
+    rectangle_height = rectangle_height + padding_vertical;  
+    %}
+
 
     %% Crop box
     crop_rec = [rectangle_x, rectangle_y, rectangle_width, rectangle_height];
     box_cropped = imcrop(rotated, crop_rec); 
 
+    figure(5);
+    imshow(box_cropped);
 end
