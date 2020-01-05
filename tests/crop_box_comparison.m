@@ -3,14 +3,11 @@ addpath(genpath('functions/'));
 %% Get list of images
 images_list = readlist('../data/images.list');
 scale_factor = 0.5;
-padding_crop = 0.15;
+padding_crop = 0.08;
 
 %% Processing
 start_limit = 1;
 end_limit = 64;
-
-
-
 
 tic
 for i = start_limit:end_limit
