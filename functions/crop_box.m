@@ -1,5 +1,5 @@
 function [box_cropped, rotated, sheared, M] = ...
-    crop_box(box_image, vertices, crop_k, corner_k)
+    crop_box(box_image, vertices, crop_padding)
     
     %% Find vectors relative to pivot as origin
     box_edge1 = point_to_vector(vertices(2), vertices(1));
@@ -19,8 +19,7 @@ function [box_cropped, rotated, sheared, M] = ...
     origin_pivot = point_to_vector(origin, vertices(2));
 
 
-    %% ---------- ROTATION ----------
-    %% Rotate longest edge
+    %% ---------- ROTATION ----------ì
     R = makeresampler({'cubic','nearest'},'fill');
     if (len1 < len2)
         M = [n1(2) -n1(1) 0; n1(1) n1(2) 0; 0 0 1];
@@ -69,16 +68,26 @@ function [box_cropped, rotated, sheared, M] = ...
     T = maketform('affine', M);
     sheared.image = imtransform(rotated.image, T, R,'FillValues',0);
 
-    %% Evaluate new vertices after shear
-    if (n_longest(2) < 0 )
-        left_corner_y_rotated = find(sum(rotated.image(:, 1, :), 3) > 0, 1); 
-        left_corner_y_sheared = find(sum(sheared.image(:, 1, :), 3) > 0, 1); 
-        y_padding = left_corner_y_sheared - left_corner_y_rotated;
-        padding = [0; abs(y_padding)];
-    else
-        padding = [0; 0];
-    end
+    %{
+        
+        if (n_longest(2) < 0 )
+            left_corner_y_rotated = find(sum(rotated.image(:, 1, :), 3) > 0, 1); 
+            left_corner_y_sheared = find(sum(sheared.image(:, 1, :), 3) > 0, 1); 
+            y_padding = left_corner_y_sheared - left_corner_y_rotated;
+            padding = [0; abs(y_padding)];
+        else
+            padding = [0; 0];
+        end
+        
+        %}
+
+    %% Find new origin
+    left_corner_y_rotated = find(sum(rotated.image(:, 1, :), 3) > 0, 1); 
+    left_corner_y_sheared = find(sum(sheared.image(:, 1, :), 3) > 0, 1); 
+    y_padding = left_corner_y_sheared - left_corner_y_rotated;
+    padding = [0; abs(y_padding)];
     
+    %% Evaluate new vertices after shear
     M = [1 0 0; m 1 0 ; 0 0 1];
     new_v1    = M(1:2, 1:2) * new_v1    + padding;
     new_v2    = M(1:2, 1:2) * new_v2    + padding;
@@ -97,13 +106,6 @@ function [box_cropped, rotated, sheared, M] = ...
     end
      
     
-    %% Evaluate padding    
-    crop_padding = abs(longest_edge(2)) * crop_k;
-    corner_padding = round(norm(shortest_edge) * corner_k);
-    
-    disp(crop_padding);
-    disp(corner_padding);
-    
     %% Consider all cases to figure out the Pivot orientation
     if( (box_edge1(1) == 0 && box_edge1(2) > 0 && box_edge2(1) > 0) || ...
             (box_edge2(2) == 0 && box_edge2(1) > 0 && box_edge1(2) > 0) || ...
@@ -116,10 +118,9 @@ function [box_cropped, rotated, sheared, M] = ...
         rectangle_height = new_pivot(2) - shortest(2);
         
         % Add padding
-        rectangle_x      = rectangle_x                     + corner_padding; 
-        rectangle_y      = rectangle_y      - crop_padding;
-        rectangle_width  = rectangle_width  + crop_padding;
-        rectangle_height = rectangle_height + crop_padding - corner_padding;
+        rectangle_y      = rectangle_y      - rectangle_height * crop_padding;
+        rectangle_width  = rectangle_width  + rectangle_width  * crop_padding;
+        rectangle_height = rectangle_height + rectangle_height * crop_padding;
 
 
         disp("qua");
@@ -134,10 +135,10 @@ function [box_cropped, rotated, sheared, M] = ...
         rectangle_x = new_pivot(1) - rectangle_width;
         rectangle_y = longest(2) - rectangle_height;
         % Add padding
-        rectangle_x      = rectangle_x      - crop_padding;
-        rectangle_y      = rectangle_y      - crop_padding;
-        rectangle_width  = rectangle_width  + crop_padding - corner_padding;
-        rectangle_height = rectangle_height + crop_padding - corner_padding;
+        rectangle_x      = rectangle_x      - rectangle_width  * crop_padding;
+        rectangle_y      = rectangle_y      - rectangle_height * crop_padding;
+        rectangle_width  = rectangle_width  + rectangle_width  * crop_padding;
+        rectangle_height = rectangle_height + rectangle_height * crop_padding;
 
         disp("que");
 
@@ -148,6 +149,4 @@ function [box_cropped, rotated, sheared, M] = ...
     crop_rec = [rectangle_x, rectangle_y, rectangle_width, rectangle_height];
     box_cropped = imcrop(sheared.image, crop_rec); 
 
-    figure(5);
-    imshow(box_cropped);
 end
