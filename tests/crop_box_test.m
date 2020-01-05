@@ -6,7 +6,8 @@ scale_factor = 0.5;
 padding_crop = 0;
 
 %% Errori: 34, 42
-img_path = '../images/original/'+string(images_list{18});
+%% 18, 8 
+img_path = '../images/original/'+string(images_list{47});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
@@ -17,7 +18,7 @@ vertices45 = find_vertices_45(bw);
 vertices90 = find_vertices_90(bw);
 best_vertices = decide_best_vertices(vertices45, vertices90);
 
-[box_cropped, rotated, rot_matrix] = crop_box(scaled_image, best_vertices, padding_crop);
+[box_cropped, rotated, sheared, rot_matrix] = crop_box(scaled_image, best_vertices, padding_crop);
 
 
 figure(1);
@@ -37,4 +38,13 @@ subplot(2,2,4);
 imshow(box_cropped);title("Box cropped");
 
 figure(2);
-imshow(rotated);
+imshow(rotated.image);
+plot_vertices(rotated.vertices);
+
+
+
+%{
+ figure(3);
+imshow(rotated.image);
+plot_vertices(rotated.vertices); 
+%}

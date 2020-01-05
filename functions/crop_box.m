@@ -1,4 +1,4 @@
-function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
+function [box_cropped, rotated, sheared, M] = crop_box(box_image, vertices, crop_padding)
     %% Find vectors relative to pivot as origin
     box_edge1 = point_to_vector(vertices(2), vertices(1));
     box_edge2 = point_to_vector(vertices(2), vertices(3));
@@ -24,10 +24,10 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
         M =  [n2(2) -n2(1) 0; n2(1) n2(2) 0; 0 0 1];
     end
     T = maketform('affine', M);
-    rotated = imtransform(box_image, T, R,'FillValues',0);
-    
+    rotated.image = imtransform(box_image, T, R,'FillValues',0);
+
     %% Find new origin after rotation
-    rotated_o = find_new_origin(rotated, M);
+    rotated_o = find_new_origin(rotated.image, M);
     
     %% Find vectors after rotation
     rotated_o_v1    = (M(1:2, 1:2) * origin_v1);
@@ -38,7 +38,8 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
     new_v1    = [rotated_o(1) + rotated_o_v1(1);    rotated_o(2) - rotated_o_v1(2)   ];
     new_v2    = [rotated_o(1) + rotated_o_v2(1);    rotated_o(2) - rotated_o_v2(2)   ];
     new_pivot = [rotated_o(1) + rotated_o_pivot(1); rotated_o(2) - rotated_o_pivot(2)];
-    
+    rotated.vertices = round([new_v1, new_pivot, new_v2]);
+
     %% Find vectors relative to pivot as origin
     box_edge1 = point_to_vector(new_pivot, new_v1);
     box_edge2 = point_to_vector(new_pivot, new_v2);
@@ -59,20 +60,59 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
     n_longest = longest_pivot / norm(longest_pivot);
     % M is the negative sine of the longest vector
     %% Il sengo dipende dal coseno/seno di n_longest (?)
-    m = - n_longest(2);
-    M = [1 m 0; 0 1 0; 0 0 1];
-    %M = [1 0 0; m 1 0; 0 0 1];
-    T = maketform('affine', M);
-    sheared = imtransform(rotated, T, R,'FillValues',0);
     
+    m = n_longest(2);
+    save_M = M;
+    
+    %% Pivot is in rigth position relative to other vertices
+    if (new_pivot(1) > new_v1(1) || new_pivot(1) > new_v2(1))
+       m = -m;
+       flag = 1;
+    end
+    %M = [1 0 0; m 1 0; 0 0 1];
+    
+    M = [1 m 0; 0 1 0; 0 0 1];
+    T = maketform('affine', M);
+    sheared.image = imtransform(rotated.image, T, R,'FillValues',0);
+    
+    if (n_longest(2) < 0 )
+        m = m;
+        sheared_o = find_new_origin(rotated.image, save_M);
+        padding = 72;
+        padding = [0; sheared_o(2)];
+        padding = 72;
+        r = rotated.image(:,1,1);
+        g = rotated.image(:,1,2);
+        b = rotated.image(:,1,3);
+        left_corner_y_rotated = find(sum(rotated.image(:, 1, :), 3) > 0, 1); 
+        left_corner_y_sheared = find(sum(sheared.image(:, 1, :), 3) > 0, 1); 
+        y_padding = left_corner_y_sheared - left_corner_y_rotated;
+        padding = [0; abs(y_padding)];
+    else
+        padding = [0; 0];
+    end
+    
+
+
     M = [1 0 0; m 1 0 ; 0 0 1];
+    %M = [1 -m 0; 0 1 0 ; 0 0 1];
     new_v1    = M(1:2, 1:2) * new_v1;
     new_v2    = M(1:2, 1:2) * new_v2;
     new_pivot = M(1:2, 1:2) * new_pivot;
     
+    %padding = [0; 329];
+    new_v1 = new_v1 + padding;
+    new_v2 = new_v2 + padding;
+    new_pivot = new_pivot + padding;
+    
+    
+    
     figure(7);
-    imshow(sheared);
-
+    imshow(sheared.image);
+    plot_vertices(round([new_v1, new_pivot, new_v2]));
+    
+    m;
+    
 %{
  
     %% Find vectors before lineare transformation using top-left side as origin
@@ -227,7 +267,7 @@ function [box_cropped, rotated, M] = crop_box(box_image, vertices, crop_padding)
 
     %% Crop box
     crop_rec = [rectangle_x, rectangle_y, rectangle_width, rectangle_height];
-    box_cropped = imcrop(sheared, crop_rec); 
+    box_cropped = imcrop(sheared.image, crop_rec); 
 
     figure(5);
     imshow(box_cropped);
