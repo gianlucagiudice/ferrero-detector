@@ -1,4 +1,4 @@
-addpath(genpath('functions/'));
+addpath(genpath('../functions/'));
 
 %% Get list of images
 images_list = readlist('../data/images.list');
@@ -12,7 +12,7 @@ end_limit = 64;
 tic
 for i = start_limit:end_limit
     %% Processing
-    img_path = '../images/original/'+string(images_list{i});
+    img_path = '../images/original/' + string(images_list{i});
     [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
     canny_edge = image_to_edge(target_image);
@@ -22,42 +22,13 @@ for i = start_limit:end_limit
     vertices45 = find_vertices_45(bw);
     vertices90 = find_vertices_90(bw);
     best_vertices = decide_best_vertices(vertices45, vertices90);
-    
-    [box_cropped, rotated, rot_matrix] = crop_box(scaled_image, best_vertices, padding_crop);
-    
+        
+    [box_cropped, rotated, sheared, rot_matrix] = ...
+    crop_box(scaled_image, best_vertices, crop_padding);
     
     %% Show results
-    figure(4);
-    disp(i);
-    imshow(box_cropped);
-
-%{
- 
-    subplot(1,2,1); imshow(scaled_image);
-    subplot(1,2,2); imshow(box_cropped);
- 
-%}
-
-    %{
-    figure(2);
-    %% Show orignal image
-    subplot(2,2,1);
-    imshow(scaled_image);title("Original Image");
-    %% Show vertices on image
-    subplot(2,2,2);
-    imshow(scaled_image);title("Best vertices method");
-    plot_vertices(best_vertices);
-    %% Show vertices on bw
-    subplot(2,2,3);
-    imshow(bw);title("Bw box");
-    plot_vertices(best_vertices);
-    %% Show vertices on bw
-    subplot(2,2,4);
-    imshow(box_cropped);title("Box cropped");
-
-    figure(3);
-    imshow(rotated);
+    figure(i);
+    imshow(imresize(box_cropped, 0.5));
     
-    %}
 end
 toc

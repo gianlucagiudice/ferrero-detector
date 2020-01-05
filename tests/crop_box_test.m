@@ -3,11 +3,10 @@ addpath(genpath('functions/'));
 %% Get list of images
 images_list = readlist('../data/images.list');
 scale_factor = 0.5;
-crop_padding = 0.08;
+crop_padding = 0.10;
 
 %% Process target image
-% 28
-img_path = '../images/original/'+string(images_list{16});
+img_path = '../images/original/'+string(images_list{52});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
@@ -22,8 +21,9 @@ best_vertices = decide_best_vertices(vertices45, vertices90);
 crop_box(scaled_image, best_vertices, crop_padding);
 
 
-figure(1);
+%% -------- Show results -------- 
 
+figure(1);
 %% Show orignal image
 subplot(2,3,1);
 imshow(scaled_image);title("Original Image");
