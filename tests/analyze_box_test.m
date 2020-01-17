@@ -6,7 +6,7 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Process target image
-img_path = '../images/original/'+string(images_list{50});
+img_path = '../images/original/'+string(images_list{55});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
@@ -25,16 +25,27 @@ crop_box(scaled_image, best_vertices, crop_padding);
 box_cropped_eq = histeq(box_cropped);
 
 
-hsv = rgb2hsv(box_cropped);
-ycbcr = rgb2ycbcr(box_cropped);
+hsv = rgb2hsv(box_cropped_eq);
+hsv_s = hsv(:,:,2);
+%% Calcolare dinamicamente la finestra 
+%out = compute_local_descriptors(hsv(:,:,2), 30, 3, @compute_average_color);
+out = compute_local_descriptors(hsv_s, 30, 10, @compute_average_color);
 
-
-out = compute_local_descriptors(hsv(:,:,2), 30, 3, @compute_average_color);
-
-labels = kmeans(out.descriptors, 3);
-
+n_labels = 3;
+labels = kmeans(out.descriptors, n_labels);
 img_labels = reshape(labels, out.nt_rows, out.nt_cols);
 img_labels_out = imresize(img_labels, [r, c], 'nearest');
+
+
+labels_pos = [];
+means_labels = [];
+%% Evaluate mean of saturation relative to labels
+for i = 1:n_labels
+    means_labels(i) = mean(hsv_s(img_labels_out == i));
+end
+[~, raffaellos_index] = min(means_labels);
+raffaellos_mask = hsv_s(raffaellos_index);
+
 
 %% Uso S =hsv(:,:,2) e Cb = YCbCr(:,:,2)
 
@@ -47,7 +58,11 @@ subplot(1,2,2);
 imshow(box);title("Box cropped"); 
 
 figure(2);
-imagesc(img_labels_out), axis image;
+subplot(3,1,1);
+imagesc(img_labels_out), axis image; title("All labels");
+subplot(3,1,2);
+imshow(raffaellos_mask);
+
 
 show_color_spaces(box_cropped, 98);
 show_color_spaces(box_cropped_eq, 99);
