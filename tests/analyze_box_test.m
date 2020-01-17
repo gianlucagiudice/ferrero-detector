@@ -20,34 +20,34 @@ best_vertices = decide_best_vertices(vertices45, vertices90);
 [box_cropped, rotated, sheared, rot_matrix] = ...
 crop_box(scaled_image, best_vertices, crop_padding);
 
+[r, c, ch] = size(box_cropped);
+
+box_cropped_eq = histeq(box_cropped);
+
+
+hsv = rgb2hsv(box_cropped);
+ycbcr = rgb2ycbcr(box_cropped);
+
+
+out = compute_local_descriptors(hsv(:,:,2), 30, 3, @compute_average_color);
+
+labels = kmeans(out.descriptors, 3);
+
+img_labels = reshape(labels, out.nt_rows, out.nt_cols);
+img_labels_out = imresize(img_labels, [r, c], 'nearest');
+
+%% Uso S =hsv(:,:,2) e Cb = YCbCr(:,:,2)
 
 %% -------- Show results -------- 
 
 figure(1);
-%% Show orignal image
-subplot(2,3,1);
-imshow(scaled_image);title("Original Image");
-
-%% Show vertices on bw
-subplot(2,3,2);
-imshow(bw);title("Bw box");
-plot_vertices(best_vertices);
-
-%% Show vertices on image
-subplot(2,3,3);
-imshow(scaled_image);title("Best vertices method");
-plot_vertices(best_vertices);
-
-%% Show rotated image on bw
-subplot(2,3,4);
-imshow(rotated.image);title("Rotated image");
-plot_vertices(rotated.vertices);
-
-%% Show sheared image
-subplot(2,3,5);
-imshow(sheared.image);title("Sheared image");
-plot_vertices(sheared.vertices); 
-
-%% Show cropped image
-subplot(2,3,6);
+subplot(1,2,1);
 imshow(box_cropped);title("Box cropped"); 
+subplot(1,2,2);
+imshow(box);title("Box cropped"); 
+
+figure(2);
+imagesc(img_labels_out), axis image;
+
+show_color_spaces(box_cropped, 98);
+show_color_spaces(box_cropped_eq, 99);

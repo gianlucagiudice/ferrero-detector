@@ -2,7 +2,8 @@ function best_vertices = decide_best_vertices(vertices45, vertices90)
     %% Assume 45 is the best method
     best_vertices = vertices45;
     
-    tan_threshold = 0.50;
+    %tan_threshold = 0.5;
+    tan_threshold = 0.85;
     len_threshold = 0.30;
 
     v1 = vertices45(1).value - vertices45(2).value;

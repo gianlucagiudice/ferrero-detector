@@ -14,8 +14,10 @@
   - Vertice pivot è quello in verde 
   - Correggo gli errori prospettici, (Esempio vertici troppo vicini)
     - Le foto sono scattate dall'alto davanti alla scatolam non perfettamente sopra
-  - **NUOVA IDEA**
-    - Cercare i vertici "massimizando" e minimizzando" le funzioni f(x) = $\pm$x;
+  - Trovo i vertici con il metodo a 90
+  - Trovo i vertici con il metodo a 45
+  - Decido il metodo migliore
+    - Dire come ho trovato le varie soglie
 - Crop immagine avendo i vertici
   - Calcolo seno e coseno e poi altre cose
   - Ruoto immagine
@@ -24,6 +26,7 @@
   - Bisogna ri-calcolare tutti i vertici
   - Faccio il crop
     - Devo avere l'orientamento dei vertici per fare il crop
+- Equalizzare l'immagine cropped, peggiora le cose
 - #### Classificatore
 
 ### Assunzioni
