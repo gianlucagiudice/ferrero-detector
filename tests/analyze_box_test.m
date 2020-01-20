@@ -44,7 +44,12 @@ for i = 1:n_labels
     means_labels(i) = mean(hsv_s(img_labels_out == i));
 end
 [~, raffaellos_index] = min(means_labels);
-raffaellos_mask = hsv_s(raffaellos_index);
+raffaellos_mask = img_labels_out == raffaellos_index;
+
+%% Morphologic operator 
+
+se = strel('disk',20);
+raffaellos_mask_closed = imopen(raffaellos_mask, se);
 
 
 %% Uso S =hsv(:,:,2) e Cb = YCbCr(:,:,2)
@@ -55,14 +60,20 @@ figure(1);
 subplot(1,2,1);
 imshow(box_cropped);title("Box cropped"); 
 subplot(1,2,2);
-imshow(box);title("Box cropped"); 
+imshow(box_cropped);title("Box cropped"); 
 
 figure(2);
-subplot(3,1,1);
+subplot(1,3,1);
 imagesc(img_labels_out), axis image; title("All labels");
-subplot(3,1,2);
+subplot(1,3,2);
 imshow(raffaellos_mask);
+subplot(1,3,3);
+imshow(raffaellos_mask_closed);
 
+figure(3);
+imshow(raffaellos_mask_closed .* box_cropped);
 
+%{
 show_color_spaces(box_cropped, 98);
-show_color_spaces(box_cropped_eq, 99);
+show_color_spaces(box_cropped_eq, 99); 
+%}
