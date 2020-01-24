@@ -28,6 +28,14 @@
     - Devo avere l'orientamento dei vertici per fare il crop
 - Equalizzare l'immagine cropped, peggiora le cose
 - #### Classificatore
+  - Cerco prima i raffaello sul canale S di HSV
+  - Faccio la proiezione verticale
+    - Derivata prima della proiezione verticale per trovare se ci sono due massimi
+    - Cerco la porzione di proiezione con valori maggiori
+      - In quella porzione cerchio i cioccolatini che non sono conformi
+  - Per capire se sono allineati
+    - Radix sort su X e Y
+      - Controllo se l'i-esmio valore differisce dal sucessivo di più della metà del size del cioccolatino
 
 ### Assunzioni
 - C'è la scatola

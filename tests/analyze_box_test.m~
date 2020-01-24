@@ -7,7 +7,7 @@ crop_padding = 0.10;
 
 %% Process target image
 %% 55
-img_path = '../images/original/'+string(images_list{41});
+img_path = '../images/original/'+string(images_list{33});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
@@ -61,9 +61,11 @@ raffaellos_mask_closed = imclose(raffaellos_mask, se);
 se = strel('square', tsize * 3);
 raffaellos_mask_opened = imopen(raffaellos_mask_closed, se);
 % Eorde mask
-se = strel('disk', round(tsize * 0.25));
+se = strel('disk', round(tsize * 0.5));
 raffaellos_mask_erode = imclose(raffaellos_mask, se);
-se = strel('disk', round(tsize * 1.5));
+for i = 1:5
+    e
+se = strel('line', round(tsize * 0.75), 0);
 raffaellos_mask_erode = imerode(raffaellos_mask_erode, se);
 
 
