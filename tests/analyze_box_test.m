@@ -27,9 +27,16 @@ box_cropped_eq = histeq(box_cropped);
 
 hsv = rgb2hsv(box_cropped_eq);
 hsv_s = hsv(:,:,2);
-%% Calcolare dinamicamente la finestra 
-%out = compute_local_descriptors(hsv(:,:,2), 30, 3, @compute_average_color);
-out = compute_local_descriptors(hsv_s, 30, 10, @compute_average_color);
+%% Calcolare dinamicamente la finestra -> Considero scatola rettangolare
+% Consider the size of a choccolate
+% Obtained from dataset
+choccolate_size_percentage = 0.166;
+% Evaluate frame size
+choccolate_fraction = 1/5;
+tsize = round(r * choccolate_size_percentage * choccolate_fraction);
+
+%% Evaluate labels
+out = compute_local_descriptors(hsv_s, tsize, 10, @compute_average_color);
 
 n_labels = 3;
 labels = kmeans(out.descriptors, n_labels);
@@ -47,15 +54,17 @@ end
 raffaellos_mask = img_labels_out == raffaellos_index;
 
 %% Morphologic operator 
-
-se = strel('disk',20);
-raffaellos_mask_closed = imopen(raffaellos_mask, se);
-
-
-%% Uso S =hsv(:,:,2) e Cb = YCbCr(:,:,2)
+% Ideally consider choccolates as square
+se = strel('square', tsize);
+raffaellos_mask_closed = imclose(raffaellos_mask, se);
+se = strel('square', tsize * 3);
+raffaellos_mask_opened = imopen(raffaellos_mask_closed, se);
+se = strel('line', tsize * 3, 90);
+raffaellos_mask_erode_horizontal  = imerode(raffaellos_mask_opened, se);
+se = strel('line', tsize * 3, 0);
+raffaellos_mask_erode_vertical  = imerode(raffaellos_mask_erode_horizontal, se);
 
 %% -------- Show results -------- 
-
 figure(1);
 subplot(1,2,1);
 imshow(box_cropped);title("Box cropped"); 
@@ -63,17 +72,19 @@ subplot(1,2,2);
 imshow(box_cropped);title("Box cropped"); 
 
 figure(2);
-subplot(1,3,1);
+subplot(2,3,1);
 imagesc(img_labels_out), axis image; title("All labels");
-subplot(1,3,2);
-imshow(raffaellos_mask);
-subplot(1,3,3);
-imshow(raffaellos_mask_closed);
+subplot(2,3,2);
+imshow(raffaellos_mask); title("Raffaellos mask");
+subplot(2,3,3);
+imshow(raffaellos_mask_closed); title("Mask imclose()");
+subplot(2,3,4);
+imshow(raffaellos_mask_opened); title("Mask imopen()");
+subplot(2,3,5);
+imshow(raffaellos_mask_erode_horizontal); title("Mask erode() horizontal");
+subplot(2,3,6);
+imshow(raffaellos_mask_erode_vertical); title("Mask erode() vertical");
 
-figure(3);
-imshow(raffaellos_mask_closed .* box_cropped);
-
-%{
+%% Show difference between equalized and not equalized
 show_color_spaces(box_cropped, 98);
 show_color_spaces(box_cropped_eq, 99); 
-%}
