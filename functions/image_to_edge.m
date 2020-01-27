@@ -5,5 +5,6 @@ function out_edge = image_to_edge(target_image)
     target_image_filtered  = imfilter(target_image_filtered , F13, 'replicate');
     %% Find edges 
     %out_edge = edge(target_image_filtered, 'Sobel');
+    %% Non so perchè ho messo qeusti parametri
     out_edge = edge(target_image_filtered, 'Canny');
 end

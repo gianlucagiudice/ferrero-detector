@@ -36,6 +36,9 @@
   - Per capire se sono allineati
     - Radix sort su X e Y
       - Controllo se l'i-esmio valore differisce dal sucessivo di più della metà del size del cioccolatino
+  
+  - **NUOVA IDEA**
+    - Ritaglio dei cioccolatini e faccio un classificatore bayesiano 
 
 ### Assunzioni
 - C'è la scatola

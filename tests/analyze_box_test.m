@@ -7,7 +7,7 @@ crop_padding = 0.10;
 
 %% Process target image
 %% 55
-img_path = '../images/original/'+string(images_list{41});
+img_path = '../images/original/'+string(images_list{42});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);
@@ -23,11 +23,10 @@ crop_box(scaled_image, best_vertices, crop_padding);
 
 [r, c, ch] = size(box_cropped);
 
-box_cropped_eq = histeq(box_cropped);
-
-
-hsv = rgb2hsv(box_cropped_eq);
+hsv = rgb2hsv(box_cropped);
 hsv_s = hsv(:,:,2);
+hsv_s_eq = histeq(hsv_s);
+
 %% Calcolare dinamicamente la finestra -> Considero scatola rettangolare
 % Consider the size of a choccolate
 % Obtained from dataset
@@ -61,32 +60,28 @@ raffaellos_mask_closed = imclose(raffaellos_mask, se);
 se = strel('square', tsize * 3);
 raffaellos_mask_opened = imopen(raffaellos_mask_closed, se);
 % Eorde mask
-se = strel('disk', round(tsize * 0.25));
-raffaellos_mask_erode = imclose(raffaellos_mask, se);
-se = strel('disk', round(tsize * 1.5));
-raffaellos_mask_erode = imerode(raffaellos_mask_erode, se);
+se = strel('disk', tsize);
+raffaellos_mask_erode = imerode(raffaellos_mask_opened, se);
 
 
 %% -------- Show results -------- 
 figure(1);
-subplot(1,2,1);
+subplot(2,4,1);
 imshow(box_cropped);title("Box cropped"); 
-subplot(1,2,2);
-imshow(box_cropped);title("Box cropped"); 
-
-figure(2);
-subplot(2,3,1);
-imagesc(img_labels_out), axis image; title("Raffaello labels");
-subplot(2,3,2);
+subplot(2,4,2);
+imshow(hsv_s); title("HSV_S");
+subplot(2,4,3);
+imshow(hsv_s_eq); title("histeq(HSV_S)");
+subplot(2,4,4);
+imagesc(img_labels_out), axis image; title("Raffaello labels HSV_S");
+subplot(2,4,5);
 imshow(raffaellos_mask); title("Raffaello mask");
-subplot(2,3,3);
-imshow(raffaellos_mask_erode); title("Raffaello mask erode");
-subplot(2,3,4);
-imshow(raffaellos_mask); title("Raffaello mask");
-subplot(2,3,5);
+subplot(2,4,6);
 imshow(raffaellos_mask_closed); title("Mask imclose()");
-subplot(2,3,6);
+subplot(2,4,7);
 imshow(raffaellos_mask_opened); title("Mask imopen()");
+subplot(2,4,8);
+imshow(raffaellos_mask_erode); title("Raffaello mask erode");
 
 %% Show difference between equalized and not equalized
 %{
