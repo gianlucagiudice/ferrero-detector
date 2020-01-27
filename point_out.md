@@ -39,6 +39,7 @@
   
   - **NUOVA IDEA**
     - Ritaglio dei cioccolatini e faccio un classificatore bayesiano 
+    - Far notare in "choccolates_statistics" che equalizzando, le cose peggiorano
 
 ### Assunzioni
 - C'è la scatola
