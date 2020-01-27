@@ -56,6 +56,7 @@ for i = 1 : n_classes
     train_labels = [train_labels; labels];
 end
 
+%% Non funziona, devo andare in palestra, poi vedo perchè
 classifier_bayes = fitcnb(train_values, train_labels);
 
 
