@@ -42,14 +42,26 @@ for i = 1 : n_classes
     end
 end
 
-%{
- 
 %% Create classifier
-train_values = [skin; noskin];
-train_labels = zeros(size(train_values, 1), 1);
-train_labels(1:rs*cs, 1) = 1;
+train_values = [];
+train_labels = [];
+for i = 1 : n_classes
+    stats = statistics{i}.value;
+    [r, c, ch] = size(stats);
+    train_values = [train_values; stats];
+    % Label must be an integere value
+    target_label = string(statistics{i}.label);
+    target_label = i;
+    labels = repmat(target_label, r*c, 1);
+    train_labels = [train_labels; labels];
+end
 
 classifier_bayes = fitcnb(train_values, train_labels);
+
+
+image = im2double(imread("../../images/original/IMG_8609.JPG"));
+figure(2);
+imshow(image);
 
 % Evaluate the target image
 [r, c, ch] = size(image);
@@ -58,4 +70,4 @@ pixs = reshape(image, r*c, 3);
 predicted = predict(classifier_bayes, pixs);
 predicted = reshape(predicted, r, c, 1);
 show_result(image, predicted); 
-%}
+
