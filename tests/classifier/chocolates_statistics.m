@@ -42,7 +42,20 @@ for i = 1 : n_classes
     end
 end
 
+%{
+ 
+%% Create classifier
+train_values = [skin; noskin];
+train_labels = zeros(size(train_values, 1), 1);
+train_labels(1:rs*cs, 1) = 1;
 
-img_path = '../../images/labeled/' + string(images_list{5});
-[original, scaled_image, ~] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
-images{1} = scaled_image;
+classifier_bayes = fitcnb(train_values, train_labels);
+
+% Evaluate the target image
+[r, c, ch] = size(image);
+pixs = reshape(image, r*c, 3);
+
+predicted = predict(classifier_bayes, pixs);
+predicted = reshape(predicted, r, c, 1);
+show_result(image, predicted); 
+%}
