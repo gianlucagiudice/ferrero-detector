@@ -2,7 +2,7 @@
 cd('../functions');
 % Read images list
 images = readlist('../data/images.list');
-path = '../images/original/' + string(images{14});
+path = '../images/original/' + string(images{12});
 
 scale_factor = 0.3;
 % Read image
@@ -43,3 +43,5 @@ subplot(r,c,15); imshow(ntsc(:,:,3)), title('NTSC 3');
 subplot(r,c,16); imshow(xyz(:,:,1)), title('XYZ 1');
 subplot(r,c,17); imshow(xyz(:,:,2)), title('XYZ 2');
 subplot(r,c,18); imshow(xyz(:,:,3)), title('XYZ 3');
+
+show_color_spaces(target_image, 2);
