@@ -10,8 +10,6 @@ dir_names = ["raffaello", "rocher", "rondnoir"];
 n_classes = length(dir_names);
 statistics = cell(1, n_classes);
 
-change_color_space = @rgb2hsv;
-
 %% Read all the images
 for i = 1 : n_classes
     stats = [];
@@ -25,16 +23,24 @@ for i = 1 : n_classes
         %% Far vedere che equalizzato fa schifo!
         %target_image = histeq(target_image);
         
-        target_image = change_color_space(target_image);
+        target_image_ycbcr = rgb2ycbcr(target_image);
+        reshaped_ycbcr = reshape(target_image_ycbcr, r*c, 1, ch);
         
-        reshaped = reshape(target_image, r*c, 1, ch);
-        stats = cat(1, stats, reshaped);
+        target_image_hsv = rgb2hsv(target_image);
+        reshaped_hsv = reshape(target_image_hsv, r*c, 1, ch);
+        
+        temp = cat(3, reshaped_ycbcr, reshaped_hsv);
+
+        stats = cat(1, stats, temp);
+        
     end
     statistics{i}.value = stats;
     statistics{i}.label = dir_names{i};
 end
 
-%% Plot the statistics
+
+%{
+ %% Plot the statistics
 figure(1);
 channels = ["r", "g", "b"];
 for i = 1 : n_classes
@@ -48,6 +54,8 @@ for i = 1 : n_classes
         title(statistics{i}.label + "_" + channels(j));
     end
 end
+ 
+%}
 
 %% Create classifier
 train_values = [];
@@ -62,28 +70,25 @@ for i = 1 : n_classes
     target_label = i;
     labels = repmat(target_label, r*c, 1);
     train_labels = [train_labels; labels];
+
 end
 
-%% Non funziona, devo andare in palestra, poi vedo perchè
 %classifier_bayes = fitcknn(train_values, train_labels);
 %classifier_bayes = fitctree(train_values, train_labels);
 classifier_bayes = fitcnb(train_values, train_labels);
 
 
-%image = im2double(imread("../../images/original/IMG_8629.JPG"));
-image = histeq(im2double(imread("../../images/original/IMG_8634.JPG")));
+target_image = im2double(imread("../../images/original/IMG_8629.JPG"));
 
-show_color_spaces(image, 3);
-
-image = change_color_space(image);
+image = cat(3, rgb2ycbcr(target_image), rgb2hsv(target_image));
 
 figure(2);
 subplot(2,2,1);
-imshow(image);
+imshow(target_image);
 
 % Evaluate the target image
 [r, c, ch] = size(image);
-pixs = reshape(image, r*c, 3);
+pixs = reshape(image, r*c, ch);
 
 predicted = predict(classifier_bayes, pixs);
 predicted = reshape(predicted, r, c, 1);
@@ -92,10 +97,9 @@ subplot(2,2,2);
 imagesc(predicted), axis image;
 
 %filtered = medfilt2(predicted, [20 20]);
-filtered = medfilt2(predicted, [30 30]);
+filtered = medfilt2(predicted, [20 20]);
 
 subplot(2,2,3);
 imagesc(filtered), axis image;
+%show_result(image, predicted); 
 
-%% Export classifier
-save(fullfile('..', '..', 'classifier_bayes.mat'), 'classifier_bayes');
