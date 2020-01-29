@@ -5,7 +5,7 @@ addpath(genpath('../../functions/'));
 
 path = "../../images/labeled/";
 %dir_names = ["none", "raffaello", "rocher", "rondnoir"];
-dir_names = ["0_raffaello", "0_rocher", "0_rondnoir"];
+dir_names = ["0_raffaello", "rocher", "0_rondnoir"];
 
 n_classes = length(dir_names);
 statistics = cell(1, n_classes);
@@ -71,8 +71,8 @@ classifier_bayes = fitcnb(train_values, train_labels);
 
 
 %image = im2double(imread("../../images/original/IMG_8629.JPG"));
-%image = histeq(im2double(imread("../../images/original/IMG_8634.JPG")));
-image = im2double(imread("../../images/original/IMG_8634.JPG"));
+image = histeq(im2double(imread("../../images/original/IMG_8634.JPG")));
+%image = im2double(imread("../../images/original/IMG_8634.JPG"));
 
 show_color_spaces(image, 3);
 
