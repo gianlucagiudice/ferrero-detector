@@ -1,6 +1,6 @@
 addpath(genpath('../functions/'));
 load(fullfile('..', 'classifier_bayes.mat'));
-change_color_space = @rgb2hsv;
+change_color_space = @rgb2lab;
 
 %% Get list of images
 images_list = readlist('../data/images.list');
@@ -9,7 +9,7 @@ crop_padding = 0.10;
 
 %% Read image
 % 55
-img_path = '../images/original/'+string(images_list{1});
+img_path = '../images/original/'+string(images_list{46});
 [~, scaled_image, target_image] = ...
 read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
