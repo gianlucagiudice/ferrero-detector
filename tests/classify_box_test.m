@@ -45,7 +45,7 @@ raffaellos_mask_erode = imerode(raffaellos_mask_opened, se);
 
 
 %% -------- Show results -------- 
-figure(1);
+figure(3);
 subplot(2,4,1);
 imshow(box_cropped);title("Box cropped"); 
 subplot(2,4,2);

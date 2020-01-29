@@ -71,7 +71,8 @@ classifier_bayes = fitcnb(train_values, train_labels);
 
 
 %image = im2double(imread("../../images/original/IMG_8629.JPG"));
-image = histeq(im2double(imread("../../images/original/IMG_8634.JPG")));
+%image = histeq(im2double(imread("../../images/original/IMG_8634.JPG")));
+image = im2double(imread("../../images/original/IMG_8634.JPG"));
 
 show_color_spaces(image, 3);
 

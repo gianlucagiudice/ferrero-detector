@@ -32,13 +32,13 @@ hsv_s_eq = histeq(hsv_s);
 % Obtained from dataset
 choccolate_size_percentage = 0.166;
 % Evaluate frame size
-choccolate_fraction = 1/5;
+choccolate_fraction = 1/2;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
 
 %% Evaluate labels
 out = compute_local_descriptors(hsv_s, tsize, 10, @compute_average_color);
 
-n_labels = 3;
+n_labels = 4;
 labels = kmeans(out.descriptors, n_labels);
 img_labels = reshape(labels, out.nt_rows, out.nt_cols);
 img_labels_out = imresize(img_labels, [r, c], 'nearest');
