@@ -1,5 +1,6 @@
 addpath(genpath('../functions/'));
 load(fullfile('..', 'classifier_bayes.mat'));
+change_color_space = @rgb2hsv;
 
 %% Get list of images
 images_list = readlist('../data/images.list');
@@ -8,8 +9,9 @@ crop_padding = 0.10;
 
 %% Read image
 % 55
-img_path = '../images/original/'+string(images_list{42});
-[~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+img_path = '../images/original/'+string(images_list{1});
+[~, scaled_image, target_image] = ...
+read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 %% Box edge
 canny_edge = image_to_edge(target_image);
@@ -26,10 +28,18 @@ crop_box(scaled_image, best_vertices, crop_padding);
 
 %% Classification
 [r, c, ch] = size(box_cropped);
+box_cropped = change_color_space(box_cropped);
+
+%box_cropped = imgaussfilt3(box_cropped);
+
 pixs = reshape(box_cropped, r*c, 3);
 
 predicted = predict(classifier_bayes, pixs);
 predicted = reshape(predicted, r, c, 1);
+
+predicted_filtered = medfilt2(predicted, [15 15]);
+
+
 
 %{
 %% Morphologic operator 
@@ -46,7 +56,9 @@ raffaellos_mask_erode = imerode(raffaellos_mask_opened, se);
 
 %% -------- Show results -------- 
 figure(3);
-subplot(2,4,1);
+subplot(1,3,1);
 imshow(box_cropped);title("Box cropped"); 
-subplot(2,4,2);
+subplot(1,3,2);
 imagesc(predicted), axis image; title("Raffaello labels HSV_S");
+subplot(1,3,3);
+imagesc(predicted_filtered), axis image; title("Raffaello labels HSV_S");

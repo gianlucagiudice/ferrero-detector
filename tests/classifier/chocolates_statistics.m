@@ -5,7 +5,7 @@ addpath(genpath('../../functions/'));
 
 path = "../../images/labeled/";
 %dir_names = ["none", "raffaello", "rocher", "rondnoir"];
-dir_names = ["raffaello", "rocher", "rondnoir"];
+dir_names = ["0_raffaello", "0_rocher", "0_rondnoir"];
 
 n_classes = length(dir_names);
 statistics = cell(1, n_classes);

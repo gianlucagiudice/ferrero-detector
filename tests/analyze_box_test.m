@@ -66,22 +66,10 @@ raffaellos_mask_erode = imerode(raffaellos_mask_opened, se);
 
 %% -------- Show results -------- 
 figure(1);
-subplot(2,4,1);
+subplot(1,2,1);
 imshow(box_cropped);title("Box cropped"); 
-subplot(2,4,2);
+subplot(1,2,2);
 imshow(hsv_s); title("HSV_S");
-subplot(2,4,3);
-imshow(hsv_s_eq); title("histeq(HSV_S)");
-subplot(2,4,4);
-imagesc(img_labels_out), axis image; title("Raffaello labels HSV_S");
-subplot(2,4,5);
-imshow(raffaellos_mask); title("Raffaello mask");
-subplot(2,4,6);
-imshow(raffaellos_mask_closed); title("Mask imclose()");
-subplot(2,4,7);
-imshow(raffaellos_mask_opened); title("Mask imopen()");
-subplot(2,4,8);
-imshow(raffaellos_mask_erode); title("Raffaello mask erode");
 
 %% Show difference between equalized and not equalized
 %{
