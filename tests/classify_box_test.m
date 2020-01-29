@@ -1,6 +1,6 @@
 addpath(genpath('../functions/'));
 load(fullfile('..', 'classifier_bayes.mat'));
-change_color_space = @rgb2lab;
+change_color_space = @rgb2hsv;
 
 %% Get list of images
 images_list = readlist('../data/images.list');
