@@ -8,7 +8,7 @@ image = imresize(image, 0.1);
 
 image = imgaussfilt3(image);
 
-out = compute_local_descriptors(image, 10, 5, @compute_qhist);
+out = compute_local_descriptors(image, 15, 10, @compute_CEDD);
 
 labels = kmeans(out.descriptors, 3);
 

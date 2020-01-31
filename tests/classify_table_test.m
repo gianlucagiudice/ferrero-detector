@@ -1,0 +1,53 @@
+addpath(genpath('../functions/'));
+
+image = imread("../images/original/IMG_8634.JPG");
+[r, c, ch] = size(image);
+
+
+%% Get list of images
+images_list = readlist('../data/images.list');
+scale_factor = 0.5;
+crop_padding = 0.10;
+
+%% Read image
+img_path = '../images/original/'+string(images_list{46});
+[~, scaled_image, target_image] = ...
+read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+
+%% Box edge
+canny_edge = image_to_edge(target_image);
+bw = canny2binary(canny_edge);
+
+%% Evaluate vertices
+vertices45 = find_vertices_45(bw);
+vertices90 = find_vertices_90(bw);
+best_vertices = decide_best_vertices(vertices45, vertices90);
+
+%% Cop box
+[box_cropped, rotated, sheared, rot_matrix] = ...
+crop_box(scaled_image, best_vertices, crop_padding);
+
+%% Classify table
+
+figure(4);
+imshow(box_cropped);
+
+box_cropped_smooth = imgaussfilt3(box_cropped);
+
+target_cropped = uint8(box_cropped_smooth * 255);
+
+out = compute_local_descriptors(target_cropped, 30, 15, @compute_lbp);
+labels = kmeans(out.descriptors, 3);
+
+img_labels = reshape(labels, out.nt_rows, out.nt_cols);
+img_labels_filtered = medfilt2(img_labels, [5 5]);
+img_labels_out = imresize(img_labels_filtered, [r, c], 'nearest');
+
+figure(1);
+subplot(2,2,1);imshow(box_cropped);
+subplot(2,2,2);imshow(box_cropped_smooth);
+subplot(2,2,3);imagesc(img_labels), axis image;
+subplot(2,2,4);imagesc(img_labels_out), axis image;  
+
+
+
