@@ -5,8 +5,9 @@ images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 crop_padding = 0.10;
 
-start_index = 1;
+start_index = 11;
 end_index = numel(images_list);
+end_index = start_index;
 
 %% Read image
 parfor i = start_index : end_index
@@ -28,15 +29,17 @@ parfor i = start_index : end_index
     crop_box(scaled_image, best_vertices, crop_padding);
     
     %% Classify table
-    table_binary = find_table_cropped(box_cropped);
+    table_mask = find_table_cropped(box_cropped);
+  
 
-    %{    
-    figure(1);
+%{
+     figure(1);
     subplot(1,1,1);imshow(table_binary); 
-    %}
-    
-    path = "../images/tables/mask_" + string(images_list{i});
-    imwrite(table_binary, path);
+     
+%}
+
+    path = "../images/box_only/mask_" + string(images_list{i});
+    imwrite(table_mask, path);
     disp(i);
 
 end
