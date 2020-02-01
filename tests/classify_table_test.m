@@ -5,9 +5,9 @@ images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 crop_padding = 0.10;
 
-start_index = 11;
+start_index = 1;
 end_index = numel(images_list);
-end_index = start_index;
+%end_index = start_index;
 
 %% Read image
 parfor i = start_index : end_index
