@@ -15,7 +15,7 @@ function out = compute_local_descriptors(image, tsize, tstep, compute_funct)
             res = compute_funct(tassello);
             descriptors = [descriptors; res];
         end
-        disp(c + " " + cols);
+        % disp(c + "/" + cols);
     end
 
     out.descriptors = descriptors;
