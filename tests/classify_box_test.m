@@ -8,8 +8,8 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Read image
-% Casi particolari: 55, 
-img_path = '../images/original/'+string(images_list{53});
+% Casi particolari: 55, 6, 8
+img_path = '../images/original/'+string(images_list{13});
 [~, scaled_image, target_image] = ...
 read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
@@ -51,14 +51,14 @@ choccolate_size_percentage = 0.166;
 %% Adjust raffaello
 raffaello = prediction == 1;
 % Close small holes
-choccolate_fraction = 1/5;
+choccolate_fraction = 1/4;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-se = strel('square', tsize);
+se = strel('disk', tsize);
 raffaello_mask_closed = imclose(raffaello, se);
 % Erase non-raffaello
-choccolate_fraction = 1/2;
+choccolate_fraction = 1/4;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-se = strel('square', tsize);
+se = strel('disk', tsize);
 raffaello_mask_opened = imopen(raffaello_mask_closed, se);
 % Dilate raffaello
 %{
@@ -67,6 +67,11 @@ tsize = round(r * choccolate_size_percentage * choccolate_fraction);
 se = strel('square', tsize);
 raffaello_mask_dilated = imdilate(raffaello_mask_opened, se); 
 %}
+choccolate_fraction = 1/4;
+tsize = round(r * choccolate_size_percentage * choccolate_fraction);
+se = strel('disk', tsize);
+raffaello_mask_dilated = imdilate(raffaello_mask_opened, se); 
+
 
 
 %% Adjust rondnoir
@@ -74,24 +79,24 @@ rondnoir = prediction == 3;
 % Close small holes
 choccolate_fraction = 1/5;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-se = strel('square', tsize);
+se = strel('disk', tsize);
 rondnoir_mask_closed = imclose(rondnoir, se);
 % Erase non-rondnoir
-choccolate_fraction = 1/2;
+choccolate_fraction = 1/3;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-se = strel('square', tsize);
+se = strel('disk', tsize);
 rondnoir_mask_opened = imopen(rondnoir_mask_closed, se);
 % Dilate rondnoir
 %{
 choccolate_fraction = 1/4;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-se = strel('square', tsize);
-rondnoir_mask_dilated = imdilate(rondnoir_mask_opened, se);
 %}
+se = strel('square', tsize);
+rondnoir_mask_dilated = imdilate(rondnoir_mask_closed, se);
 
 %% Evaluate box enhanced
 box_enhanced = zeros(r, c) + 2;
-box_enhanced(raffaello_mask_opened) = 1;
+box_enhanced(raffaello_mask_dilated) = 1;
 box_enhanced(rondnoir_mask_opened) = 3;
 box_enhanced(table_mask) = 0;
 

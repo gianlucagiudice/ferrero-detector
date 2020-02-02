@@ -44,10 +44,8 @@ load('../data/edges_ratio.mat');
 %% Plot results
 figure(1);
 subplot(1,1,1);
-histogram(ratios, 20);
+histogram(ratios, 25);
 title("Edges ratio");
-xlabel("Ratio");
-ylabel("Occurence")
 
 %% Evaluate statistics
 sum_ratios_rectangles = 0;
