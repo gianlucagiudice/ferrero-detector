@@ -63,14 +63,14 @@ for i = 1 : n_classes
     train_labels = [train_labels; labels];
 end
 
-classifier_bayes = fitcknn(train_values, train_labels);
+%classifier_bayes = fitcknn(train_values, train_labels);
 %classifier_bayes = fitctree(train_values, train_labels);
-%classifier_bayes = fitcnb(train_values, train_labels);
+classifier_bayes = fitcnb(train_values, train_labels);
 
 
 %image = im2double(imread("../../images/original/IMG_8629.JPG"));
-image = histeq(im2double(imread("../../images/original/IMG_8650.JPG")));
-%image = im2double(imread("../../images/original/IMG_8634.JPG"));
+%image = histeq(im2double(imread("../../images/original/IMG_8650.JPG")));
+image = im2double(imread("../../images/original/IMG_8634.JPG"));
 
 show_color_spaces(image, 3);
 

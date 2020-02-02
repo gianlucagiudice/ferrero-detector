@@ -8,8 +8,8 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Read image
-% 55
-img_path = '../images/original/'+string(images_list{46});
+% Casi particolari: 55, 
+img_path = '../images/original/'+string(images_list{53});
 [~, scaled_image, target_image] = ...
 read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
@@ -30,14 +30,15 @@ crop_box(scaled_image, best_vertices, crop_padding);
 [r, c, ch] = size(box_cropped);
 box_cropped = change_color_space(box_cropped);
 
-%box_cropped = imgaussfilt3(box_cropped);
-
+%% Classify choccolates
 pixs = reshape(box_cropped, r*c, 3);
-
 predicted = predict(classifier_bayes, pixs);
 predicted = reshape(predicted, r, c, 1);
 
+%% Classification enhancement
 predicted_filtered = medfilt2(predicted, [15 15]);
+table_mask = find_table_mask_cropped(box_cropped);
+prediction = predicted_filtered .* abs(1 - table_mask);
 
 
 
@@ -56,9 +57,11 @@ raffaellos_mask_erode = imerode(raffaellos_mask_opened, se);
 
 %% -------- Show results -------- 
 figure(3);
-subplot(1,3,1);
+subplot(2,3,1);
 imshow(box_cropped);title("Box cropped"); 
-subplot(1,3,2);
+subplot(2,3,2);
 imagesc(predicted), axis image; title("Raffaello labels HSV_S");
-subplot(1,3,3);
+subplot(2,3,3);
 imagesc(predicted_filtered), axis image; title("Raffaello labels HSV_S");
+subplot(2,3,4);
+imagesc(prediction), axis image; title("Raffaello labels HSV_S");
