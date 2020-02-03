@@ -7,16 +7,14 @@ images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 crop_padding = 0.10;
 
-%% Test particolari: 16, 
+%% Test particolari: 16, 11, 6, 8
+target_index = 6;
+
 start_index = 1;
 end_index = numel(images_list);
-%end_index = start_index;
 
-%% Read image
 parfor i = start_index : end_index
-        
     %% Read image
-    % Casi particolari: 6, 8
     img_path = '../images/original/'+string(images_list{i});
     [~, scaled_image, target_image] = ...
     read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
@@ -44,101 +42,158 @@ parfor i = start_index : end_index
     predicted = reshape(predicted, r, c, 1);
 
     %% Classification enhancement
-    predicted_filtered = medfilt2(predicted, [15 15]);
+    predicted_filtered = medfilt2(predicted, [10 10]);
     table_mask = find_table_mask_cropped(box_cropped);
     prediction = predicted_filtered .* abs(1 - table_mask);
 
-    %% Morphologic operator 
-    % Consider the size of a choccolate, btained from dataset
+    %% Consider the size of a choccolate, btained from dataset
     choccolate_size_percentage = 0.166;
-    % Evaluate frame size
-
     %% Lables = [0 = table; 1 = raffaello; 2 = rocher; 3 = rondnoir]
     %% NOTA BENE: Uso elemento strutturante quadrato perchè la sliding windows sarà quadrata
 
-    %% Adjust raffaello
+
+
+    %% Enhance raffaello
     raffaello = prediction == 1;
-    % Close small holes
-    choccolate_fraction = 1/3;
+    %% Erase non-raffaello
+    raffaello_labels = bwlabel(raffaello);
+    % Threshold is 1/2 of choccolate
+    choccolate_fraction = 1/2;
+    tsize = round(r * choccolate_size_percentage * choccolate_fraction);
+
+    valid_raffaello = [];
+    for label_index = 1 : numel(unique(raffaello_labels))
+        target_label = raffaello_labels == label_index; 
+        if sum(target_label, 'all') > tsize ^ 2
+            valid_raffaello = [valid_raffaello, label_index];
+        end
+    end
+    %% Evaluate valid raffaello
+    raffaello_mask_deleted = zeros(r, c);
+    for label_index = 1 : numel(valid_raffaello)
+        valid_label_mask = raffaello_labels == valid_raffaello(label_index);
+        %valid_raffaello_label = raffaello_labels == label_index;
+        %raffaello_label_mask = raffaello_labels == raffaello_labels(label_index);
+        raffaello_mask_deleted = raffaello_mask_deleted | valid_label_mask;
+    end
+    %% Mask enhancement
+    choccolate_fraction = 1/2;
+    tsize = round(r * choccolate_size_percentage * choccolate_fraction);
+    raffaello_mask_filtered = medfilt2(raffaello, [tsize tsize]);
+    % Open small holes
+    choccolate_fraction = 1/6;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
     se = strel('disk', tsize);
-    raffaello_mask_closed = imclose(raffaello, se);
-    % Erase non-raffaello
-    choccolate_fraction = 1/4;
-    tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-    se = strel('disk', tsize);
-    raffaello_mask_opened = imopen(raffaello_mask_closed, se);
-    % Dilate raffaello
-    %{
-    choccolate_fraction = 1/4;
+    raffaello_mask_filtered_opened = imopen(raffaello_mask_filtered, se);
+    % Close holes
+    choccolate_fraction = 1.5;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
     se = strel('square', tsize);
-    raffaello_mask_dilated = imdilate(raffaello_mask_opened, se); 
-    %}
-    choccolate_fraction = 1/5;
+    raffaello_mask_filtered_closed = imclose(raffaello_mask_filtered_opened, se);
+    % Dilate
+    choccolate_fraction = 1/3;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
-    se = strel('disk', tsize);
-    raffaello_mask_dilated = imdilate(raffaello_mask_opened, se); 
+    se = strel('square', tsize);
+    raffaello_mask_filtered_dilated = imdilate(raffaello_mask_filtered_closed, se);
 
 
-
-    %% Adjust rondnoir
+    %% Enhance rondnoir
     rondnoir = prediction == 3;
-    % Close small holes
-    choccolate_fraction = 1/5;
+    %% Rondnoir median filter
+    choccolate_fraction = 1;
+    tsize = round(r * choccolate_size_percentage * choccolate_fraction);
+    rondnoir_mask_filtered = medfilt2(rondnoir, [tsize tsize]);
+    % Open small holes
+    choccolate_fraction = 1/4;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
     se = strel('disk', tsize);
-    rondnoir_mask_closed = imclose(rondnoir, se);
-    % Erase non-rondnoir
+    rondnoir_mask_filtered_opened = imopen(rondnoir_mask_filtered, se);
+    % Close small holes
     choccolate_fraction = 1/3;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
     se = strel('disk', tsize);
-    rondnoir_mask_opened = imopen(rondnoir_mask_closed, se);
-    % Dilate rondnoir
-    choccolate_fraction = 1/4;
+    rondnoir_mask_filtered_closed = imclose(rondnoir_mask_filtered_opened, se);
+    % Dilate
+    choccolate_fraction = 1/3;
     tsize = round(r * choccolate_size_percentage * choccolate_fraction);
     se = strel('square', tsize);
-    rondnoir_mask_dilated = imdilate(rondnoir_mask_closed, se);
+    rondnoir_mask_filtered_dilated = imdilate(rondnoir_mask_filtered_closed, se);
+
 
     %% Evaluate box enhanced
     box_enhanced = zeros(r, c) + 2;
-    box_enhanced(raffaello_mask_dilated) = 1;
-    box_enhanced(rondnoir_mask_opened) = 3;
+    box_enhanced(raffaello_mask_filtered_dilated) = 1;
+    box_enhanced(rondnoir_mask_filtered_dilated) = 3;
     box_enhanced(table_mask) = 0;
 
     %% -------- Show results -------- 
     f = figure('visible', 'off');
     %% Classification
-    subplot(3,4,1);
-    imshow(box_cropped);title("Box cropped"); 
-    subplot(3,4,2);
-    imagesc(predicted), axis image; title("Labels HSV_S");
-    subplot(3,4,3);
-    imagesc(predicted_filtered), axis image; title("Labels filtered");
-    subplot(3,4,4);
-    imagesc(prediction), axis image; title("Labels with table");
+    subplot(5,4,1);
+    imshow(box_cropped);
+    title("Box cropped"); 
+    subplot(5,4,2);
+    imagesc(predicted), axis image;
+    title("Labels HSV_S");
+    subplot(5,4,3);
+    imagesc(predicted_filtered), axis image;
+    title("Labels filtered");
+    subplot(5,4,4);
+    imagesc(prediction), axis image;
+    title("Labels with table");
     %% Raffaello
-    subplot(3,4,5);
+    subplot(5,4,5);
     imshow(raffaello), axis image; title("Raffaello mask");
-    subplot(3,4,6);
-    imshow(raffaello_mask_closed); title("Raffaello mask imclose()");
-    subplot(3,4,7);
-    imshow(raffaello_mask_opened); title("Raffaello mask imopen()");
-    subplot(3,4,8);
-    imshow(raffaello_mask_dilated); title("Raffaello mask imdilate()");
+    subplot(5,4,6);
+    imagesc(raffaello_labels), axis image;
+    title("Raffaello labels()");
+    %% Raffaello labels
+    subplot(5,4,7);
+    histogram(raffaello_labels(raffaello_labels~=0));
+    title("Raffaello lables dimension");
+    subplot(5,4,8);
+    imshow(raffaello_mask_deleted), axis image;
+    title("Deleted non raffaello");
+    %% Raffaello median filter
+    subplot(5,4,9);
+    imshow(raffaello_mask_filtered);
+    title("Raffaello mask medfilt2()");    
+    subplot(5,4,10);
+    imshow(raffaello_mask_filtered_opened), axis image;
+    title("Raffaello mask filtered imopen()");
+    subplot(5,4,11);
+    imshow(raffaello_mask_filtered_closed), axis image;
+    title("Raffaello mask filtered imclose()");
+    subplot(5,4,12);
+    imshow(raffaello_mask_filtered_dilated), axis image;
+    title("Raffaello mask filtered imdilate()");
     %% Rondnoir
-    subplot(3,4,9);
+    subplot(5,4,13);
     imshow(rondnoir), axis image; title("Rondnoir mask");
-    subplot(3,4,10);
-    imshow(rondnoir_mask_closed); title("Rondnoir mask imclose()");
-    subplot(3,4,11);
-    imshow(rondnoir_mask_opened); title("Rondnoir mask imopen()");
-    %% Box enhanced
-    subplot(3,4,12);
+    subplot(5,4,14);
+    imshow(rondnoir_mask_filtered); title("Rondnoir mask medfilt2()");
+    subplot(5,4,15);
+    imshow(rondnoir_mask_filtered_opened);
+    title("Rondnoir mask filtered imopen()");
+    subplot(5,4,16);
+    imshow(rondnoir_mask_filtered_closed);
+    title("Rondnoir mask filtered imclose()");
+    subplot(5,4,17);
+    imshow(rondnoir_mask_filtered_dilated);
+    title("Rondnoir mask filtered dilated()");
+
+    subplot(5,4,18);
+    imagesc(box_enhanced), axis image; title("Box enhanced");
+    subplot(5,4,19);
     imagesc(box_enhanced), axis image; title("Box enhanced");
 
+    subplot(5,4,20);
+    imagesc(box_enhanced), axis image; title("Box enhanced");
+
+    %% Save
     name = split(string(images_list{i}), '.');
     path = "../images/classify_box/classified_" + name(1);
     saveas(f, path, 'png');
     disp(i);
+
 end
