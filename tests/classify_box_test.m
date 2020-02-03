@@ -8,7 +8,7 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Test particolari: 11, 6, 8, 37
-target_index = 11;
+target_index = 6;
 
 %% Read image
 img_path = '../images/original/'+string(images_list{target_index});
@@ -75,7 +75,7 @@ for label_index = 1 : numel(valid_raffaello)
     raffaello_mask_deleted = raffaello_mask_deleted | valid_label_mask;
 end
 % Close holes
-choccolate_fraction = 1/4;
+choccolate_fraction = 1/6;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
 se = strel('disk', tsize);
 raffaello_mask_deleted = imclose(raffaello_mask_deleted, se);
@@ -84,7 +84,7 @@ choccolate_fraction = 1/2;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
 raffaello_mask_filtered = medfilt2(raffaello, [tsize tsize]);
 % Open small holes
-choccolate_fraction = 1/8;
+choccolate_fraction = 1/5;
 tsize = round(r * choccolate_size_percentage * choccolate_fraction);
 se = strel('disk', tsize);
 raffaello_mask_filtered_opened = imopen(raffaello_mask_filtered, se);
