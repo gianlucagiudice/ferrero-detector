@@ -13,7 +13,7 @@ target_index = 6;
 start_index = 1;
 end_index = numel(images_list);
 
-parfor i = start_index : end_index
+for i = start_index : end_index
     %% Read image
     img_path = '../images/original/'+string(images_list{i});
     [~, scaled_image, target_image] = ...
