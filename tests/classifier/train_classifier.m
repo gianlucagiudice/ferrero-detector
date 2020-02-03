@@ -10,6 +10,7 @@ dir_names = ["raffaello", "rocher", "rondnoir"];
 n_classes = length(dir_names);
 statistics = cell(1, n_classes);
 change_color_space = @rgb2hsv;
+channels = ["h", "s", "v"];
 
 %% Read all the images
 for i = 1 : n_classes
@@ -35,7 +36,6 @@ end
 
 %% Plot the statistics
 figure(1);
-channels = ["r", "g", "b"];
 for i = 1 : n_classes
     stats = statistics{i}.value;
     [r, c, ch] = size(stats);
