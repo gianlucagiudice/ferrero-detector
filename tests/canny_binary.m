@@ -1,5 +1,5 @@
 %% Import functions
-addpath(genpath('functions/'));
+addpath(genpath('../functions/'));
 
 %% Get list of images
 images = readlist('../data/images.list');
