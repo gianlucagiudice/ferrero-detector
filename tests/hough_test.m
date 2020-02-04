@@ -62,17 +62,18 @@ BW = border;
 
 figure(2);
 [H,T,R] = hough(BW);
-P = houghpeaks(H,3);
+P = houghpeaks(H,5,'Threshold',0);
 imshow(H,[],'XData',T,'YData',R,'InitialMagnification','fit');
 xlabel('\theta'), ylabel('\rho');
 axis on, axis normal, hold on;
 plot(T(P(:,2)),R(P(:,1)),'s','color','white');
 
-lines = houghlines(BW, T, R, P, 'FillGap', 200, 'MinLength', 200);
+lines = houghlines(BW, T, R, P, 'FillGap', 200, 'MinLength', 10);
 figure(1);
-b = im2double(b);
+
 [r, c] = size(BW);
-for k = 1:length(lines);
+b = zeros(r, c);
+for k = 1:length(lines)
     xy = [lines(k).point1; lines(k).point2];
     x1 = xy(1,1);
     y1 = xy(1,2);
@@ -80,11 +81,17 @@ for k = 1:length(lines);
     y2 = xy(2,2);
 
     m = (y2-y1)/(x2-x1);
-    b = insertShape(b, 'line', [1, m*(1-x1)+y1, c, m*(c-x1)+y1], 'LineWidth', 10);
-    disp(m);
+
+    if x2 == x1
+        %b(:, x1, 2) = 1;
+    else
+        b = b + insertShape(zeros(r, c, 3), 'line', [1, m*(1-x1)+y1, c, m*(c-x1)+y1], 'LineWidth', 1, 'Color', [0, 0.5, 0], 'SmoothEdges', false);
+
+    end
+
     %%line([1, c], [m*(1-x1)+y1, m*(c-x1)+y1], 'LineWidth', 2, 'Color', 'green');
 end
-imshow(b);
+imshow(b(:,:,2) == 1);
 
 
  
