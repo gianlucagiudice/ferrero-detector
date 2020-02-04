@@ -93,6 +93,8 @@ for k = 1:length(lines)
 end
 imshow(b(:,:,2) == 1);
 
+%% Labeling componentni 8 connesse
+
 
  
 figure(3);
