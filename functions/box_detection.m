@@ -1,18 +1,19 @@
-function box_binary = box_detection(canny_edge, padding_size)
+function boxBinary = box_detection(cannyEdge, paddingSize)
     %% Label edges
-    [r, c] = size(canny_edge);
+    [r, c] = size(cannyEdge);
 
-    % 11px is the border size
-    out = compute_local_descriptors(canny_edge, 11, 5, @compute_average_color);
+    % 30px is the border size
+    out = compute_local_descriptors(cannyEdge, 30, 10, @compute_average_color);
+
     % Label the image using k-means clustering
-    labels = kmeans(out.descriptors, 2);
+    labels = kmeans(out.descriptors, 3);
     img_labels = reshape(labels, out.nt_rows, out.nt_cols);
     img_labels_out = imresize(img_labels, [r, c], 'nearest'); 
 
     %% Find label relative to background
     label_list = zeros(1, length(unique(labels)));
     for label = 1:length(unique(labels))
-        label_list(label) = sum(img_labels_out == label .* canny_edge, 'all');
+        label_list(label) = sum(img_labels_out == label .* cannyEdge, 'all');
     end
     [~, bkg_label] = min(label_list);
     elements = img_labels_out ~= bkg_label;
@@ -21,8 +22,15 @@ function box_binary = box_detection(canny_edge, padding_size)
     % Assume the box is the biggest element
     objects = bwlabel(elements);
     box_label = mode(objects(objects > 0), 'all');
-    box_binary = (objects == box_label);
+    boxBinary = (objects == box_label);
 
-    %% Box enhancement
-    box_binary = medfilt2(box_binary, [15 15]);
+    %% Fill holes
+    boxBinary = imfill(boxBinary, 'holes');
+
+    %% Add padding to box
+    boxBinary = padarray(boxBinary, [paddingSize paddingSize], 0, 'both');
+
+    %% Delete elemnts connected to box
+    se = strel('disk', 60);
+    boxBinary = imopen(boxBinary, se);
 end

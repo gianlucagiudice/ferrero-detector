@@ -10,7 +10,7 @@ crop_padding = 0.10;
 % 55
 parfor i = 1 : length(images_list)
     img_path = '../images/original/'+string(images_list{i});
-    [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+    [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 2);
 
     %% Box edge
     canny_edge = image_to_edge(target_image);

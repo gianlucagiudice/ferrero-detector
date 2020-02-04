@@ -13,7 +13,7 @@ target_index = 46;
 %% Read image
 img_path = '../images/original/'+string(images_list{target_index});
 [~, scaled_image, target_image] = ...
-read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
+read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 2);
 
 %% Box edge
 canny_edge = image_to_edge(target_image);

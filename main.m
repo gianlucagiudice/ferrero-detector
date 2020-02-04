@@ -2,30 +2,26 @@ addpath(genpath('functions/'));
 
 %% Get list of images
 images_list = readlist('data/images.list');
-scale_factor = 0.5;
+scaleFactor = 0.5;
+imgPadding = 300;
 
 %% Processing
-start_limit = 62;
-end_limit = 64;
-bw_box = {};
-images = {};
+targetIndex = 5;
 
 tic
-for i = start_limit:end_limit
     
-    % 9; 15; 21; 23; 24;    5, 6 57
-    img_path = 'images/original/'+string(images_list{i});
-    [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
-    canny_edge = image_to_edge(target_image);
-    bw = canny2binary(canny_edge);
-    vertices = decide_best_vertices(find_vertices_45(bw), find_vertices_90(bw));
-    
-    %% Plot vertices
-    figure(1);
-    imshow(scaled_image);
-    disp(i);
-    hold on;
-    plot_vertices(vertices);
-    
-end
+imgPath = 'images/original/'+string(images{targetIndex});
+[~, scaledImage, targetImage] = read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
+ 
+%% Find edges
+cannyEdge = image_to_edge(targetImage);
+ 
+%% Box detection
+boxMask = box_detection(cannyEdge, imgPadding);
+
+%% Show results
+figure(1);
+subplot(1,1,1);
+imshow(boxMask);
+
 toc
