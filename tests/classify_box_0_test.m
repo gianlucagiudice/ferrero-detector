@@ -7,8 +7,8 @@ images_list = readlist('../data/images.list');
 scale_factor = 0.5;
 crop_padding = 0.10;
 
-%% Test particolari: 11, 6, 8, 37, 44
-target_index = 49;
+%% Test particolari: 6, 8, 11, 37, 44
+target_index = 46;
 
 %% Read image
 img_path = '../images/original/'+string(images_list{target_index});
@@ -152,7 +152,7 @@ rondnoir_mask_filtered_closed_big = imclose(rondnoir_mask_filtered_closed, se);
 %% Evaluate box enhanced
 box_enhanced = zeros(r, c) + 2;
 box_enhanced(raffaello_mask_filtered_closed_big) = 1;
-box_enhanced(rondnoir_mask_filtered_closed_big) = 3;
+box_enhanced(rondnoir_mask_filtered_closed) = 3;
 box_enhanced(table_mask) = 0;
 % Median filter box
 choccolate_fraction = 1/2;

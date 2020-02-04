@@ -8,7 +8,7 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Test particolari: 11, 6, 8, 37
-target_index = 6;
+target_index = 26;
 
 %% Read image
 img_path = '../images/original/'+string(images_list{target_index});
