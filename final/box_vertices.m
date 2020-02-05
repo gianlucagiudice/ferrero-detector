@@ -10,9 +10,6 @@ function box_descriptor = box_vertices(box_label, padding_size)
    
    box_label = medfilt2(box_label, [50 50]);
    
-   figure(1);
-   imshow(box_label);
-   
    % Detecting the number of hough peaks to find based on the number of incomplete sides
    peaks_count = length(unique(box_label(:, padding_size))) + ...
       length(unique(box_label(:, cols - padding_size))) + ...
@@ -20,24 +17,13 @@ function box_descriptor = box_vertices(box_label, padding_size)
       length(unique(box_label(rows - padding_size, :)));
 
    %  Preparing input data for Hough transform
-   edges = edge(box_label, 'prewitt');
-   
-   figure(2);
-   imshow(edges);
-   
-   
-   [H, T, R] = hough(edges);
-   
-   figure(3);
-   imshow(H,[],'XData',T,'YData',R, 'InitialMagnification','fit');
-   xlabel('\theta'), ylabel('\rho');
-   axis on, axis normal, hold on;
-   
+   edges = edge(box_label, 'prewitt');   
+   [H, T, R] = hough(edges);   
    P = houghpeaks(H, peaks_count, 'Threshold', 0);
    lines = houghlines(edges, T, R, P, 'FillGap', 400, 'MinLength', 30);
 
    % Preparing vertices map
-   vertices_mask = zeros(rows, cols);
+   vertices_mask = zeros(rows, cols, 3);
    % Draw lines in image
    for k = 1:length(lines)
       xy = [lines(k).point1; lines(k).point2];
@@ -45,13 +31,13 @@ function box_descriptor = box_vertices(box_label, padding_size)
       y1 = xy(1,2);
       x2 = xy(2,1);
       y2 = xy(2,2);
-
-      if (peaks_count == 4) || (x1 ~= x2) && (y1 ~= y2)
+      if ((peaks_count == 4) && (x1 ~= x2)) || (x1 ~= x2) && (y1 ~= y2)
          m = (y2-y1)/(x2-x1);
-         vertices_mask = vertices_mask + insertShape(zeros(rows, cols), 'line', [1, m*(1-x1)+y1, cols, m*(cols-x1)+y1], 'LineWidth', 1, 'Color', [0.5, 0.5, 0.5], 'SmoothEdges', false);
+         line = insertShape(zeros(rows, cols, 3), 'line', [1, m*(1-x1)+y1, cols, m*(cols-x1)+y1], 'LineWidth', 3, 'Color', [0.5 0.5 0.5], 'SmoothEdges', false);
+         vertices_mask = vertices_mask + line;      
       elseif (peaks_count == 4 && (x1 == x2))
          row_mask = zeros(rows, cols);
-         row_mask(:, x1) = 0.5;
+         row_mask(:, x1) = [0.5 0.5 0.5];
          vertices_mask = vertices_mask + row_mask;
       end
    end
@@ -65,6 +51,7 @@ function box_descriptor = box_vertices(box_label, padding_size)
       vertices(k, :) = vertices_regions(k).Centroid(:);
    end
    
+   disp(vertices);
    % Calculate convex hull for vertices sorting
    convex_hull = convhull(vertices);
    box_descriptor.vertices = zeros(4, 2);
