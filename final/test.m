@@ -25,7 +25,7 @@ boxLabel = box_detection(cannyEdge, imgPadding);
 %% Da qui inziano i plot che avevi fatto tu
 image = boxLabel;
 
-out = box_vertices(image, 5);
+out = box_vertices(image, imgPadding);
 bar = regionprops(image, 'Centroid');
 
 [r, c] = size(image);
