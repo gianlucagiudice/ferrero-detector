@@ -8,6 +8,8 @@
 function box_descriptor = box_vertices(box_label, padding_size)
    [rows, cols] = size(box_label);
    
+   box_label = medfilt2(box_label, [50 50]);
+   
    figure(1);
    imshow(box_label);
    
@@ -27,15 +29,11 @@ function box_descriptor = box_vertices(box_label, padding_size)
    [H, T, R] = hough(edges);
    
    figure(3);
-   imshow(H,[],'XData',T,'YData',R,...
-            'InitialMagnification','fit');
-    xlabel('\theta'), ylabel('\rho');
-    axis on, axis normal, hold on;
+   imshow(H,[],'XData',T,'YData',R, 'InitialMagnification','fit');
+   xlabel('\theta'), ylabel('\rho');
+   axis on, axis normal, hold on;
    
-   
-    %% Il problme è ala riga sotto
    P = houghpeaks(H, peaks_count, 'Threshold', 0);
-   
    lines = houghlines(edges, T, R, P, 'FillGap', 400, 'MinLength', 30);
 
    % Preparing vertices map
