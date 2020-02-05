@@ -1,5 +1,13 @@
-function box_vertices = box_vertices(box_label, padding_size)
+%{
+   Returns a struct containing:
+   vertices: unsorted list of 4 vertices
+   distances: list of pairwise distances between vertices
+   vertices_s: sorted list of 4 vertices, the first pair is the one with the longet distance
+   distances_s: list of sorted distances      
+%}
+function box_descriptor = box_vertices(box_label, padding_size)
    [rows, cols] = size(box_label);
+   imshow(box_label);
    % Detecting the number of hough peaks to find based on the number of incomplete sides
    peaks_count = length(unique(box_label(:, padding_size))) + ...
       length(unique(box_label(:, cols - padding_size))) + ...
@@ -32,12 +40,27 @@ function box_vertices = box_vertices(box_label, padding_size)
       end
    end
    % Calculate and return vertex centroid
-   vertices = regionprops((vertices_mask(:, :, 1) == 1), 'Centroid');
-   box_vertices = [];
-   for k = 1 : numel(vertices)
-      box_vertices = [box_vertices; [vertices(k).Centroid(1), vertices(k).Centroid(2)]];
+   vertices_regions = regionprops((vertices_mask(:, :, 1) == 1), 'Centroid');
+   vertices = zeros(4, 2);
+   for k = 1 : numel(vertices_regions)
+      vertices(k, :) = vertices_regions(k).Centroid(:);
+   end
+   
+   % Calculate convex hull for vertices sorting
+   convex_hull = convhull(vertices);
+   box_descriptor.vertices = zeros(4, 2);
+   box_descriptor.distances = zeros(4, 1);
+   
+   for i = 1 : length(convex_hull) - 1
+      box_descriptor.distances(i) = round(pdist2(vertices(convex_hull(i), :), vertices(convex_hull(i + 1), :)));
+      box_descriptor.vertices(i, :) = vertices(convex_hull(i), :);
    end
 
-   convex_hull = convhull(box_vertices);
+   disp(box_descriptor.vertices);
 
+   % Sorting vertices based on edge length
+   [~, index] = max(box_descriptor.distances);
+   index = index - 1;
+   box_descriptor.distances_s = circshift(box_descriptor.distances, index * -1);
+   box_descriptor.vertices_s = circshift(box_descriptor.vertices, index * -1);
 end
