@@ -24,6 +24,7 @@ function box_descriptor = box_vertices(box_label, padding_size)
 
    % Preparing vertices map
    vertices_mask = zeros(rows, cols, 3);
+   nhv_edges = 0;
    % Draw lines in image
    for k = 1:length(lines)
       xy = [lines(k).point1; lines(k).point2];
@@ -31,7 +32,8 @@ function box_descriptor = box_vertices(box_label, padding_size)
       y1 = xy(1,2);
       x2 = xy(2,1);
       y2 = xy(2,2);
-      if ((peaks_count == 4) && (x1 ~= x2)) || (x1 ~= x2) && (y1 ~= y2)
+      if (((peaks_count == 4) && (x1 ~= x2)) || ((x1 ~= x2) && (y1 ~= y2))) && nhv_edges < 4
+         nhv_edges = nhv_edges + 1;
          m = (y2-y1)/(x2-x1);
          line = insertShape(zeros(rows, cols, 3), 'line', [1, m*(1-x1)+y1, cols, m*(cols-x1)+y1], 'LineWidth', 3, 'Color', [0.5 0.5 0.5], 'SmoothEdges', false);
          vertices_mask = vertices_mask + line;      

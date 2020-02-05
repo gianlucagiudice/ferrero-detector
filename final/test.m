@@ -10,7 +10,7 @@ imgPadding = 300;
 
 
 %% Indici delle immagini da testare: 5, 6, 16, 19
-targetIndex = 21;
+targetIndex = 5;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
