@@ -1,47 +1,83 @@
 addpath(genpath('../functions/'));
 
 %% Get list of images
-images_list = readlist('../data/images.list');
+images = readlist('../data/images.list');
 scaleFactor = 0.5;
 imgPadding = 300;
 
 %% Processing
-targetIndex = 5;
+targetIndex = 46;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
 [~, scaledImage, targetImage] = read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
- 
+
 %% Find edges
 cannyEdge = image_to_edge(targetImage);
- 
-%% Box detection
-boxMask = box_detection(cannyEdge, imgPadding);
 
-%% Vertices
-vertices90 = find_vertices_90(boxMask);
-vertices45 = find_vertices_45(boxMask);
-best_vertices = decide_best_vertices(vertices45, vertices90);
 
-vertices = best_vertices - imgPadding;
+%% Adjust Perspective
+vertices = [937 29; 1450 328; 946 1031; 394 634];
+
+type = 2; %% Recatangular
+
+%% Out vertices
+% Find longest adn shortes edge
+edgesLength = zeros(1, 4);
+for i = 1 : 4
+    % Evaluate next index
+    nextI = mod(i+1, 5) + floor(i / length(vertices));
+    v1 = vertices(i, :);
+    v2 = vertices(nextI, :);
+    edgesLength(i) = norm(v1 - v2);
+end
+edgesLengthSorted = sort(edgesLength);
+
+%% Evaluate new vertices
+edgePivot = norm(vertices(1, :) - vertices(2, :));
+% Check if need rotation
+if edgePivot == edgesLengthSorted(1) ||  edgePivot == edgesLengthSorted(2)
+    applyRotation = true;
+    vertical = edgesLengthSorted(4);
+    horizontal = edgesLengthSorted(1);
+else
+    applyRotation = false;
+    vertical =  edgesLengthSorted(1);
+    horizontal =  edgesLengthSorted(4);
+end
+
+% New v1
+newV1 = [1, 1];
+% New v2 
+newV2 = [horizontal, 1];
+% New v3
+newV3 = [horizontal, vertical];
+% New v4
+newV4 = [1, vertical];
+% Oout vertices
+outVertices = [newV1; newV2; newV3; newV4];
+
+%% Evaluate Transformation
+H = fitgeotrans(vertices, outVertices, 'projective');
+[Iwarp, ref] = imwarp(scaledImage, H, 'OutputView', imref2d(size(scaledImage)));
+
+%% Crop box
+boxCropped = imcrop(Iwarp, [1, 1, horizontal, vertical]);
+
+%% Rotate if necessary
+if applyRotation
+    tform = affine2d([0 1 0; -1 0 0; 0 0 1]);
+    boxCroppedRotated = imwarp(boxCropped, tform);
+end
 
 %% Show results
 figure(1);
 %% Show orignal image
-subplot(3,2,1)
+subplot(2,2,1)
 imshow(scaledImage);title("Original Image");
-%% Show binary image
-subplot(3,2,2)
-imshow(boxMask);title("Binary image Image");
-%% Show vertices 90
-subplot(3,2,3)
-imshow(scaledImage);title("Vertices 90 method");
-plot_vertices(vertices90);
-%% Show vertices 45
-subplot(3,2,4)
-imshow(scaledImage);title("Vertices 45 method");
-plot_vertices(vertices45);
-%% Show best vertices
-subplot(3,2,5)
-imshow(scaledImage);title("Best vertices method");
-plot_vertices(best_vertices);
+subplot(2,2,2)
+imshow(Iwarp);title("Perspective adjust");
+subplot(2,2,3)
+imshow(boxCropped);title("Perspective adjust");
+subplot(2,2,4)
+imshow(boxCroppedRotated);title("Perspective adjust");

@@ -35,39 +35,24 @@ objects = bwlabel(elements);
 box_label = mode(objects(objects > 0), 'all');
 box_mask = (objects == box_label);
 
-%% Box enhancement
-box_mask_enhancement = medfilt2(box_mask, [15 15]);
-
-padding = 150;
-A = padarray(box_mask_enhancement, [padding padding], 0, 'both');
-se = strel('square', 100);
-%box_mask_enhancement = imfill(A, 'holes');
-box_mask_enhancement = imclose(A, se);
-se = strel('square', 20);
-
-box_mask_enhancement = imopen(box_mask_enhancement, se);
-
-box_mask_enhancement = imfill(box_mask_enhancement, 'holes');
-
-measurements = regionprops(box_mask_enhancement, 'BoundingBox');
-
-
-ImagePoints = [766 216; 1372 346; 454 984; 1158 1184];
+%% Pespective
+ImagePoints = [1 1; 1 400; 400 400; 800 800];
 
 
 % These are the points in the image
 % Refence Points from Court Model
-A = [0 0]'; 
+A = [100 100]'; 
 B = [0 600]';
 C = [300 0]';
 D = [300 600]';
 pin = ImagePoints;
 pout = [A B C D]; % 2xN matrix of output
 
-pout(2,:)=500-pout(2,:); %flip to agree with pin
+%pout(2,:)=500-pout(2,:); %flip to agree with pin
 
 H = fitgeotrans(pin,pout','projective');
 
+%[Iwarp, ref] = imwarp(scaled_image, H, 'OutputView', imref2d(size(scaled_image)));
 [Iwarp, ref] = imwarp(scaled_image, H, 'OutputView', imref2d(size(scaled_image)));
 
 
@@ -82,16 +67,7 @@ lr = 1158 1184
 
 
 figure(1);
-subplot(3,2,1);imshow(canny_edge);title('Edges');
-subplot(3,2,2);imagesc(img_labels_out), axis image; title('2-Kmeans Labels');
-subplot(3,2,3);imshow(elements);title('All elements');
-subplot(3,2,4);imagesc(objects), axis image;title('Elements labels');
-subplot(3,2,5);imshow(box_mask);title('Box');
-subplot(3,2,6);imshow(box_mask_enhancement);title('Box enhancement');
+imshow(scaled_image);
 
 figure(2);
-imshow(box_mask_enhancement);
-
-
-figure(3);
 imshow(Iwarp);
