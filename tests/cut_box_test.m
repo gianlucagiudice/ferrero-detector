@@ -2,7 +2,7 @@ relPath = "../";
 addpath(genpath(relPath + 'functions/'));
 
 %% Get list of images
-images_list = readlist(relPath + 'data/images.list');
+images = readlist(relPath + 'data/images.list');
 scaleFactor = 0.5;
 imgPadding = 300;
 
