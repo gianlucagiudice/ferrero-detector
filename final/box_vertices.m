@@ -1,3 +1,10 @@
+%{
+   Returns a struct containing:
+   vertices: unsorted list of 4 vertices
+   distances: list of pairwise distances between vertices
+   vertices_s: sorted list of 4 vertices, the first pair is the one with the longet distance
+   distances_s: list of sorted distances      
+%}
 function box_descriptor = box_vertices(box_label, padding_size)
    [rows, cols] = size(box_label);
    imshow(box_label);
