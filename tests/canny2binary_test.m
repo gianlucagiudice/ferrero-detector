@@ -34,6 +34,7 @@ objects = bwlabel(elements);
 box_label = mode(objects(objects > 0), 'all');
 box_mask = (objects == box_label);
 
+
 %% Box enhancement
 box_mask_enhancement = medfilt2(box_mask, [15 15]);
 
@@ -43,4 +44,4 @@ subplot(3,2,2);imagesc(img_labels_out), axis image; title('2-Kmeans Labels');
 subplot(3,2,3);imshow(elements);title('All elements');
 subplot(3,2,4);imagesc(objects), axis image;title('Elements labels');
 subplot(3,2,5);imshow(box_mask);title('Box');
-subplot(3,2,6);imshow(box_mask_enhancement);title('Box enhancement');
+subplot(3,2,6);imshow(imfill(box_mask_enhancement,26,'holes'));title('Box enhancement');
