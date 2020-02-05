@@ -22,7 +22,7 @@ vertices = [937 29; 1450 328; 946 1031; 394 634];
 type = 2; %% Recatangular
 
 %% Out vertices
-% Find longest adn shortes edge
+% Find longest and shortes edge
 edgesLength = zeros(1, 4);
 for i = 1 : 4
     % Evaluate next index
@@ -33,18 +33,26 @@ for i = 1 : 4
 end
 edgesLengthSorted = sort(edgesLength);
 
+
 %% Evaluate new vertices
-edgePivot = norm(vertices(1, :) - vertices(2, :));
-% Check if need rotation
-if edgePivot == edgesLengthSorted(1) ||  edgePivot == edgesLengthSorted(2)
-    applyRotation = true;
-    vertical = edgesLengthSorted(4);
+if type == 1
+    applyRotation = false;
+    vertical = edgesLengthSorted(1);
     horizontal = edgesLengthSorted(1);
 else
-    applyRotation = false;
-    vertical =  edgesLengthSorted(1);
-    horizontal =  edgesLengthSorted(4);
+    edgePivot = norm(vertices(1, :) - vertices(2, :));
+    % Check if need rotation
+    if edgePivot == edgesLengthSorted(1) ||  edgePivot == edgesLengthSorted(2)
+        applyRotation = true;
+        vertical = edgesLengthSorted(4);
+        horizontal = edgesLengthSorted(1);
+    else
+        applyRotation = false;
+        vertical =  edgesLengthSorted(1);
+        horizontal =  edgesLengthSorted(4);
+    end
 end
+
 
 % New v1
 newV1 = [1, 1];
@@ -75,6 +83,13 @@ figure(1);
 %% Show orignal image
 subplot(2,2,1)
 imshow(scaledImage);title("Original Image");
+hold on;
+% Plot vertice
+for i = 1 : 4
+    x = vertices(i, 1);
+    y = vertices(i, 2);
+    plot(x, y, 'g+', 'MarkerSize', 15, 'LineWidth', 2);
+end
 subplot(2,2,2)
 imshow(Iwarp);title("Perspective adjust");
 subplot(2,2,3)

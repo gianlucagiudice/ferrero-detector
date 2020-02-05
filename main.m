@@ -6,7 +6,7 @@ scaleFactor = 0.5;
 imgPadding = 300;
 
 %% Processing
-targetIndex = 5;
+targetIndex = 46;
 
 tic
     
@@ -19,9 +19,15 @@ cannyEdge = image_to_edge(targetImage);
 %% Box detection
 boxMask = box_detection(cannyEdge, imgPadding);
 
+%% Crop Box
+vertices = [937 29; 1450 328; 946 1031; 394 634];
+type = 2; %% Recatangular
+
+boxCropped = crop_box_perspective(scaledImage, vertices, type);
+
 %% Show results
 figure(1);
 subplot(1,1,1);
-imshow(boxMask);
+imshow(boxCropped);
 
 toc
