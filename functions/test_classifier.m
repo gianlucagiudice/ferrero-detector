@@ -8,7 +8,7 @@ function [train_perf, test_perf] = test_classifier(descriptor, labels, cv)
     %   Ritorna le performance del classificatore in fase di training e in
     %   fase di test
     
-    
+    %% Reshape descriptor
     train.values = descriptor(cv.training,:);
     train.labels = labels(cv.training);
     

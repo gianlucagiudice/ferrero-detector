@@ -11,22 +11,12 @@ classes.label = [1, 2, 3];
 %% Target color space
 change_color_space = @rgb2hsv;
 
-%% Equalization
-
-%% Features
-lbp     = []; % Local binary pattern histograms
-cedd    = []; % Gray-Level Co-Occurence 
-qhist   = [];
-ghist   = []; % Gray-level histograms
-glcm    = []; % Gray-Level Co-Occurence Matrices
-avg     = []; % Color average
-std     = []; % Standard deviation
-
 images = {};
-lables = [];
+
+data.labels = [];
 
 %% Read all images
-n = 0;
+N = 0;
 for i = 1 : length(classes.name)
     % Path
     target_path = path + classes.name(i) + "/";
@@ -38,43 +28,62 @@ for i = 1 : length(classes.name)
     for j = 3 : length(files)
         % Read the image
         images{j - 2, i} = imread(target_path + "/" + files{j});
-        n = n + 1;
-        lables(n) = classes.label(i);
+        N = N + 1;
+        data.labels(N) = classes.label(i);
     end
 end
 
 disp('Read completed');
 
 
-%% Compute all features foreach images
-N = numel(images);
+%% Compute all features for each images
 j = 1;
-for i = 1 : N
+for i = 1 : numel(images)
     if isempty(images{i}) == false
+        %% Compute features
         im = images{i};
-        % Compute features
-        lbp{i}   = compute_lbp(im);
-        cedd{i}  = compute_CEDD(im);
-        qhist{i} = compute_qhist(im);
-        ghist{i} = compute_ghist(im);
-        glcm{i}  =  compute_glcm(rgb2gray(im));
-    
+        % Local binary pattern histograms
+        descriptor.lbp{j}   = compute_lbp(im);
+        descriptor.cedd{j}  = compute_CEDD(im);
+        % Gray-Level Co-Occurence 
+        descriptor.qhist{j} = compute_qhist(im);
+        % Gray-level histograms
+        descriptor.ghist{j} = compute_ghist(im);
+        % Gray-Level Co-Occurence Matrices
+        descriptor.glcm{j}  =  compute_glcm(rgb2gray(im));
+
         im = change_color_space(im2double(im));
-        avg{i}   = compute_average_color(im);
-        std{i}   = compute_std(im);
+        % Color average
+        descriptor.avg{j}   = compute_average_color(im);
+        % Standard deviation
+        descriptor.std{j}   = compute_std(im);
     
-        disp(string(j) + " - " + string(n));
+
+        disp(string(j) + " - " + string(N));
+        
         j = j + 1;
     end
-
 end
 
+%% Reshape descriptors
+fn = fieldnames(descriptor);
+for k = 1:numel(fn)
+    % Target field
+    field = fn{k};
+    % Matrix size
+    nCols = length(descriptor.(field){1});
+    nRows = length(descriptor.(field));
+    % reshape
+    matrix = reshape(cell2mat(descriptor.(field)), nCols, nRows);
+    % Override 
+    descriptor.(field) = double(matrix)'; 
+end
 
-save('lbp', 'lbp');
-save('cedd', 'cedd');
-save('qhist', 'qhist');
-save('ghist', 'ghist');
-save('glcm', 'glcm');
-save('avg', 'avg');
-save('std', 'std');
-save('labels', 'labels');
+%% Descriptor in data
+data.descriptor = descriptor;
+
+%% Save descriptor
+save('data', 'data');
+clear all
+
+load('data');

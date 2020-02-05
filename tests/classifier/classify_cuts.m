@@ -1,19 +1,30 @@
-load('lbp');
-load('cedd');
-load('qhist');
-load('cnn');
+clear all;
 
-[images, labels]= readlists();
+%% Load descriptors and label
+load('data');
 
-cv = cvpartition(labels,'Holdout',0.2);
+%% Get labels
+labels = data.labels;
+descriptor = data.descriptor;
 
-[tr1, ts1] = test_classifier(lbp,labels,cv)
-
-[tr2, ts2] = test_classifier(cedd,labels,cv)
-
-[tr3, ts3] = test_classifier(qhist,labels,cv)
-
-[tr4, ts4] = test_classifier([cedd lbp qhist],labels,cv)
+%% Portion of taining-set test-set
+testPortion = 0.2;
+cv = cvpartition(labels, 'holdout', testPortion);
 
 
-%[tr, ts] = test_classifier(cnn,labels,cv)
+feature = descriptor.lbp;
+[tr1, ts1] = test_classifier(feature, labels, cv)
+
+feature = descriptor.cedd;
+[tr2, ts2] = test_classifier(feature, labels, cv)
+
+feature = descriptor.qhist;
+[tr3, ts3] = test_classifier(feature, labels, cv)
+
+feature = [data.descriptor.cedd data.descriptor.lbp data.descriptor.qhist];
+[tr4, ts4] = test_classifier( feature, labels, cv)
+
+feature = descriptor.avg;
+[tr5, ts5] = test_classifier( feature, labels, cv)
+
+
