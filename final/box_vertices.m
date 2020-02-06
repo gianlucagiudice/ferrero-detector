@@ -6,7 +6,7 @@ vertices_s:sorted list of 4 vertices, the first pair is the one with the longet 
 distances_s:list of sorted distances
 %}
 function outVertices = box_vertices(box_label, padding_size)
-    debug = false;
+    debug = true;
 
     [rows, cols] = size(box_label);
 
@@ -103,8 +103,45 @@ function outVertices = box_vertices(box_label, padding_size)
 
 
     if debug
+        %% Casi particolari = 17
+        
+        
         figure;
-        subplot(1, 2, 1);
+        
+        %% Box mas
+        subplot(2,2,1); 
+        imshow(box_label), title("Box mask");
+        
+        %% Box edge
+        subplot(2, 2, 2);
+        imshow(edges), title("Edges image");
+        
+        %% Hough transform
+        subplot(2,2,3);
+        imagesc(H), colorbar, title("Hough Transform");
+        xlabel('\theta'), ylabel('\rho');
+        axis on, axis normal, hold on;
+        plotX = T(P(:,2)) + 90;
+        plotY = R(P(:,1)) + round(length(H) / 2);
+        plot(plotX, plotY,'s','color','white');
+        
+        %% Mask with lines
+        subplot(2,2,4);
+        imshow(box_label), title("Vertices");
+        hold on
+        X = [1: size(box_label, 2)];
+        
+        for n = 1:numel(rhos)
+            Y = (rhos(n) - X * cos(thetas(n))) / sin(thetas(n)); % valori delle coordinate y
+            % Si risolve su y l'equazione rho=x*cos(theta)+y*sin(theta)
+            plot(X, Y, 'r-', 'LineWidth', 1);
+        end
+        
+        % Vertices
+        viscircles(vertices(1, :), 10, 'Color', 'm');
+        viscircles(vertices(2, :), 10, 'Color', 'g');
+        viscircles(vertices(3, :), 10, 'Color', 'b');
+        viscircles(vertices(4, :), 10, 'Color', 'y');
         %imshow(vertices_mask);
     end
 
