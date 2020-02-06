@@ -9,7 +9,7 @@ scale_factor = 0.5;
 img_padding = 300;
 
 % Casi speciali: 6
-img_path = '../images/original/'+string(images{15});
+img_path = '../images/original/'+string(images{1});
 [original, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 2);
 
 %% Find edges
@@ -19,19 +19,24 @@ canny_edge = image_to_edge(target_image);
 [r, c] = size(canny_edge);
 
 % 30px is the border size
-out = compute_local_descriptors(canny_edge, 30, 10, @compute_average_color);
+out = compute_local_descriptors(canny_edge, 10, 3, @compute_average_color);
 
 % Label the image using k-means clustering
-labels = kmeans(out.descriptors, 3);
+labels = kmeans(out.descriptors, 2);
 img_labels = reshape(labels, out.nt_rows, out.nt_cols);
 img_labels_out = imresize(img_labels, [r, c], 'nearest'); 
 
 %% Find label relative to background
-label_list = zeros(1, length(unique(labels)));
-for label = 1:length(unique(labels))
-    label_list(label) = sum(img_labels_out == label .* canny_edge, 'all');
+bkg_label = -1;
+min_value = Inf;
+for label = 1:unique(labels)
+    cmp = mean(canny_edge(img_labels_out == label));
+    if (cmp < min_value)
+        min_value = cmp;
+        bkg_label = label;
+    end
 end
-[~, bkg_label] = min(label_list);
+
 elements = img_labels_out ~= bkg_label;
 
 %% Delete all non-box elements

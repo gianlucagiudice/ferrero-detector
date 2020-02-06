@@ -6,9 +6,11 @@
    distances_s: list of sorted distances      
 %}
 function box_descriptor = box_vertices(box_label, padding_size)
+    debug = false;
+
    [rows, cols] = size(box_label);
    
-   box_label = medfilt2(box_label, [50 50]);
+   box_label = medfilt2(box_label, [40 40]);
    
    % Detecting the number of hough peaks to find based on the number of incomplete sides
    peaks_count = length(unique(box_label(:, padding_size))) + ...
@@ -44,8 +46,7 @@ function box_descriptor = box_vertices(box_label, padding_size)
       end
    end
    
-   figure(4);
-   imshow(vertices_mask);
+   
    % Calculate and return vertex centroid
    vertices_regions = regionprops((vertices_mask(:, :, 1) == 1), 'Centroid');
    vertices = zeros(4, 2);
@@ -71,4 +72,10 @@ function box_descriptor = box_vertices(box_label, padding_size)
    index = index - 1;
    box_descriptor.distances_s = circshift(box_descriptor.distances, index * -1);
    box_descriptor.vertices_s = circshift(box_descriptor.vertices, index * -1);
+
+   if debug
+        figure(4);
+        subplot(1,2,1);
+        imshow(vertices_mask);
+   end
 end
