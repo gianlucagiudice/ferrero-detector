@@ -5,7 +5,7 @@ images = readlist('../data/images.list');
 scaleFactor = 0.5;
 imgPadding = 300;
 
-for targetIndex = 1 : length(images)
+parfor targetIndex = 1 : length(images)
     %% Read image
     imgPath = '../images/original/'+string(images{targetIndex});
     [~, scaledImage, targetImage] = read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
@@ -28,7 +28,7 @@ for targetIndex = 1 : length(images)
 
     %% Save
     name = split(string(images{targetIndex}), '.');
-    path = "../images/vertices/vertices_" + name(1);
+    path = "../images/cropped/cropped" + name(1);
     saveas(f, path, 'png');
     disp(targetIndex);
 
