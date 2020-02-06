@@ -1,14 +1,8 @@
 function boxCropped = crop_box_perspective(image, imgPadding, vertices, type)
     vertices = vertices - imgPadding;
 
-    edgesLength = zeros(1, 4);
-    for i = 1 : 4
-        % Evaluate next index
-        nextI = mod(i+1, 5) + floor(i / length(vertices));
-        v1 = vertices(i, :);
-        v2 = vertices(nextI, :);
-        edgesLength(i) = norm(v1 - v2);
-    end
+    %% Evaluate edges length
+    edgesLength = edges_length(vertices);
     edgesLengthSorted = sort(edgesLength);
 
     %% Evaluate new vertices

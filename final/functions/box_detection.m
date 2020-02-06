@@ -1,5 +1,5 @@
 function boxOpened = box_detection(cannyEdge, paddingSize)
-    debug = false;
+    debug = true;
 
     %% Label edges
     [r, c] = size(cannyEdge);

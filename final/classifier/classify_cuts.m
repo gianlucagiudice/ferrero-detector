@@ -1,7 +1,7 @@
 clear all;
 
 %% Load descriptors and label
-load('data');
+load('../cuts');
 
 %% Get labels
 labels = data.labels;

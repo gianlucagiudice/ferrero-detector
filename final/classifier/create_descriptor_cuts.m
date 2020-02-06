@@ -80,10 +80,10 @@ for k = 1:numel(fn)
 end
 
 %% Descriptor in data
-data.descriptor = descriptor;
+data.descriptors = descriptor;
 
 %% Save descriptor
-save('data', 'data');
+save('../data/cuts', 'cuts');
 clear all
 
-load('data');
+load('../data/cuts');
