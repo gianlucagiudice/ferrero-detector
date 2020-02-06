@@ -14,8 +14,11 @@ function out = compute_local_descriptors(image, tsize, tstep, compute_funct)
             tassello = tmp(r - half + 1:r + half + 1, c - half + 1:c + half + 1, :);
             res = compute_funct(tassello);
             descriptors = [descriptors; res];
+            
+            %disp(r + "/" + rows);
+    
         end
-        % disp(c + "/" + cols);
+    
     end
 
     out.descriptors = descriptors;

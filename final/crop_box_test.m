@@ -23,6 +23,7 @@ vertices = box_vertices(boxLabel, imgPadding);
 
 type = 2; % Recatangular
 
+%% Crop box
 cropped = crop_box_perspective(scaledImage, imgPadding, vertices, 2);
 
 

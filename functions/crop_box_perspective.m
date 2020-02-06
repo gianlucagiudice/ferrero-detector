@@ -1,5 +1,5 @@
 function boxCropped = crop_box_perspective(image, imgPadding, vertices, type)
-    vertices = vertices.vertices - imgPadding;
+    vertices = vertices - imgPadding;
 
     edgesLength = zeros(1, 4);
     for i = 1 : 4

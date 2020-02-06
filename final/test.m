@@ -3,14 +3,14 @@ addpath(genpath('../functions/'));
 %% Get list of images
 images = readlist('../data/images.list');
 scaleFactor = 0.5;
-imgPadding = 300;
+paddingSize = 300;
 
 
 %% Ho solo aggiunto che l'immagine viene presa da un indice anzichè da out.png
 
 
 %% Indici delle immagini da testare: 7
-targetIndex = 18;
+targetIndex = 15;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
@@ -21,18 +21,32 @@ imgPath = '../images/original/'+string(images{targetIndex});
 cannyEdge = image_to_edge(targetImage);
 
 %% I vertici vanno cercati su questa immagine
-boxLabel = box_detection(cannyEdge, imgPadding);
+boxLabel = box_detection(cannyEdge, paddingSize);
 
 %% Da qui inziano i plot che avevi fatto tu
 image = boxLabel;
 
-out = box_vertices(boxLabel, imgPadding);
+vertices = box_vertices(boxLabel, paddingSize);
 
-figure(1);
-imshow(rgb2gray(scaledImage));
+%% Crop box
+type = 2; % Recatangular
+cropped = crop_box_perspective(scaledImage, paddingSize, vertices, type);
+
+figure;
+imshow(cropped);
+
+
+%{
+ 
+figure;
+
+imgPadding = padarray(rgb2gray(scaledImage), [paddingSize paddingSize], 0, 'both');
+imshow(imgPadding);
 bar = regionprops(boxLabel, 'Centroid');
 
-viscircles(out.vertices_s(1, :) - imgPadding, 10, 'Color', 'r');
-viscircles(out.vertices_s(2, :) - imgPadding, 10, 'Color', 'g');
-viscircles(out.vertices_s(3, :) - imgPadding, 10, 'Color', 'b');
-viscircles(out.vertices_s(4, :) - imgPadding, 10, 'Color', 'y');
+viscircles(vertices(1, :), 10, 'Color', 'r');
+viscircles(vertices(2, :), 10, 'Color', 'g');
+viscircles(vertices(3, :), 10, 'Color', 'b');
+viscircles(vertices(4, :), 10, 'Color', 'y');
+ 
+%}
