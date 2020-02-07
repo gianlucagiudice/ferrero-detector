@@ -25,7 +25,7 @@ feature = descriptor.qhist;
 [tr3, ts3] = test_classifier(feature, labels, cv, classifier)
 
 feature = [cuts.descriptors.cedd cuts.descriptors.lbp cuts.descriptors.qhist];
-[tr4, ts4] = test_classifier(feature, labels, cv, classifier)
+[tr4, ts4, c] = test_classifier(feature, labels, cv, classifier)
 
 feature = descriptor.avg;
 [tr5, ts5] = test_classifier(feature, labels, cv, classifier)
