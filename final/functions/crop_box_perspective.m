@@ -1,5 +1,7 @@
-function boxCropped = crop_box_perspective(image, imgPadding, vertices, type)
-    vertices = vertices - imgPadding;
+function boxRotated = crop_box_perspective(image, sf, imgPadding, vertices, type)
+    debug = false;
+
+    vertices = (vertices - imgPadding) * sf;
 
     %% Evaluate edges length
     edgesLength = edges_length(vertices);
@@ -42,10 +44,25 @@ function boxCropped = crop_box_perspective(image, imgPadding, vertices, type)
     %% Crop box
     boxCropped = imcrop(Iwarp, [1, 1, horizontal, vertical]);
 
+    boxRotated = boxCropped; 
     %% Rotate if necessary
     if applyRotation
         tform = affine2d([0 1 0; -1 0 0; 0 0 1]);
-        boxCropped = imwarp(boxCropped, tform);
+        boxRotated = imwarp(boxCropped, tform);
+    end
+
+    if debug
+        %% Show results
+        figure
+        %% Show orignal image
+        subplot(2,2,1)
+        imshow(image);title("Original Image");
+        subplot(2,2,2)
+        imshow(Iwarp);title("Perspective adjust");
+        subplot(2,2,3)
+        imshow(boxCropped);title("Perspective adjust");
+        subplot(2,2,4)
+        imshow(boxRotated);title("Rotation adjust");
     end
 
 end

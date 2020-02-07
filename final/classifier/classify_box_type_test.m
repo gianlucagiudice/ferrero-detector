@@ -1,6 +1,8 @@
 %% Load descriptors and label
 load('../../data/edges.mat');
 
+saveClassifier = false;
+
 %% Get data
 labels = edges.labels;
 lenEdges = edges.descriptors;
@@ -68,7 +70,9 @@ disp("Test set");
 disp(ts1);
 
 %% Save classifier
-save('boxTypeClassifier', 'boxTypeClassifier');
+if saveClassifier
+    save('boxTypeClassifier', 'boxTypeClassifier');
+end
 
 %{
 %% Fisher criterion:

@@ -6,7 +6,7 @@ vertices_s:sorted list of 4 vertices, the first pair is the one with the longet 
 distances_s:list of sorted distances
 %}
 function outVertices = box_vertices(box_label, padding_size)
-    debug = true;
+    debug = false;
 
     [rows, cols] = size(box_label);
 
@@ -80,11 +80,22 @@ function outVertices = box_vertices(box_label, padding_size)
 
     % Calculate convex hull for vertices sorting
     convex_hull = convhull(vertices);
-
-    for i = 1:length(convex_hull) - 1
-        distances(i) = round(pdist2(vertices(convex_hull(i), :), vertices(convex_hull(i + 1), :)));
-        outVertices(i, :) = vertices(convex_hull(i), :);
+    box_descriptor.vertices = zeros(4, 2);
+    box_descriptor.distances = zeros(4, 1);
+    
+    for i = 1 : length(convex_hull) - 1
+       box_descriptor.distances(i) = round(pdist2(vertices(convex_hull(i), :), vertices(convex_hull(i + 1), :)));
+       box_descriptor.vertices(i, :) = vertices(convex_hull(i), :);
     end
+  
+    % Sorting vertices based on edge length
+    [~, index] = max(box_descriptor.distances);
+    index = index - 1;
+    box_descriptor.distances_s = circshift(box_descriptor.distances, index * -1);
+    box_descriptor.vertices_s = circshift(box_descriptor.vertices, index * -1);
+ 
+    %% Vertices to return
+    outVertices = box_descriptor.vertices_s;
 
 
     if debug
