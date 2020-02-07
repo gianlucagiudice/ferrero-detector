@@ -30,7 +30,7 @@ parfor targetIndex = 1 : N
     %% Save cuts
     for i = 1 : 24
         name = split(string(images{targetIndex}), '.');
-        fileName = name(1) + "_cut" + i; 
+        fileName = name(1) + "-cut$" + i; 
         path = "../images/cuts/" + fileName + ".png";
         imwrite(choccolates{i}, path);
     end

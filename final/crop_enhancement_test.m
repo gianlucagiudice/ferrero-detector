@@ -8,6 +8,8 @@ images = readlist('../data/images.list');
 targetIndex = 7;
 scaleFactor = 0.5;
 paddingSize = 300;
+p1 = 0.05;
+p2 = 0.04;
 
 %% Read image
 N = numel(images);
@@ -22,9 +24,9 @@ parfor targetIndex = 1:N
     [r, c, ~] = size(img);
 
     if r == c
-        p = 0.05;
+        p = p1;
     else
-        p = 0.04;
+        p = p2;
     end
 
     crop = imcrop(img, [c*p r*p c-2*c*p r-2*r*p]);
