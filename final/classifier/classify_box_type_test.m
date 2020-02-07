@@ -1,4 +1,5 @@
 %% Load descriptors and label
+addpath(genpath('../functions/'));
 load('../../data/edges.mat');
 
 saveClassifier = false;

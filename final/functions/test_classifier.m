@@ -1,4 +1,4 @@
-function [train_perf, test_perf] = test_classifier(descriptor, labels, cv)
+function [train_perf, test_perf, c] = test_classifier(descriptor, labels, cv, classifier)
     % Testa un classificatore con i dati descrittori e partizionamento.
     % Paramnetri: 
     %   descriptor : descrittore/i da usareper la classificazione
@@ -16,9 +16,7 @@ function [train_perf, test_perf] = test_classifier(descriptor, labels, cv)
     test.labels  = labels(cv.test);
     
     %% Train classifier
-    c = fitcknn(train.values, train.labels, 'NumNeighbors',7);
-    % c = fitctree(train.ghist, train.labels);
-    % c = fitcnb(train.ghist, train.labels);
+    c = classifier(train.values, train.labels);
 	
 	%% Predict using classifier
 	train.predicted = predict(c, train.values);
