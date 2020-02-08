@@ -70,6 +70,9 @@ disp(tr3);
 disp("Test set");
 disp(ts3);
 
+%% Classification Learner toolbox
+T = table(features, labels);
+
 %% Save classifier
 if saveClassifier
     save('boxTypeClassifier', 'boxTypeClassifier');

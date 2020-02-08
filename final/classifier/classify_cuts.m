@@ -48,6 +48,8 @@ feature10 = descriptor.qhist_hsv_s;
 feature11 = [descriptor.qhist, descriptor.lbp, descriptor.qhist_hsv_s];
 [tr11, ts11] = test_classifier(feature11, labels, cv, classifier);
 
+%% Classification Learner toolbox
+T7 = table(feature7, labels);
 
 %% Show results
 disp("LBP");
