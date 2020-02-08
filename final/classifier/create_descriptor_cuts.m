@@ -12,7 +12,6 @@ change_color_space = @rgb2ycbcr;
 %% Compute all features for each images
 tic
 
-
 N = numel(images);
 parfor targetIndex = 1 : N
 
@@ -53,6 +52,8 @@ parfor targetIndex = 1 : N
     disp(string(targetIndex) + " - " + string(N));
     
 end
+
+
 %% Zip descriptors
 descriptors.lbp = lbp;
 descriptors.cedd = cedd;
@@ -65,10 +66,21 @@ descriptors.qhist_hsv_s = qhist_hsv_s;
 
 disp("All descriptors created.");
 
-
-disp("Reshape feature . . .");
-%% Reshape descriptors
+%% Normalization of values
+disp("Feature normalization . . .");
 fn = fieldnames(descriptors);
+for k = 1:numel(fn)
+    % Target feature
+    feature = descriptors.(fn{k});
+    % Normalization
+    minV = min(feature); maxV = max(feature);
+    feature = (feature - minV) / (maxV - minV);
+    % Save normalization
+    descriptors.(fn{k}) = feature;
+end
+
+%% Reshape descriptors
+disp("Reshape feature . . .");
 for k = 1:numel(fn)
     % Target field
     field = fn{k};

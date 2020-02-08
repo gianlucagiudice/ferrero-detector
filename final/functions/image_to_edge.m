@@ -4,7 +4,7 @@ function out_edge = image_to_edge(target_image)
     %% Image enhancement
     % 15
     
-    target_image_filtered = medfilt2(target_image, [10 10]);
+    target_image_filtered = medfilt2(target_image, [15 15]);
     F5 = fspecial('gaussian', 5, 3);
     target_image_smooth  = imfilter(target_image_filtered , F5, 'replicate');
     %% Find edges 
@@ -19,6 +19,6 @@ function out_edge = image_to_edge(target_image)
         subplot(2,2,3);
         imshow(target_image_smooth), title("Gaussian filter()");
         subplot(2,2,4);
-        imshow(out_edge), title("Canny edge");
+        imshow(out_edge), title("Canny edge (threshold = " + t + ")");
     end
 end

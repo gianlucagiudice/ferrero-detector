@@ -33,6 +33,8 @@ function boxOpened = box_detection(cannyEdge, paddingSize)
 
     %% Fill holes
     boxFilled = imfill(boxBinary, 'holes');
+    se = strel("square", 30);
+    boxFilled = imclose(boxFilled, se);
 
     %% Median filter
     boxFiltered = medfilt2(boxFilled, [30 30]);
