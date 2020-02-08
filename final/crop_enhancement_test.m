@@ -16,7 +16,7 @@ N = numel(images);
 
 parfor targetIndex = 1:N
     name = split(string(images{targetIndex}), '.');
-    path = "../images/cropped/cropped_" + name(1);
+    path = "../images/cropped/" + name(1);
     imgPath = path + ".png";
 
     img = imread(imgPath);
@@ -33,7 +33,7 @@ parfor targetIndex = 1:N
     
     %% Save results
     name = split(string(images{targetIndex}), '.');
-    path = "../images/crop_enhanced/cropped_" + name(1);
+    path = "../images/cropEnhanced/" + name(1);
     imwrite(crop, path + ".png");
     
     disp(targetIndex);

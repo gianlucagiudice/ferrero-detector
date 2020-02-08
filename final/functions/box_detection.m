@@ -1,6 +1,4 @@
-function boxOpened = box_detection(cannyEdge, paddingSize)
-    debug = true;
-
+function boxOpened = box_detection(cannyEdge, paddingSize, debug)
     %% Label edges
     [r, c] = size(cannyEdge);
 
@@ -47,7 +45,7 @@ function boxOpened = box_detection(cannyEdge, paddingSize)
     boxPadding = padarray(boxFilteredFilled, [paddingSize paddingSize], 0, 'both');
 
     %% Delete elemnts connected to box
-    se = strel('disk', 30);
+    se = strel('disk', 50);
     boxOpened = imopen(boxPadding, se);
     
     if debug

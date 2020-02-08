@@ -85,3 +85,44 @@ subplot(plotR,plotC,21);imshow(raf_cs(:,:,3));title("Raffaello Cr");
 subplot(plotR,plotC,22);imhist(raf_cs(:,:,3));title("Raffaello Cr");
 subplot(plotR,plotC,23);imshow(ron_cs(:,:,3));title("Rondnoir Cr");
 subplot(plotR,plotC,24);imhist(ron_cs(:,:,3));title("Rondnoir Cr");
+
+%% Prewitt edge
+imgPath = "../../images/cuts/"+images{753};
+ron = imread(imgPath);
+
+imgPath = "../../images/cuts/"+images{852};
+rej = imread(imgPath);
+
+ron_gray = rgb2gray(ron);
+rej_gray = rgb2gray(rej);
+
+ron_edge = edge(ron_gray, 'prewitt');
+rej_edge = edge(rej_gray, 'prewitt');
+
+ron_edge_filt = edge(imgaussfilt(ron_gray, 1.5), 'prewitt');
+rej_edge_filt = edge(imgaussfilt(rej_gray, 1.5), 'prewitt');
+
+ron_eq = histeq(ron_gray);
+rej_eq = histeq(rej_gray);
+
+ron_eq_edge = edge(ron_eq, 'prewitt');
+rej_eq_edge = edge(rej_eq, 'prewitt');
+
+ron_eq_edge_filt = edge(imgaussfilt(ron_eq, 1.5), 'prewitt');
+rej_eq_edge_filt = edge(imgaussfilt(rej_eq, 1.5), 'prewitt');
+
+
+figure(3);
+subplot(3,4,1);imshow(ron_gray);title("Rondnoir");
+subplot(3,4,2);imshow(rej_gray);title("Rejection");
+subplot(3,4,5);imshow(ron_edge);title("Prewitt rondnoir");
+subplot(3,4,6);imshow(rej_edge);title("Prewitt reject");
+subplot(3,4,9);imshow(ron_edge_filt);title("Prewitt rondnoir gaussian (\sigma = 1.5)");
+subplot(3,4,10);imshow(rej_edge_filt);title("Prewitt reject gaussian (\sigma = 1.5)");
+
+subplot(3,4,3);imshow(ron_eq);title("Rondnoir eq");
+subplot(3,4,4);imshow(rej_eq);title("Rejection eq");
+subplot(3,4,7);imshow(ron_eq_edge);title("Prewitt rondnoir eq");
+subplot(3,4,8);imshow(rej_eq_edge);title("Prewitt reject eq");
+subplot(3,4,11);imshow(ron_eq_edge_filt);title("Prewitt rondnoir eq gaussian (\sigma = 1.5)");
+subplot(3,4,12);imshow(rej_eq_edge_filt);title("Prewitt reject eq gaussian (\sigma = 1.5)");

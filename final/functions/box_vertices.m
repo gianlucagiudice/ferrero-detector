@@ -5,9 +5,7 @@ distances:list of pairwise distances between vertices
 vertices_s:sorted list of 4 vertices, the first pair is the one with the longet distance
 distances_s:list of sorted distances
 %}
-function outVertices = box_vertices(box_label, padding_size)
-    debug = true;
-
+function outVertices = box_vertices(box_label, padding_size, debug, targetIndex)
     [rows, cols] = size(box_label);
 
     box_label = medfilt2(box_label, [40 40]);
@@ -102,7 +100,7 @@ function outVertices = box_vertices(box_label, padding_size)
         %% Casi particolari = 17
         
         %% Show results
-        figure(3);
+        f = figure('visible', 'off');
         
         %% Box mas
         subplot(2,2,1); 
@@ -139,6 +137,11 @@ function outVertices = box_vertices(box_label, padding_size)
         viscircles(vertices(3, :), 10, 'Color', 'b');
         viscircles(vertices(4, :), 10, 'Color', 'y');
         %imshow(vertices_mask);
+
+        %% Save
+        path = "../images/hough/hough_" + targetIndex;
+        print('ScreenSizeFigure','-dpng','-r0')
+        saveas(f, path, 'png');
     end
 
 end

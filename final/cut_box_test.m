@@ -5,7 +5,7 @@ addpath(genpath(relPath + 'functions/'));
 images = readlist(relPath + 'data/images.list');
 imgPadding = 300;
 scaleFactor = 0.5;
-targetIndex = 17;
+targetIndex = 7;
 
 tic
 
@@ -13,21 +13,14 @@ tic
 N = numel(images);
 
 name = split(string(images{targetIndex}), '.');
-path = "../images/cropEnhanced/cropEnhanced_" + name(1);
+path = "../images/cropEnhanced/" + name(1);
 imgPath = path + ".png";
 
 img = imread(imgPath);
-choccolates = cut_type1(img);
+choccolates = cut_type1(img, true);
 
-%% Show results
-figure(2);
-for k = 1 : 24
-    subplot(4, 6, k);
-    imshow(choccolates{k});
-    j = floor((k - 1)/6) + 1;
-    i = mod((k - 1), 6) + 1;
-    text = "(" + j + ", " + i + ")";
-    title(text);
-end
+%% Predict box
+%prediction = predict_cuts(choccolates);
+
 
 toc

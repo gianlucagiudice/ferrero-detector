@@ -1,9 +1,5 @@
-function out_edge = image_to_edge(target_image)
-    debug = true;
-
+function out_edge = image_to_edge(target_image, debug)
     %% Image enhancement
-    % 15
-    
     target_image_filtered = medfilt2(target_image, [15 15]);
     F5 = fspecial('gaussian', 5, 3);
     target_image_smooth  = imfilter(target_image_filtered , F5, 'replicate');
@@ -12,13 +8,15 @@ function out_edge = image_to_edge(target_image)
 
     if debug
         figure(1);
-        subplot(2,2,1);
+        subplot(2,3,1);
         imshow(target_image), title("Input image");
-        subplot(2,2,2);
-        imshow(target_image_filtered), title("medfilt2()");
-        subplot(2,2,3);
-        imshow(target_image_smooth), title("Gaussian filter()");
-        subplot(2,2,4);
-        imshow(out_edge), title("Canny edge (threshold = " + t + ")");
+        subplot(2,3,2);
+        imshow(target_image_filtered), title("Median filter 15x15");
+        subplot(2,3,4);
+        imshow(target_image_smooth), title("Smoothing");
+        subplot(2,3,5);
+        mesh(fspecial('gaussian', 5, 3));title("Gaussian filter (5x5, \sigma = 3)");
+        subplot(2,3,6);
+        imshow(out_edge); title("Canny edge (threshold = " + t + ")");
     end
 end

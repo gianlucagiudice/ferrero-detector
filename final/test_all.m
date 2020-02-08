@@ -7,6 +7,7 @@ relPath = "../";
 images = readlist('../data/images.list');
 scaleFactor = 0.5;
 paddingSize = 300;
+debug = true;
 
 %% Start processing
 tic
@@ -19,13 +20,13 @@ parfor targetIndex = 1:N
         read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
 
     % Find edges
-    cannyEdge = image_to_edge(targetImage);
+    cannyEdge = image_to_edge(targetImage, false);
 
     % I vertici vanno cercati su questa immagine
-    boxMask = box_detection(cannyEdge, paddingSize);
+    boxMask = box_detection(cannyEdge, paddingSize, false);
 
     % Find vertices
-    vertices = box_vertices(boxMask, paddingSize);
+    vertices = box_vertices(boxMask, paddingSize, debug, targetIndex);
 
     % Classify box type
     typeFeature = compute_type_feature(vertices);
@@ -34,11 +35,11 @@ parfor targetIndex = 1:N
     % Crop box from original image
     cropTarget = originalImage;
     sf = length(cropTarget) ./ length(scaledImage);
-    cropped = crop_box_perspective(cropTarget, sf, paddingSize, vertices, boxType);
+    cropped = crop_box_perspective(cropTarget, sf, paddingSize, vertices, boxType, false);
 
     %% Save results
     name = split(string(images{targetIndex}), '.');
-    path = "../images/cropped/cropped_"+name(1);
+    path = "../images/cropped/"+name(1);
     imwrite(cropped, path + ".png");
 
     disp("Processed "+targetIndex + "-" + N);

@@ -1,5 +1,4 @@
-function boxRotated = crop_box_perspective(image, sf, imgPadding, vertices, type)
-    debug = false;
+function boxRotated = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
 
     vertices = (vertices - imgPadding) * sf;
 
