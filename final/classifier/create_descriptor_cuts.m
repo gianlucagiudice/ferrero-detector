@@ -16,10 +16,12 @@ tic
 N = numel(images);
 parfor targetIndex = 1 : N
 
+    %{
     %% skip non choccolates
     if labels(targetIndex) > 3
         continue
-    end
+    end 
+    %}
 
     %% Read image
     targetPath = path + images{targetIndex};
@@ -36,16 +38,18 @@ parfor targetIndex = 1 : N
     ghist{targetIndex} = compute_ghist(im);
     % Gray-Level Co-Occurence Matrices
     glcm{targetIndex}  =  compute_glcm(rgb2gray(im));
-
-    im = change_color_space(im2double(im));
+    % Custom
+    im_1 = change_color_space(im2double(im));
     % Color average
-    avg{targetIndex} = compute_average_color(im);
+    avg{targetIndex} = compute_average_color(im_1);
     % Standard deviation
-    std{targetIndex} = compute_std(im);
+    std{targetIndex} = compute_std(im_1);
+    % Saturation channel
+    im_2 = uint8(rgb2hsv(im));
+    qhist_hsv_s{targetIndex} = compute_qhist(im_2(:,:,2));
 
     %% Save labels
     zipLabels(targetIndex) = labels(targetIndex);
-    
     disp(string(targetIndex) + " - " + string(N));
     
 end
@@ -57,6 +61,7 @@ descriptors.ghist = ghist;
 descriptors.glcm = glcm;
 descriptors.avg = avg;
 descriptors.std = std;
+descriptors.qhist_hsv_s = qhist_hsv_s;
 
 disp("All descriptors created.");
 

@@ -57,18 +57,18 @@ disp("- - - - - - -");
 disp("Classification tree:")
 [tr2, ts2, ~] = test_classifier(features, labels, cv, @fitctree);
 disp("Training set");
-disp(tr1);
+disp(tr2);
 disp("Test set");
-disp(ts1);
+disp(ts2);
 
 %% Naive Bayes model
 disp("- - - - - - -");
 disp("Naive Bayes model:")
 [tr3, ts3, ~] = test_classifier(features, labels, cv, @fitcnb);
 disp("Training set");
-disp(tr1);
+disp(tr3);
 disp("Test set");
-disp(ts1);
+disp(ts3);
 
 %% Save classifier
 if saveClassifier
