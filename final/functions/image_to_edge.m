@@ -1,15 +1,17 @@
 function out_edge = image_to_edge(target_image)
-    debug = false;
+    debug = true;
 
     %% Image enhancement
-    target_image_filtered = medfilt2(target_image, [15 15]);
+    % 15
+    
+    target_image_filtered = medfilt2(target_image, [10 10]);
     F5 = fspecial('gaussian', 5, 3);
     target_image_smooth  = imfilter(target_image_filtered , F5, 'replicate');
     %% Find edges 
-    out_edge = edge(target_image_smooth, 'Canny'); 
+    [out_edge, t] = edge(target_image_smooth, 'Canny'); 
 
     if debug
-        figure
+        figure(1);
         subplot(2,2,1);
         imshow(target_image), title("Input image");
         subplot(2,2,2);

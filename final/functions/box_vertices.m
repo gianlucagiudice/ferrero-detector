@@ -6,7 +6,7 @@ vertices_s:sorted list of 4 vertices, the first pair is the one with the longet 
 distances_s:list of sorted distances
 %}
 function outVertices = box_vertices(box_label, padding_size)
-    debug = false;
+    debug = true;
 
     [rows, cols] = size(box_label);
 
@@ -102,7 +102,7 @@ function outVertices = box_vertices(box_label, padding_size)
         %% Casi particolari = 17
         
         %% Show results
-        figure;
+        figure(3);
         
         %% Box mas
         subplot(2,2,1); 
