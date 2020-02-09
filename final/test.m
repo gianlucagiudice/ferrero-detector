@@ -9,7 +9,7 @@ boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 6;
+targetIndex = 4;
 scaleFactor = 0.5;
 paddingSize = 300;
 debug = false;

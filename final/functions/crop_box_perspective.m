@@ -63,9 +63,9 @@ function [boxRotated, outMatrix] = crop_box_perspective(image, sf, imgPadding, v
         subplot(2,2,2)
         imshow(Iwarp);title("Perspective adjust");
         subplot(2,2,3)
-        imshow(boxCropped);title("Perspective adjust");
+        imshow(boxCropped);title("Box cropped");
         subplot(2,2,4)
-        imshow(boxRotated);title("Rotation adjust");
+        imshow(boxRotated);title("Box rotated");
     end
 
 end
