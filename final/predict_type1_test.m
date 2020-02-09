@@ -1,11 +1,15 @@
 relPath = "../";
 addpath(genpath(relPath + 'functions/'));
+boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
+cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
+
+debug = true;
 
 %% Get list of images
 images = readlist(relPath + 'data/images.list');
 imgPadding = 300;
 scaleFactor = 0.5;
-targetIndex = 7;
+targetIndex = 39;
 
 tic
 
@@ -20,7 +24,8 @@ img = imread(imgPath);
 choccolates = cut_type1(img, true);
 
 %% Predict box
-%prediction = predict_cuts(choccolates);
+prediction = predict_type1(choccolates, cutClassifier, debug);
+
 
 
 toc

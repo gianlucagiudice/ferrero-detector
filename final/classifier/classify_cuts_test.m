@@ -25,7 +25,7 @@ feature2 = descriptor.cedd;
 [tr2, ts2] = test_classifier(feature2, labels, cv, classifier);
 
 feature3 = descriptor.qhist;
-[tr3, ts3] = test_classifier(feature3, labels, cv, classifier);
+[tr3, ts3, cutClassifier] = test_classifier(feature3, labels, cv, classifier);
 
 feature4 = [descriptor.cedd, descriptor.lbp, descriptor.qhist];
 [tr4, ts4, c] = test_classifier(feature4, labels, cv, classifier);
@@ -40,7 +40,7 @@ feature7 = [descriptor.avg, descriptor.lbp, descriptor.cedd];
 [tr7, ts7] = test_classifier(feature7, labels, cv, classifier);
 
 feature8 = [descriptor.qhist, descriptor.lbp];
-[tr8, ts8, cutClassifier] = test_classifier(feature8, labels, cv, classifier);
+[tr8, ts8] = test_classifier(feature8, labels, cv, classifier);
 
 feature9 = descriptor.std;
 [tr9, ts9] = test_classifier(feature9, labels, cv, classifier);
