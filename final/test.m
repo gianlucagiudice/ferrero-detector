@@ -26,7 +26,7 @@ cannyEdge = image_to_edge(targetImage, false);
 boxMask = box_detection(cannyEdge, paddingSize, false);
 
 %% Find box vertices
-vertices = box_vertices(boxMask, paddingSize, true, targetIndex);
+vertices = box_vertices(boxMask, paddingSize, true);
 
 %% Classify box type
 typeFeature = compute_type_feature(vertices);
@@ -35,7 +35,8 @@ boxType = boxTypeClassifier.predict(typeFeature);
 %% Crop box from original image
 cropTarget = originalImage;
 sf = length(cropTarget) ./ length(scaledImage);
-cropped = crop_box_perspective(cropTarget, sf, paddingSize, vertices, boxType, false);
+[cropped, tMatrix] = crop_box_perspective(cropTarget, sf, paddingSize, vertices, boxType, true);
+
 
 %% Cut choccolates
 

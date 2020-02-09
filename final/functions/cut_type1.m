@@ -14,7 +14,13 @@ function cuts = cut_type1(boxCropped, debug)
             startIndexJ = (j - 1) * tWidth + 1;
             endIndexJ   = j * tWidth;
             target = boxCropped(startIndexI:endIndexI, startIndexJ:endIndexJ, :);
-            cuts{k} = target;
+            % Save cut value
+            cuts{k}.value = target;
+            % Save center
+            x = mean([startIndexJ, endIndexJ]);
+            y = mean([startIndexI, endIndexI]);
+            cuts{k}.center = [x, y];
+            
             k = k +1;
         end
     end
@@ -23,7 +29,7 @@ function cuts = cut_type1(boxCropped, debug)
         figure(6);
         for k = 1 : 24
             subplot(4, 6, k);
-            imshow(cuts{k});
+            imshow(cuts{k}.value);
             j = floor((k - 1)/6) + 1;
             i = mod((k - 1), 6) + 1;
             text = "(" + j + ", " + i + ")";

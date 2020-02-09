@@ -5,7 +5,7 @@ distances:list of pairwise distances between vertices
 vertices_s:sorted list of 4 vertices, the first pair is the one with the longet distance
 distances_s:list of sorted distances
 %}
-function outVertices = box_vertices(box_label, padding_size, debug, targetIndex)
+function outVertices = box_vertices(box_label, padding_size, debug)
     [rows, cols] = size(box_label);
 
     box_label = medfilt2(box_label, [40 40]);
@@ -138,10 +138,13 @@ function outVertices = box_vertices(box_label, padding_size, debug, targetIndex)
         viscircles(vertices(4, :), 10, 'Color', 'y');
         %imshow(vertices_mask);
 
+        %{
         %% Save
         path = "../images/hough/hough_" + targetIndex;
         print('ScreenSizeFigure','-dpng','-r0')
-        saveas(f, path, 'png');
+        saveas(f, path, 'png'); 
+        %}
+
     end
 
 end

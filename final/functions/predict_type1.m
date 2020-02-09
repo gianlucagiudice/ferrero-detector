@@ -15,7 +15,7 @@ function outPrediction = predict_type1(cuts, classifier, debug)
     
     %% Predict
     for i = 1 : numel(cuts)
-        data = compute_qhist(cuts{i});
+        data = compute_qhist(cuts{i}.value);
         prediction(i) = classifier.predict(data);
     end
     prediction = prediction';

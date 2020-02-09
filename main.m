@@ -25,6 +25,12 @@ type = 2; %% Recatangular
 
 boxCropped = crop_box_perspective(scaledImage, vertices, type);
 
+%{
+T = [1 0 0;0 1 0;100 0 1];
+tform_t = affine2d(T) 
+%}
+
+
 %% Show results
 figure(1);
 subplot(1,1,1);

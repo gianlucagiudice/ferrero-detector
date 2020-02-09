@@ -1,4 +1,4 @@
-function boxRotated = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
+function [boxRotated, outMatrix] = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
 
     vertices = (vertices - imgPadding) * sf;
 
@@ -38,17 +38,21 @@ function boxRotated = crop_box_perspective(image, sf, imgPadding, vertices, type
 
     %% Evaluate Transformation
     H = fitgeotrans(vertices, outVertices, 'projective');
-    [Iwarp, ref] = imwarp(image, H, 'OutputView', imref2d(size(image)));
+    Iwarp = imwarp(image, H, 'OutputView', imref2d(size(image)));
 
     %% Crop box
     boxCropped = imcrop(Iwarp, [1, 1, horizontal, vertical]);
 
     boxRotated = boxCropped; 
     %% Rotate if necessary
+    rotMatrix = [1 0 0; 0 1 0; 0 0 1];
     if applyRotation
-        tform = affine2d([0 1 0; -1 0 0; 0 0 1]);
-        boxRotated = imwarp(boxCropped, tform);
+        rotMatrix = affine2d([0 1 0; -1 0 0; 0 0 1]);
+        boxRotated = imwarp(boxCropped, rotMatrix);
     end
+    
+    projectionMatrix = H.T;
+    outMatrix = projectionMatrix * rotMatrix;
 
     if debug
         %% Show results

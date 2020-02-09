@@ -9,7 +9,7 @@ debug = true;
 images = readlist(relPath + 'data/images.list');
 imgPadding = 300;
 scaleFactor = 0.5;
-targetIndex = 39;
+targetIndex = 49;
 
 tic
 
