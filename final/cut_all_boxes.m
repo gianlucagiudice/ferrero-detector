@@ -5,6 +5,7 @@ addpath(genpath(relPath + 'functions/'));
 images = readlist(relPath + 'data/images.list');
 imgPadding = 300;
 scaleFactor = 0.5;
+debug = false;
 
 %% Read image
 N = numel(images);
@@ -13,7 +14,7 @@ tic
 parfor targetIndex = 1 : N
 
     name = split(string(images{targetIndex}), '.');
-    path = "../images/cropEnhanced/cropEnhanced_" + name(1);
+    path = "../images/cropEnhanced/" + name(1);
     imgPath = path + ".png";
 
     img = imread(imgPath);
@@ -25,7 +26,7 @@ parfor targetIndex = 1 : N
     end
 
     %% Cut box
-    choccolates = cut_type1(img);
+    choccolates = cut_type1(img, debug);
 
     %% Save cuts
     for i = 1 : 24
@@ -34,6 +35,7 @@ parfor targetIndex = 1 : N
         path = "../images/cuts/" + fileName + ".png";
         imwrite(choccolates{i}, path);
     end
+    
 
 end
 toc
