@@ -5,7 +5,7 @@ distances:list of pairwise distances between vertices
 vertices_s:sorted list of 4 vertices, the first pair is the one with the longet distance
 distances_s:list of sorted distances
 %}
-function [outVertices, nRotation] = box_vertices(box_label, padding_size, debug)
+function outVertices = box_vertices(box_label, padding_size, debug)
     [rows, cols] = size(box_label);
 
     box_label = medfilt2(box_label, [40 40]);
@@ -87,8 +87,7 @@ function [outVertices, nRotation] = box_vertices(box_label, padding_size, debug)
     [~, index] = max(distances);
     index = index - 1;
     outVertices = circshift(outVertices, index * -1);
-    nRotation = mod(index + 1, 4);
-   
+
     %% Debug
     if debug
         % Casi particolari = 17

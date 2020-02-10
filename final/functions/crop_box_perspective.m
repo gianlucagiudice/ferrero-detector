@@ -1,4 +1,4 @@
-function [boxCropped, outMatrix] = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
+function [boxCropped, tForm] = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
     vertices = (vertices - imgPadding) * sf;
 
     %% Evaluate edges length
@@ -23,9 +23,9 @@ function [boxCropped, outMatrix] = crop_box_perspective(image, sf, imgPadding, v
 
     %% Compute Transformation
     H = fitgeotrans(vertices, outVertices, 'projective');
+    tForm = maketform('projective', H.T);
     Iwarp = imwarp(image, H, 'OutputView', imref2d(size(image)));
-    outMatrix = H.T;
-
+    
     %% Crop box
     boxCropped = imcrop(Iwarp, [1, 1, horizontal, vertical]);
 

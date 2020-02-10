@@ -21,10 +21,10 @@ path = "../images/cropEnhanced/" + name(1);
 imgPath = path + ".png";
 
 img = imread(imgPath);
-choccolates = cut_type1(img, true);
+choccolates = cut_type2(img, true);
 
 %% Predict box
-prediction = predict_type1(choccolates, cutClassifier, debug);
+prediction = predict_type2(choccolates, cutClassifier, debug);
 
 
 

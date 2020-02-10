@@ -30,7 +30,7 @@ parfor targetIndex = 1:N
     end
 
     crop = imcrop(img, [c*p r*p c-2*c*p r-2*r*p]);
-    
+       
     %% Save results
     name = split(string(images{targetIndex}), '.');
     path = "../images/cropEnhanced/" + name(1);
