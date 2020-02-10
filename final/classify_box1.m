@@ -5,13 +5,16 @@ addpath(genpath('functions/'));
 targetIndex = 6;
 scaleFactor = 0.5;
 paddingSize = 150;
-tagSize = round(0.0632 * scaleFactor * length(img));
 debug = false;
 
 %% Read image
 imgPath = '../images/cropEnhanced/IMG_26.png';
 
 img = imread(imgPath);
+
+
+tagSize = round(0.0632 * scaleFactor * length(img));
+
 
 img = imresize(img, 0.5);
 

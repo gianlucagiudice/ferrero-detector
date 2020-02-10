@@ -126,3 +126,76 @@ subplot(3,4,7);imshow(ron_eq_edge);title("Prewitt rondnoir eq");
 subplot(3,4,8);imshow(rej_eq_edge);title("Prewitt reject eq");
 subplot(3,4,11);imshow(ron_eq_edge_filt);title("Prewitt rondnoir eq gaussian (\sigma = 1.5)");
 subplot(3,4,12);imshow(rej_eq_edge_filt);title("Prewitt reject eq gaussian (\sigma = 1.5)");
+
+
+
+%% LBP
+plotR = 3; plotC = 3;
+
+roc_lbp = compute_lbp(roc);
+raf_lbp = compute_lbp(raf);
+ron_lbp = compute_lbp(ron);
+
+figure(4);
+subplot(plotR,plotC,1);imshow(roc);title("Rocher RGB");
+subplot(plotR,plotC,2);imshow(raf);title("Raffaello RGB");
+subplot(plotR,plotC,3);imshow(ron);title("Rondnoir RGB");
+
+subplot(plotR,plotC,4);histogram(roc_lbp, 59);title("Rocher LBP");
+subplot(plotR,plotC,5);histogram(raf_lbp, 59);title("Raffaello LBP");
+subplot(plotR,plotC,6);histogram(ron_lbp, 59);title("Rondnoir LBP");
+
+imgPath = "../../images/cuts/"+rocher{60};
+roc = imread(imgPath);
+imgPath = "../../images/cuts/"+rondnoir{70};
+ron = imread(imgPath);
+imgPath = "../../images/cuts/"+raffaello{17};
+raf = imread(imgPath);
+
+subplot(plotR,plotC,7);histogram(roc_lbp, 59);title("Rocher LBP");
+subplot(plotR,plotC,8);histogram(raf_lbp, 59);title("Raffaello LBP");
+subplot(plotR,plotC,9);histogram(ron_lbp, 59);title("Rondnoir LBP");
+
+%% STD
+figure(5);
+imgPath = "../../images/cuts/"+images{753};
+ron = imread(imgPath);
+imgPath = "../../images/cuts/"+images{852};
+rej = imread(imgPath);
+
+ron_gray = rgb2gray(ron);
+rej_gray = rgb2gray(rej);
+
+subplot(2,2,1);imshow(ron_gray);title("Rondnoir");
+subplot(2,2,2);imshow(rej_gray);title("Rejection");
+subplot(2,2,3);imhist(ron_gray);title("Rondnoir hist");
+subplot(2,2,4);imhist(rej_gray);title("Rejection hist");
+
+
+%% Superpixel cut
+A = rgb2hsv(roc);
+A = A(:,:,2);
+t = round(length(A) / 10);
+A_F = medfilt2(A, [t t], 'symmetric');
+[L,N] = superpixels(A_F,30);
+BW = boundarymask(L);
+
+
+outputImage = zeros(size(A),'like',A);
+idx = label2idx(L);
+numRows = size(A,1);
+numCols = size(A,2);
+for labelVal = 1:N
+    i = idx{labelVal};
+    outputImage(i) = mean(A_F(i));
+end
+
+figure(7);
+subplot(2,2,1);
+imshow(A);
+subplot(2,2,2);
+imshow(A_F);
+subplot(2,2,3);
+imshow(imoverlay(A_F,BW,'cyan'))
+subplot(2,2,4);
+imshow(outputImage)

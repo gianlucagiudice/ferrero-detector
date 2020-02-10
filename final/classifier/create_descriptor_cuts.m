@@ -26,6 +26,8 @@ parfor targetIndex = 1 : N
     targetPath = path + images{targetIndex};
     im = imread(targetPath);
 
+    %% Cop cut
+
     %% Compute feature
     % Local binary pattern histograms
     lbp{targetIndex}   = compute_lbp(im);
