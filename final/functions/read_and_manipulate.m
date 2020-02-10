@@ -14,6 +14,8 @@ function [original, scaled_image, out_image] = read_and_manipulate(path, scale_f
     
     %% Insert debug here
     if debug
+        % Casi particolari 41
+        
         figure(1);
         subplot(2,2,1);
         imshow(original);title("Original image");

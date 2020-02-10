@@ -17,7 +17,7 @@ debug = false;
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
 [originalImage, scaledImage, targetImage] = ...
-    read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2, false);
+    read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2, true);
 
 %% Find edges
 cannyEdge = image_to_edge(targetImage, false);
@@ -33,13 +33,13 @@ typeFeature = compute_type_feature(vertices);
 boxType = boxTypeClassifier.predict(typeFeature);
 
 %% Crop box from original image
-cropTarget = originalImage;
+cropTarget = scaledImage;
 sf = length(cropTarget) ./ length(scaledImage);
 % Compute cropped image and spatial transformation structure
-[cropped, tForm] = crop_box_perspective(cropTarget, sf, paddingSize, vertices, boxType, false);
+[cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, false);
 
 %% Crop enhancement
-[cropEnhanced, padding] = crop_enhancement(cropped, false);
+[cropEnhanced, cropPadding] = crop_enhancement(cropped, true);
 
 %% Classification
 if boxType == 1
@@ -49,8 +49,7 @@ else
     choccolates = cut_type_2(cropEnhanced, false);
     %% Find errors in box
     errors = find_errors_2(choccolates, cutClassifier, debug);
-    disp(errors);
 end
 
 %% Get errors position in original image
-%errorsPosition = inverse_transformation()
+errorsPosition = inverse_transformation(tForm, errors, cropPadding)

@@ -1,5 +1,5 @@
-function [boxCropped, tForm] = crop_box_perspective(image, sf, imgPadding, vertices, type, debug)
-    vertices = (vertices - imgPadding) * sf;
+function [boxCropped, tForm] = crop_box_perspective(image, imgPadding, vertices, type, debug)
+    vertices = vertices - imgPadding;
 
     %% Evaluate edges length
     edgesLength = edges_length(vertices);
