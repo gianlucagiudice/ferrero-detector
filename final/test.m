@@ -33,8 +33,6 @@ typeFeature = compute_type_feature(vertices);
 boxType = boxTypeClassifier.predict(typeFeature);
 
 %% Crop box from original image
-cropTarget = scaledImage;
-sf = length(cropTarget) ./ length(scaledImage);
 % Compute cropped image and spatial transformation structure
 [cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, false);
 
@@ -48,8 +46,11 @@ else
     %% Cut box
     choccolates = cut_type_2(cropEnhanced, false);
     %% Find errors in box
-    errors = find_errors_2(choccolates, cutClassifier, debug);
+    errors = find_errors_2(choccolates, cutClassifier, false);
 end
 
-%% Get errors position in original image
-errorsPosition = inverse_transformation(tForm, errors, cropPadding)
+%% Get errors position in scaled image
+errorsPosition = inverse_transformation(tForm, errors, cropPadding);
+
+%% Plot errors on original image
+plot_errors(originalImage, vertices, errorsPosition, scaleFactor, paddingSize);
