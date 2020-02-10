@@ -1,4 +1,4 @@
-function plot_errors(image, vertices, errors, scaleFactor, padding)
+function image = plot_errors(image, vertices, errors, scaleFactor, padding)
     %% Evaluate original points position
     vertices = (vertices - padding) / scaleFactor;
     errors = errors / scaleFactor;
@@ -26,8 +26,4 @@ function plot_errors(image, vertices, errors, scaleFactor, padding)
     boundary = [boundary, vertices(1,1), vertices(1,2)];
     
     image = insertShape(image, 'Line',boundary,'LineWidth',40,'Color',boundaryColor);
-
-    figure(9);
-    imshow(image);
-    
 end
