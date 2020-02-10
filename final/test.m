@@ -17,7 +17,7 @@ debug = false;
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
 [originalImage, scaledImage, targetImage] = ...
-    read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
+    read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2, true);
 
 %% Find edges
 cannyEdge = image_to_edge(targetImage, false);
@@ -26,7 +26,7 @@ cannyEdge = image_to_edge(targetImage, false);
 boxMask = box_detection(cannyEdge, paddingSize, false);
 
 %% Find box vertices
-vertices = box_vertices(boxMask, paddingSize, true);
+[vertices , rotNumber] = box_vertices(boxMask, paddingSize, true);
 
 %% Classify box type
 typeFeature = compute_type_feature(vertices);

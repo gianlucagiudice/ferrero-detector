@@ -7,7 +7,7 @@ function out_edge = image_to_edge(target_image, debug)
     [out_edge, t] = edge(target_image_smooth, 'Canny'); 
 
     if debug
-        figure(1);
+        figure(2);
         subplot(2,3,1);
         imshow(target_image), title("Input image");
         subplot(2,3,2);

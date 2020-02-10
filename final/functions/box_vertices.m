@@ -5,7 +5,7 @@ distances:list of pairwise distances between vertices
 vertices_s:sorted list of 4 vertices, the first pair is the one with the longet distance
 distances_s:list of sorted distances
 %}
-function outVertices = box_vertices(box_label, padding_size, debug)
+function [outVertices, nRotation] = box_vertices(box_label, padding_size, debug)
     [rows, cols] = size(box_label);
 
     box_label = medfilt2(box_label, [40 40]);
@@ -76,41 +76,30 @@ function outVertices = box_vertices(box_label, padding_size, debug)
 
     end
 
-    % Calculate convex hull for vertices sorting
+    %% Construct vertices from convex hull
     convex_hull = convhull(vertices);
-    box_descriptor.vertices = zeros(4, 2);
-    box_descriptor.distances = zeros(4, 1);
-    
     for i = 1 : length(convex_hull) - 1
-       box_descriptor.distances(i) = round(pdist2(vertices(convex_hull(i), :), vertices(convex_hull(i + 1), :)));
-       box_descriptor.vertices(i, :) = vertices(convex_hull(i), :);
+       outVertices(i, :) = vertices(convex_hull(i), :);
     end
-  
-    % Sorting vertices based on edge length
-    [~, index] = max(box_descriptor.distances);
+    distances = edges_length(outVertices);
+    
+    % Rearrange vertices
+    [~, index] = max(distances);
     index = index - 1;
-    box_descriptor.distances_s = circshift(box_descriptor.distances, index * -1);
-    box_descriptor.vertices_s = circshift(box_descriptor.vertices, index * -1);
- 
-    %% Vertices to return
-    outVertices = box_descriptor.vertices_s;
-
-
+    outVertices = circshift(outVertices, index * -1);
+    nRotation = mod(index + 1, 4);
+   
+    %% Debug
     if debug
-        %% Casi particolari = 17
-        
-        %% Show results
-        f = figure('visible', 'off');
-        
-        %% Box mas
+        % Casi particolari = 17
+        figure(3);
+        % Box mask
         subplot(2,2,1); 
         imshow(box_label), title("Box mask");
-        
-        %% Box edge
+        % Box edge
         subplot(2, 2, 2);
         imshow(edges), title("Edges image");
-        
-        %% Hough transform
+        % Hough transform
         subplot(2,2,3);
         imagesc(H), colorbar, title("Hough Transform");
         xlabel('\theta'), ylabel('\rho');
@@ -118,8 +107,7 @@ function outVertices = box_vertices(box_label, padding_size, debug)
         plotX = T(P(:,2)) + 90;
         plotY = R(P(:,1)) + round(length(H) / 2);
         plot(plotX, plotY,'s','color','white');
-        
-        %% Mask with lines
+        % Mask with lines
         subplot(2,2,4);
         imshow(box_label), title("Vertices");
         hold on

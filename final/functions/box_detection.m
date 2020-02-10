@@ -50,7 +50,7 @@ function boxOpened = box_detection(cannyEdge, paddingSize, debug)
     
     if debug
         %% Caso particolare: 6
-        figure(2);
+        figure(3);
         subplot(2,5,1);imshow(cannyEdge);title('Edges');
         subplot(2,5,2);imagesc(img_labels_out), axis image; title('2-Kmeans Labels');
         subplot(2,5,3);imshow(elements);title('All elements');
