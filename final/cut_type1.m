@@ -1,4 +1,4 @@
-function regions = cut_type2(image)
+function regions = cut_type1(image)
    [w, ~] = size(image);
    regions = cell(24, 1);
    circle_radius = w / 8 * 1.1;
