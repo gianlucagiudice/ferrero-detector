@@ -5,6 +5,7 @@ function regions = cut_type2(image, debug)
 
     regions = cell(4, 6);
     radius = min([cols / 2, rows / 2]) * 0.8;
+    
 
     for i = 1 : 4
         center_r = round((i -1) * rows + rows / 2);

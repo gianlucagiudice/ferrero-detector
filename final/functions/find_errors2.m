@@ -16,19 +16,25 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
     %% Predict
     for i = 1 : length(cuts(:,1))
         for j = 1 : length(cuts)
-            cut = uint8(cuts{i, j}.value * 255);
+            cut = cuts{i, j}.value;
+            cutConv = uint8(cut * 255);
             % Compute feature
-            lbp = compute_lbp(cut);
-            avg = compute_average_color(cut);
+            lbp = compute_lbp(cutConv);
+            avg = compute_average_color(rgb2ycbcr(cut));
             % Normalization
-            lbp = (lbp - min(lbp)) / (max(lbp) - min(lbp));
-            avg = (avg - min(avg)) / (max(avg) - min(avg));
+            
+%{
+ lbp = (lbp - min(lbp)) / (max(lbp) - min(lbp));
+            avg = (avg - min(avg)) / (max(avg) - min(avg)); 
+%}
+
             % Zip data
             data = double([avg, lbp]);
+            %data = avg;
             % Predict
             prediction(i, j) = classifier.predict(data);
             
-            figure(80);imshow(cut);
+            %figure(80);imshow(cut);
             %disp(prediction(i,j));
         end
     end
@@ -41,7 +47,7 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
     outPrediction = prediction;
     if diff1 == 0 || diff2 == 0
         % Box is correct
-        errors = zeros(4,6);
+        errors = boolean(zeros(4,6));
     else
         if diff1 < diff2
             errors = prediction ~= valid1;

@@ -11,7 +11,7 @@ labels = cuts.labels;
 descriptor = cuts.descriptors;
 
 %% Portion of taining-set test-set
-testPortion = 0.7;
+testPortion = 0.5;
 cv = cvpartition(labels, 'holdout', testPortion);
 
 classifier = @fitcknn;
@@ -19,7 +19,7 @@ classifier = @fitcknn;
 %classifier = @fitcnb;
 
 feature1 = descriptor.lbp;
-[tr1, ts1, cutClassifier] = test_classifier(feature1, labels, cv, classifier);
+[tr1, ts1] = test_classifier(feature1, labels, cv, classifier);
 
 feature2 = descriptor.cedd;
 [tr2, ts2] = test_classifier(feature2, labels, cv, classifier);
@@ -31,10 +31,10 @@ feature4 = [descriptor.cedd, descriptor.lbp, descriptor.qhist];
 [tr4, ts4] = test_classifier(feature4, labels, cv, classifier);
 
 feature5 = descriptor.avg;
-[tr5, ts5] = test_classifier(feature5, labels, cv, classifier);
+[tr5, ts5, cutClassifier] = test_classifier(feature5, labels, cv, classifier);
 
 feature6 = [descriptor.avg, descriptor.lbp];
-[tr6, ts6] = test_classifier(feature6, labels, cv, classifier);
+[tr6, ts6, cutClassifier] = test_classifier(feature6, labels, cv, classifier);
 
 feature7 = [descriptor.avg, descriptor.lbp, descriptor.cedd];
 [tr7, ts7] = test_classifier(feature7, labels, cv, classifier);
@@ -52,7 +52,7 @@ feature11 = [descriptor.qhist, descriptor.lbp, descriptor.qhist_hsv_s];
 [tr11, ts11] = test_classifier(feature11, labels, cv, classifier);
 
 feature12 = [descriptor.avg, descriptor.lbp];
-[tr12, ts12, cutClassifier] = test_classifier(feature12, labels, cv, classifier);
+[tr12, ts12] = test_classifier(feature12, labels, cv, classifier);
 
 %% Save classifier
 if saveClassifier

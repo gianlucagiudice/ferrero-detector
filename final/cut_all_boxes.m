@@ -26,14 +26,19 @@ parfor targetIndex = 1 : N
     end
 
     %% Cut box
-    choccolates = cut_type1(img, debug);
+    choccolates = cut_type2(img, debug);
 
     %% Save cuts
-    for i = 1 : 24
-        name = split(string(images{targetIndex}), '.');
-        fileName = name(1) + "-cut$" + i; 
-        path = "../images/cuts/" + fileName + ".png";
-        imwrite(choccolates{i}, path);
+    k = 1;
+    for i = 1 : 4
+        for j = 1 : 6
+            name = split(string(images{targetIndex}), '.');
+            fileName = name(1) + "-" + k; 
+            path = "../images/cuts/" + fileName + ".png";
+            imwrite(choccolates{i, j}.value, path);
+            k = k + 1;
+        end
+
     end
     
 

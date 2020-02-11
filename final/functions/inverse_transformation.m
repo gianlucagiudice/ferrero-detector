@@ -7,7 +7,8 @@ function outV = inverse_transformation(T, errors, padding)
         t = round(tforminv(T, y, x));
         outV = [outV; t(1, :)];
     end
-
-    outV = round(outV - padding'); 
-    disp(length(outV));
+    
+    if isempty(outV) == false
+        outV = round(outV - padding'); 
+    end
 end

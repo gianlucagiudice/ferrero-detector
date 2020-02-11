@@ -52,6 +52,9 @@ parfor targetIndex = 1 : N
     %% Save labels
     zipLabels(targetIndex) = labels(targetIndex);
     disp(string(targetIndex) + " - " + string(N));
+
+    % Debug
+    %figure(20);imshow(im);disp(labels(targetIndex));
     
 end
 
@@ -74,13 +77,20 @@ fn = fieldnames(descriptors);
 for k = 1:numel(fn)
     % Target feature
     feature = descriptors.(fn{k});
+    % Reshape
+    matrix = [];
+    for i= 1 : length(feature)
+        matrix(i,:) = feature{i};
+    end
+    descriptors.(fn{k}) = matrix;
     % Normalization
-    minV = min(feature); maxV = max(feature);
-    feature = (feature - minV) / (maxV - minV);
+    %minV = min(feature); maxV = max(feature);
+    %feature = (feature - minV) / (maxV - minV);
     % Save normalization
-    descriptors.(fn{k}) = feature;
 end
 
+%{
+ 
 %% Reshape descriptors
 disp("Reshape feature . . .");
 for k = 1:numel(fn)
@@ -94,6 +104,8 @@ for k = 1:numel(fn)
     % Override 
     descriptors.(field) = double(matrix)'; 
 end
+ 
+%}
 
 toc
 
