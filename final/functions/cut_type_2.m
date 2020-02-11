@@ -15,12 +15,22 @@ function cuts = cut_type2(boxCropped, debug)
             endIndexJ   = j * tWidth;
             target = boxCropped(startIndexI:endIndexI, startIndexJ:endIndexJ, :);
 
+            figure(80);
+            imshow(target);
+            
             % Save cut value
-            cuts{k}.value = target;
+            cuts{i, j}.value = target;
+            
+            figure(80);
+            imshow(cuts{i, j}.value);
+            
+            
             % Save center
             x = mean([startIndexJ, endIndexJ]);
             y = mean([startIndexI, endIndexI]);
-            cuts{k}.center = [y; x];
+            cuts{i, j}.center = [y; x];
+            
+            disp(cuts{i, j}.center);
             
             k = k +1;
         end

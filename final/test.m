@@ -9,7 +9,7 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 41;
+targetIndex = 54;
 scaleFactor = 0.5;
 paddingSize = 300;
 debug = false;
@@ -34,7 +34,7 @@ boxType = boxTypeClassifier.predict(typeFeature);
 
 %% Crop box from original image
 % Compute cropped image and spatial transformation structure
-[cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, false);
+[cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, debug);
 
 %% Crop enhancement
 [cropEnhanced, cropPadding] = crop_enhancement(cropped, debug);
