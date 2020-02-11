@@ -9,10 +9,10 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 54;
+targetIndex = 6;
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = false;
+debug = true;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
