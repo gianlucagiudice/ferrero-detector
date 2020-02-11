@@ -13,7 +13,7 @@ targetIndex = 52;
 
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = true;
+debug = false;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});

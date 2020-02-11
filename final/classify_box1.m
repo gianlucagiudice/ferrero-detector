@@ -13,7 +13,7 @@ imgPath = '../images/cropEnhanced/IMG_26.png';
 img = imread(imgPath);
 
 
-tagSize = round(0.0632 * scaleFactor * length(img));
+tagSize = round(0.0632 *0.5 * scaleFactor * length(img));
 
 
 img = imresize(img, 0.5);
