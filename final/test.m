@@ -9,7 +9,7 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 8;
+targetIndex = 55;
 scaleFactor = 0.5;
 paddingSize = 300;
 debug = false;
