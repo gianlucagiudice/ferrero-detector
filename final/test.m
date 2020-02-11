@@ -12,7 +12,7 @@ images = readlist('../data/images.list');
 targetIndex = 6;
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = true;
+debug = false;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
@@ -44,10 +44,10 @@ if boxType == 1
     % Type 1
 else
     % Cut box
-    choccolates = cut_type_2(cropEnhanced, debug);
+    choccolates = cut_type2(cropEnhanced, debug);
     save('choccolates', 'choccolates');
     % Find errors in box
-    errors = find_errors_2(choccolates, cutClassifier, debug);
+    errors = find_errors2(choccolates, cutClassifier, debug);
 end
 
 %% Get errors position in scaled image
