@@ -11,7 +11,7 @@ function image = plot_errors(image, vertices, errors, scaleFactor, padding)
 
         %% Draw errors
         circle = [];
-        for i = 1:length(errors)
+        for i = 1 : size(errors, 1)
             circle = [circle; errors(i, 1), errors(i, 2), 100];
         end
         image = insertShape(image, 'Circle', circle,'LineWidth',15,'Color','blue');

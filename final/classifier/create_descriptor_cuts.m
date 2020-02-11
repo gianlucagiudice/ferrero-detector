@@ -90,7 +90,6 @@ for k = 1:numel(fn)
 end
 
 %{
- 
 %% Reshape descriptors
 disp("Reshape feature . . .");
 for k = 1:numel(fn)
@@ -104,7 +103,6 @@ for k = 1:numel(fn)
     % Override 
     descriptors.(field) = double(matrix)'; 
 end
- 
 %}
 
 toc
