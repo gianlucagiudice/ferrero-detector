@@ -21,15 +21,9 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
             % Compute feature
             lbp = compute_lbp(cutConv);
             avg = compute_average_color(rgb2ycbcr(cut));
-            % Normalization
-            
-%{
- lbp = (lbp - min(lbp)) / (max(lbp) - min(lbp));
-            avg = (avg - min(avg)) / (max(avg) - min(avg)); 
-%}
-
+            min_region_avg = compute_min_region_avg(cut);
             % Zip data
-            data = double([avg, lbp]);
+            data = double([avg, lbp, min_region_avg]);
             %data = avg;
             % Predict
             prediction(i, j) = classifier.predict(data);

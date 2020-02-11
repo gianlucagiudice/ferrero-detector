@@ -36,6 +36,12 @@ feature5 = descriptor.avg;
 feature6 = [descriptor.avg, descriptor.lbp];
 [tr6, ts6, cutClassifier] = test_classifier(feature6, labels, cv, classifier);
 
+feature13 = descriptor.min_avg_region;
+[tr13, ts13, cutClassifier] = test_classifier(feature13, labels, cv, classifier);
+
+feature14 = [descriptor.avg, descriptor.lbp, descriptor.min_avg_region];
+[tr14, ts14, cutClassifier] = test_classifier(feature14, labels, cv, classifier);
+
 feature7 = [descriptor.avg, descriptor.lbp, descriptor.cedd];
 [tr7, ts7] = test_classifier(feature7, labels, cv, classifier);
 
@@ -104,14 +110,6 @@ disp(ts9);
 
 disp("- - - - - - - -");
 
-disp("AVG, LBP");
-disp("Training set");
-disp(tr6);
-disp("Test set");
-disp(ts6);
-
-disp("- - - - - - - -");
-
 disp("AVG, LBP, CEDD");
 disp("Training set");
 disp(tr7);
@@ -157,6 +155,31 @@ disp("Training set");
 disp(tr12);
 disp("Test set");
 disp(ts12);
+
+disp("- - - - - - - -");
+
+disp("AVG, LBP");
+disp("Training set");
+disp(tr6);
+disp("Test set");
+disp(ts6);
+
+disp("- - - - - - - -");
+
+disp("MIN Region");
+disp("Training set");
+disp(tr13);
+disp("Test set");
+disp(ts13);
+
+disp("- - - - - - - -");
+
+disp("AVG, LBP, MIN Region");
+disp("Training set");
+disp(tr14);
+disp("Test set");
+disp(ts14);
+
 
 %% Rocher type
 rocher_1 = imread("../../images/cuts/IMG_50-15.png");

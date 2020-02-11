@@ -87,6 +87,8 @@ subplot(plotR,plotC,23);imshow(ron_cs(:,:,3));title("Rondnoir Cr");
 subplot(plotR,plotC,24);imhist(ron_cs(:,:,3));title("Rondnoir Cr");
 
 %% Prewitt edge
+edgeMethod = 'canny';
+
 imgPath = "../../images/cuts/"+images{753};
 ron = imread(imgPath);
 
@@ -172,7 +174,7 @@ subplot(2,2,3);imhist(ron_gray);title("Rondnoir hist");
 subplot(2,2,4);imhist(rej_gray);title("Rejection hist");
 
 
-%% Superpixel cut
+%% Region based segmentation
 A = rgb2hsv(roc);
 A = A(:,:,2);
 t = round(length(A) / 10);
@@ -183,19 +185,21 @@ BW = boundarymask(L);
 
 outputImage = zeros(size(A),'like',A);
 idx = label2idx(L);
-numRows = size(A,1);
-numCols = size(A,2);
+segmentMeans = [];
 for labelVal = 1:N
     i = idx{labelVal};
-    outputImage(i) = mean(A_F(i));
+    segmentAvg = mean(A_F(i));
+    segmentMeans(labelVal) = segmentAvg;
+    outputImage(i) = segmentAvg;
 end
+
 
 figure(7);
 subplot(2,2,1);
-imshow(A);
+imshow(A);title("Rocher HSV_S");
 subplot(2,2,2);
-imshow(A_F);
+imshow(A_F);title("Median filter [30 30]");
 subplot(2,2,3);
-imshow(imoverlay(A_F,BW,'cyan'))
+imshow(imoverlay(A_F,BW,'cyan'));title("Region based segmentation");
 subplot(2,2,4);
-imshow(outputImage)
+imshow(imoverlay(outputImage, BW, 'cyan'));title("Average based on region");

@@ -9,10 +9,11 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 52;
+targetIndex = 52; 
+
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = false;
+debug = true;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
@@ -47,7 +48,7 @@ else
     choccolates = cut_type2(cropEnhanced, debug);
     save('choccolates', 'choccolates');
     % Find errors in box
-    errors = find_errors2(choccolates, cutClassifier, true);
+    errors = find_errors2(choccolates, cutClassifier, debug);
 end
 
 %% Get errors position in scaled image
