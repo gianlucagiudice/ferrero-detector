@@ -1,7 +1,7 @@
 function regions = cut_type1(image)
    [w, ~] = size(image);
    regions = cell(24, 1);
-   circle_radius = w / 8 * 1.1;
+   circle_radius = w / 8 * 0.8;
 
    c2delta = 30;
    c6delta = 30;
@@ -22,7 +22,7 @@ function regions = cut_type1(image)
    centers = [centers; c3+c3delta c3+c3delta; c5-c5delta c3+c3delta; c3+c3delta c5-c5delta; c5-c5delta c5-c5delta];
 
    for i = 1:length(centers)
-      regions{i}.pixels = crop_centroid(image, centers(i, :), circle_radius);
+      regions{i}.value = crop_centroid(image, centers(i, :), circle_radius);
       regions{i}.radius = circle_radius;
       regions{i}.center = centers(i, :);
    end
