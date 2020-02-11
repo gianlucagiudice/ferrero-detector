@@ -21,7 +21,7 @@ function [boxEnhanced, padding] = crop_enhancement(img, debug)
     padding = [xPad; yPad];
     
     if debug
-        figure(6);
+        figure(5);
         subplot(1,2,1);
         imshow(img); title("Original cropped image");
         subplot(1,2,2);

@@ -19,7 +19,7 @@ function regions = cut_type2(image, debug)
     end
 
     if debug
-        figure(97);
+        figure(6);
         k = 1;
         for i = 1 : 4
             for j = 1 : 6

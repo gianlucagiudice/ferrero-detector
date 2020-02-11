@@ -30,11 +30,9 @@ boxMask = box_detection(cannyEdge, paddingSize, debug);
 vertices = box_vertices(boxMask, paddingSize, debug);
 
 %% Classify box type
-typeFeature = compute_type_feature(vertices);
-boxType = boxTypeClassifier.predict(typeFeature);
+boxType = classify_box_type(vertices, boxTypeClassifier, debug);
 
 %% Crop box from original image
-% Compute cropped image and spatial transformation structure
 [cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, debug);
 
 %% Crop enhancement
@@ -52,11 +50,11 @@ else
 end
 
 %% Get errors position in scaled image
-errorsPosition = inverse_transformation(tForm, errors, cropPadding);
+errorsPosition = inverse_transformation(tForm, errors, cropPadding, debug);
 
 %% Plot errors on original image
 outImage = plot_errors(originalImage, vertices, errorsPosition, scaleFactor, paddingSize);
 
-%% Show image
+%% Show output image
 figure(99);
 imshow(outImage);
