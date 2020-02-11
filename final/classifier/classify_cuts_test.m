@@ -11,7 +11,7 @@ labels = cuts.labels;
 descriptor = cuts.descriptors;
 
 %% Portion of taining-set test-set
-testPortion = 0.75;
+testPortion = 0.30;
 cv = cvpartition(labels, 'holdout', testPortion);
 
 classifier = @fitcknn;
