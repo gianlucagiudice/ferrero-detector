@@ -41,7 +41,7 @@ cmap = [66,3,201;
         215,27,59;
         58,107,53] / 255;
 
-for targetLabel = 1 : length(unique(labels))
+for targetLabel = 1 : 3
     mask = labels == targetLabel;
     scatter3(xData(mask), yData(mask), zData(mask), 30, cmap(targetLabel, :), 'filled');
     hold on

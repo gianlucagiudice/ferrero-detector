@@ -137,13 +137,13 @@ raf_lbp = compute_lbp(raf);
 ron_lbp = compute_lbp(ron);
 
 figure(4);
-subplot(plotR,plotC,1);imshow(roc);title("Rocher RGB");
-subplot(plotR,plotC,2);imshow(raf);title("Raffaello RGB");
-subplot(plotR,plotC,3);imshow(ron);title("Rondnoir RGB");
+subplot(plotR,plotC,1);imshow(roc);title("Rocher_1 RGB");
+subplot(plotR,plotC,2);imshow(raf);title("Raffaello_1 RGB");
+subplot(plotR,plotC,3);imshow(ron);title("Rondnoir_1 RGB");
 
-subplot(plotR,plotC,4);histogram(roc_lbp, 59);title("Rocher LBP");
-subplot(plotR,plotC,5);histogram(raf_lbp, 59);title("Raffaello LBP");
-subplot(plotR,plotC,6);histogram(ron_lbp, 59);title("Rondnoir LBP");
+subplot(plotR,plotC,4);histogram(roc_lbp, 59);title("Rocher_2 LBP");
+subplot(plotR,plotC,5);histogram(raf_lbp, 59);title("Raffaello_2 LBP");
+subplot(plotR,plotC,6);histogram(ron_lbp, 59);title("Rondnoir_2 LBP");
 
 imgPath = "../../images/cuts/"+rocher{60};
 roc = imread(imgPath);
@@ -152,9 +152,9 @@ ron = imread(imgPath);
 imgPath = "../../images/cuts/"+raffaello{17};
 raf = imread(imgPath);
 
-subplot(plotR,plotC,7);histogram(roc_lbp, 59);title("Rocher LBP");
-subplot(plotR,plotC,8);histogram(raf_lbp, 59);title("Raffaello LBP");
-subplot(plotR,plotC,9);histogram(ron_lbp, 59);title("Rondnoir LBP");
+subplot(plotR,plotC,7);histogram(roc_lbp, 59);title("Rocher_3 LBP");
+subplot(plotR,plotC,8);histogram(raf_lbp, 59);title("Raffaello_3 LBP");
+subplot(plotR,plotC,9);histogram(ron_lbp, 59);title("Rondnoir_3 LBP");
 
 %% STD
 figure(5);
