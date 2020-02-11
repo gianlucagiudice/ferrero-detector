@@ -44,7 +44,7 @@ if boxType == 1
     % Type 1
 else
     % Cut box
-    choccolates = cut_type2(cropEnhanced, debug);
+    choccolates = cut_type2(cropEnhanced, false);
     save('choccolates', 'choccolates');
     % Find errors in box
     errors = find_errors2(choccolates, cutClassifier, debug);
