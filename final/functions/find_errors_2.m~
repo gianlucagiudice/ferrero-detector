@@ -17,12 +17,13 @@ function errorsPosition = find_errors_2(cuts, classifier, debug)
     for i = 1 : length(cuts(:,1))
         for j = 1 : length(cuts)
             cut = uint8(cuts{i, j}.value * 255);
-            figure(80);imshow(cut);
-            data = compute_lbp(cut);
+            lbp = compute_lbp(cut);
+            avg = compute
             prediction(i, j) = classifier.predict(data);
+            
+            %figure(80);imshow(cut);disp(prediction(i,j));
         end
     end
-    prediction = prediction';
     
     %% Errors
     

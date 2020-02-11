@@ -1,3 +1,5 @@
+
+
 function errorsPosition = find_errors_2(cuts, classifier, debug)
     %% Valid masks
     valid1 = [2 2 2 2 2 2;
@@ -17,11 +19,18 @@ function errorsPosition = find_errors_2(cuts, classifier, debug)
     for i = 1 : length(cuts(:,1))
         for j = 1 : length(cuts)
             cut = uint8(cuts{i, j}.value * 255);
-            data = compute_lbp(cut);
+            % Compute feature
+            lbp = compute_lbp(cut);
+            avg = compute_average_color(cut);
+            % Normalization
+            lbp = (lbp - min(lbp)) / (max(lbp) - min(lbp));
+            avg = (avg - min(avg)) / (max(avg) - min(avg));
+            % Zip data
+            data = double([avg, lbp]);
+            % Predict
             prediction(i, j) = classifier.predict(data);
             
-            figure(80);imshow(cut);
-            disp(prediction(i,j));
+            figure(80);imshow(cut);disp(prediction(i,j));
         end
     end
     
