@@ -1,5 +1,3 @@
-
-
 function errorsPosition = find_errors2(cuts, classifier, debug)
     %% Valid masks
     valid1 = [2 2 2 2 2 2;
@@ -30,7 +28,8 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
             % Predict
             prediction(i, j) = classifier.predict(data);
             
-            figure(80);imshow(cut);disp(prediction(i,j));
+            figure(80);imshow(cut);
+            %disp(prediction(i,j));
         end
     end
     
@@ -56,7 +55,7 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
     e = cuts(errors);
     errorsPosition = [];
     for i = 1 : numel(e)
-        errorsPosition = [errorsPosition, e{i}.center];
+        errorsPosition = [errorsPosition; e{i}.center];
     end
     
     if debug

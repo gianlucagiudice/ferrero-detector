@@ -4,23 +4,21 @@ function regions = cut_type2(image, debug)
     rows = floor(r / 4);
 
     regions = cell(4, 6);
-    radius = min(cols, rows) * 0.8;
+    radius = min([cols / 2, rows / 2]) * 0.8;
 
     for i = 1 : 4
         center_r = round((i -1) * rows + rows / 2);
 
         for j = 1 : 6
             center_c = round((j - 1) * cols + cols / 2);
-            disp([center_c, center_r, radius]);
             regions{i, j}.value = crop_centroid(image, [center_r, center_c], radius);
             regions{i, j}.center = [center_r, center_c];
             regions{i, j}.radius = radius;
         end
     end
 
-    disp(regions{1});
     if debug
-        figure(7);
+        figure(97);
         k = 1;
         for i = 1 : 4
             for j = 1 : 6
