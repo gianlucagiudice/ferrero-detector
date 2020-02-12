@@ -179,7 +179,7 @@ imshow(box_cropped);
 title("Box cropped"); 
 subplot(5,4,2);
 imagesc(predicted), axis image;
-title("Labels HSV_S");
+title("Labels YCbCr_{Cr}");
 subplot(5,4,3);
 imagesc(predicted_filtered), axis image;
 title("Labels filtered");

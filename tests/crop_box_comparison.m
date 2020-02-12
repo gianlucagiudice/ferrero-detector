@@ -7,7 +7,7 @@ padding_crop = 0.08;
 
 %% Processing
 start_limit = 1;
-end_limit = 64;
+end_limit = 20;
 
 tic
 for i = start_limit:end_limit

@@ -91,7 +91,7 @@ function outVertices = box_vertices(box_label, padding_size, debug)
     %% Debug
     if debug
         % Casi particolari = 17
-        figure(3);
+        figure(4);
         % Box mask
         subplot(2,2,1); 
         imshow(box_label), title("Box mask");

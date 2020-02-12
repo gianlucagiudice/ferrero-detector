@@ -31,7 +31,7 @@ function [boxCropped, tForm] = crop_box_perspective(image, imgPadding, vertices,
 
     %% Debug
     if debug
-        figure(4);
+        figure(5);
         subplot(2,2,1)
         imshow(image);title("Original Image");
         subplot(2,2,2)

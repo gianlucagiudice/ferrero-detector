@@ -17,6 +17,19 @@ function out_edge = image_to_edge(target_image, debug)
         subplot(2,3,5);
         mesh(fspecial('gaussian', 5, 3));title("Gaussian filter (5x5, \sigma = 3)");
         subplot(2,3,6);
-        imshow(out_edge); title("Canny edge (threshold = " + t + ")");
+        imshow(out_edge); title("Canny edge (threshold = " + t(1) + ")");
     end
+    
+    %{
+    figure(20);
+    subplot(2,2,1);
+    imshow(out_edge); title("Canny edge");
+    subplot(2,2,2);
+    imshow(edge(target_image_smooth, 'Prewitt')); title("Prewitt");
+    subplot(2,2,3);
+    imshow(edge(target_image_smooth, 'Sobel')); title("Sobel");
+    subplot(2,2,4);
+    imshow(edge(target_image_smooth, 'Log')); title("Log");
+    %}
+
 end

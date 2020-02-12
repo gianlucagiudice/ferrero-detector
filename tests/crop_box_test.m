@@ -6,7 +6,7 @@ scale_factor = 0.5;
 crop_padding = 0.10;
 
 %% Process target image
-img_path = '../images/original/'+string(images_list{50});
+img_path = '../images/original/'+string(images_list{20});
 [~, scaled_image, target_image] = read_and_manipulate(img_path, scale_factor, @rgb2ycbcr, 3);
 
 canny_edge = image_to_edge(target_image);

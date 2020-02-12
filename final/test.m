@@ -9,11 +9,11 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 52; 
+targetIndex = 17; 
 
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = false;
+debug = true;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
@@ -24,7 +24,7 @@ imgPath = '../images/original/'+string(images{targetIndex});
 cannyEdge = image_to_edge(targetImage, debug);
 
 %% Detect Box
-boxMask = box_detection(cannyEdge, paddingSize, debug);
+boxMask = box_detection(cannyEdge, paddingSize, true);
 
 %% Find box vertices
 vertices = box_vertices(boxMask, paddingSize, debug);

@@ -67,7 +67,7 @@ function errorsPosition = find_errors_2(cuts, classifier, debug)
                 179 33 52] / 255;
         l = [{'Rocher'}, {'Raffaello'}, {'Rondnoir'}, {'Wrong'}];
         
-        figure(7);
+        figure(8);
         % Valid mask 1
         h1 = subplot(2,2,1);
         imagesc(valid1);title("Valid mask_1");
