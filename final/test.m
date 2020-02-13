@@ -36,7 +36,7 @@ boxType = classify_box_type(vertices, boxTypeClassifier, debug);
 [cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, debug);
 
 %% Crop enhancement
-[cropEnhanced, cropPadding] = crop_enhancement(cropped, debug);
+[cropEnhanced, cropPadding] = crop_enhancement(cropped, true);
 
 %% Find errors
 if boxType == 1
