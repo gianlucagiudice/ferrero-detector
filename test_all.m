@@ -24,7 +24,7 @@ parfor targetIndex = 1 : numel(images)
     imwrite(outImage, path + ".png");
 
     %% Processing status
-    disp("Processed "+targetIndex + "-" + N);
+    disp("Processed "+targetIndex + "-" + numel(images));
 
 end
 
