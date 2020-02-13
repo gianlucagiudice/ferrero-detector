@@ -16,7 +16,7 @@ function [train_perf, test_perf, c] = test_classifier(descriptor, labels, cv, cl
     test.labels  = labels(cv.test);
     
     %% Train classifier
-    c = classifier(train.values, train.labels);
+    c = classifier(train.values, train.labels,'NumNeighbors',1);
 	
 	%% Predict using classifier
 	train.predicted = predict(c, train.values);

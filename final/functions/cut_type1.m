@@ -60,7 +60,7 @@ function regions = cut_type1(image, debug)
          center = regions{i}.center;
          x = center(1);
          y = center(2);
-         plot(x, y, 'r+', 'LineWidth', 3, 'MarkerSize', 15);
+         plot(x, y, 'r+', 'LineWidth', 3, 'MarkerSize', 30);
       end
       hold off
 

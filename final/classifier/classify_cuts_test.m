@@ -11,7 +11,7 @@ labels = cuts.labels;
 descriptor = cuts.descriptors;
 
 %% Portion of taining-set test-set
-testPortion = 0.30;
+testPortion = 0.25;
 cv = cvpartition(labels, 'holdout', testPortion);
 
 classifier = @fitcknn;
@@ -193,3 +193,14 @@ subplot(2,2,1);imshow(rocher_2);title("Rocher tag")
 subplot(2,2,2);imshow(rocher_1);title("Rocher no tag")
 subplot(2,2,3);imhist(rocher_2_hsv(:,:,2));title("HSV_S")
 subplot(2,2,4);imhist(rocher_1_hsv(:,:,2));title("HSV_S")
+
+
+xlabels = {'lbp','qhist','avg','qhist+lbp','avg+lbp','avg+lbp+std','avg+lbp+min\_region'};
+
+tr = [tr1.accuracy, tr3.accuracy, tr5.accuracy, tr8.accuracy, tr6.accuracy, tr12.accuracy];
+ts = [ts1.accuracy, ts3.accuracy, ts5.accuracy, ts8.accuracy, ts6.accuracy, ts12.accuracy];
+
+figure(10), bar([tr' ts']);
+legend({'training','test'},'location','eastoutside');
+set(gca,'XTick',1:numel(xlabels),'XTickLabel',xlabels);
+ylim([0.93 1])

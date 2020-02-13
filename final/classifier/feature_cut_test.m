@@ -175,6 +175,7 @@ subplot(2,2,4);imhist(rej_gray);title("Rejection hist");
 
 
 %% Region based segmentation
+roc = imread("../../images/cuts/IMG_55-20.png");
 A = rgb2hsv(roc);
 A = A(:,:,2);
 t = round(length(A) / 10);

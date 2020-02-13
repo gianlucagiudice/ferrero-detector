@@ -9,7 +9,7 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 8; 
+targetIndex = 43; 
 
 scaleFactor = 0.5;
 paddingSize = 300;
@@ -36,7 +36,7 @@ boxType = classify_box_type(vertices, boxTypeClassifier, debug);
 [cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, debug);
 
 %% Crop enhancement
-[cropEnhanced, cropPadding] = crop_enhancement(cropped, true);
+[cropEnhanced, cropPadding] = crop_enhancement(cropped, debug);
 
 %% Find errors
 if boxType == 1
