@@ -175,7 +175,6 @@ subplot(2,2,4);imhist(rej_gray);title("Rejection hist");
 
 
 %% Region based segmentation
-roc = imread("../../images/cuts/IMG_55-20.png");
 A = rgb2hsv(roc);
 A = A(:,:,2);
 t = round(length(A) / 10);
@@ -197,7 +196,7 @@ end
 
 figure(7);
 subplot(2,2,1);
-imshow(A);title("Rocher HSV_S");
+imshow(A);title("Rondnoir HSV_S");
 subplot(2,2,2);
 imshow(A_F);title("Median filter [30 30]");
 subplot(2,2,3);
