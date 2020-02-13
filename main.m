@@ -1,39 +1,62 @@
+%% Load functions
 addpath(genpath('functions/'));
 
+%% Load classifier
+boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
+cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
+
 %% Get list of images
-images_list = readlist('data/images.list');
+images = readlist('../data/images.list');
+
+%% Parameters
+targetIndex = 43; 
+
 scaleFactor = 0.5;
-imgPadding = 300;
+paddingSize = 300;
+debug = false;
 
-%% Processing
-targetIndex = 46;
+%% Read image
+imgPath = '../images/original/'+string(images{targetIndex});
+[originalImage, scaledImage, targetImage] = ...
+    read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2, debug);
 
-tic
-    
-imgPath = 'images/original/'+string(images{targetIndex});
-[~, scaledImage, targetImage] = read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
- 
 %% Find edges
-cannyEdge = image_to_edge(targetImage);
- 
-%% Box detection
-boxMask = box_detection(cannyEdge, imgPadding);
+cannyEdge = image_to_edge(targetImage, debug);
 
-%% Crop Box
-vertices = [937 29; 1450 328; 946 1031; 394 634];
-type = 2; %% Recatangular
+%% Detect Box
+boxMask = box_detection(cannyEdge, paddingSize, debug);
 
-boxCropped = crop_box_perspective(scaledImage, vertices, type);
+%% Find box vertices
+vertices = box_vertices(boxMask, paddingSize, debug);
 
-%{
-T = [1 0 0;0 1 0;100 0 1];
-tform_t = affine2d(T) 
-%}
+%% Classify box type
+boxType = classify_box_type(vertices, boxTypeClassifier, debug);
 
+%% Crop box from original image
+[cropped, tForm] = crop_box_perspective(scaledImage, paddingSize, vertices, boxType, debug);
 
-%% Show results
-figure(1);
-subplot(1,1,1);
-imshow(boxCropped);
+%% Crop enhancement
+[cropEnhanced, cropPadding] = crop_enhancement(cropped, debug);
 
-toc
+%% Find errors
+if boxType == 1
+    % Cut square box
+    choccolates = cut_type1(cropEnhanced, debug);
+    % Find errors
+    errors = find_errors1(choccolates, cutClassifier, debug);
+else
+    % Cut box
+    choccolates = cut_type2(cropEnhanced, debug);
+    % Find errors in box
+    errors = find_errors2(choccolates, cutClassifier, debug);
+end
+
+%% Get errors position in scaled image
+errorsPosition = inverse_transformation(tForm, errors, cropPadding);
+
+%% Plot errors on original image
+outImage = plot_errors(originalImage, vertices, errorsPosition, scaleFactor, paddingSize);
+
+%% Show output image
+figure(99);
+imshow(outImage);
