@@ -2,7 +2,7 @@
 addpath(genpath('functions/'));
 
 %% Parameters
-targetIndex = 6;
+targetIndex = 56;
 scaleFactor = 0.5;
 paddingSize = 150;
 debug = false;
@@ -72,11 +72,11 @@ disp(t2);
 
 figure(1);
 subplot(2,2,1);
-imshow(img_hsv_s);
+imshow(img_hsv_s);title("HSV_S");
 subplot(2,2,2);
-imshow(img_hsv_s_filt);
+imshow(img_hsv_s_filt);title("Median filter");
 subplot(2,2,3);
-imshow(tags);
+imshow(tags);title("Binarization low t");
 subplot(2,2,4);
 imshow(tagsOpened);
 

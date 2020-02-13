@@ -4,7 +4,7 @@ function outV = inverse_transformation(T, errors, padding)
     for i = 1 : size(errors, 1)
         x = errors(i, 1) + padding;
         y = errors(i, 2) + padding;
-        t = round(tforminv(T, y, x));
+        t = round(tforminv(T, x,y));
         outV = [outV; t(1, :)];
     end
     

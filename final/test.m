@@ -9,11 +9,11 @@ cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
 images = readlist('../data/images.list');
 
 %% Parameters
-targetIndex = 17; 
+targetIndex = 8; 
 
 scaleFactor = 0.5;
 paddingSize = 300;
-debug = true;
+debug = false;
 
 %% Read image
 imgPath = '../images/original/'+string(images{targetIndex});
@@ -24,7 +24,7 @@ imgPath = '../images/original/'+string(images{targetIndex});
 cannyEdge = image_to_edge(targetImage, debug);
 
 %% Detect Box
-boxMask = box_detection(cannyEdge, paddingSize, true);
+boxMask = box_detection(cannyEdge, paddingSize, debug);
 
 %% Find box vertices
 vertices = box_vertices(boxMask, paddingSize, debug);
@@ -40,17 +40,19 @@ boxType = classify_box_type(vertices, boxTypeClassifier, debug);
 
 %% Find errors
 if boxType == 1
-    % Type 1
+    % Cut square box
+    choccolates = cut_type1(cropEnhanced, debug);
+    % Find errors
+    errors = find_errors1(choccolates, cutClassifier, debug);
 else
     % Cut box
     choccolates = cut_type2(cropEnhanced, debug);
-    save('choccolates', 'choccolates');
     % Find errors in box
     errors = find_errors2(choccolates, cutClassifier, debug);
 end
 
 %% Get errors position in scaled image
-errorsPosition = inverse_transformation(tForm, errors, cropPadding, debug);
+errorsPosition = inverse_transformation(tForm, errors, cropPadding);
 
 %% Plot errors on original image
 outImage = plot_errors(originalImage, vertices, errorsPosition, scaleFactor, paddingSize);

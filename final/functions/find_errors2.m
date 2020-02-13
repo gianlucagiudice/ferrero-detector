@@ -24,12 +24,8 @@ function errorsPosition = find_errors2(cuts, classifier, debug)
             min_region_avg = compute_min_region_avg(cut);
             % Zip data
             data = double([avg, lbp, min_region_avg]);
-            %data = avg;
             % Predict
             prediction(i, j) = classifier.predict(data);
-            
-            %figure(80);imshow(cut);
-            %disp(prediction(i,j));
         end
     end
     

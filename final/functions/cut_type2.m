@@ -12,8 +12,8 @@ function regions = cut_type2(image, debug)
 
         for j = 1 : 6
             center_c = round((j - 1) * cols + cols / 2);
-            regions{i, j}.value = crop_centroid(image, [center_r, center_c], radius);
-            regions{i, j}.center = [center_r, center_c];
+            regions{i, j}.value = crop_centroid(image, [center_c, center_r], radius);
+            regions{i, j}.center = [center_c, center_r];
             regions{i, j}.radius = radius;
         end
     end
