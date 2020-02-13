@@ -73,7 +73,6 @@ function outVertices = box_vertices(box_label, padding_size, debug)
 
             vertices = [vertices; x y];
         end
-
     end
 
     %% Construct vertices from convex hull

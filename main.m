@@ -7,7 +7,7 @@ images = readlist('data/images.list');
 
 %% Parameters
 targetIndex = 14;
-debug = false;
+debug = true;
 
 %% Read image
 imgPath = 'images/original/'+string(images{targetIndex});
