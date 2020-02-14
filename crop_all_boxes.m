@@ -17,7 +17,7 @@ parfor targetIndex = 1:N
     %% Read image
     imgPath = 'images/original/'+string(images{targetIndex});
     [originalImage, scaledImage, targetImage] = ...
-        read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2, debug);
+        read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 3, debug);
 
     %% Find edges
     cannyEdge = image_to_edge(targetImage, debug);
@@ -40,7 +40,7 @@ parfor targetIndex = 1:N
     %% Save results
     name = split(string(images{targetIndex}), '.');
     path = "images/cropEnhanced/"+name(1);
-    imwrite(cropEnhanced, path + ".png");
+    imwrite(cropEnhanced, path + ".jpg");
 
     disp("Processed "+targetIndex + "-" + N);
 
