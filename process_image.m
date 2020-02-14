@@ -18,7 +18,7 @@ function outImage = process_image(image, debug)
     scaledImage = imresize(image, scaleFactor);
 
     %% Get target color space
-    targetImage = manipulate(scaledImage, @rgb2ycbcr, 2, debug);
+    targetImage = manipulate(scaledImage, @rgb2ycbcr, 3, debug);
 
     %% Find edges
     cannyEdge = image_to_edge(targetImage, debug);
