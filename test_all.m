@@ -1,5 +1,6 @@
 clear all
 
+addpath(genpath('functions'));
 %% Get list of images
 images = readlist('data/images.list');
 
@@ -20,6 +21,7 @@ for targetIndex = 1 : numel(images)
         outImage = process_image(image, debug);
     catch exception
         disp(" Error" + targetIndex);
+        continue
     end
     
     %% Save results
