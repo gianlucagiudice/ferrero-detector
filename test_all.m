@@ -25,7 +25,7 @@ for targetIndex = 1 : numel(images)
     %% Save results
     name = split(string(images{targetIndex}), '.');
     path = "images/processed/"+name(1);
-    imwrite(outImage, path + ".png");
+    imwrite(outImage, path + ".jpg");
 
     %% Processing status
     disp("Processed "+targetIndex + "-" + numel(images));
