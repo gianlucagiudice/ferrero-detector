@@ -6,7 +6,7 @@ addpath(genpath('functions'));
 images = readlist('data/images.list');
 
 %% Parameters
-targetIndex = 14;
+targetIndex = 32;
 debug = false;
 
 %% Read image

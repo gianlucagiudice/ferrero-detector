@@ -10,13 +10,17 @@ debug = false;
 tic
 disp('Start processing . . .');
 
-parfor targetIndex = 1 : numel(images)
+for targetIndex = 1 : numel(images)
     %% Read image
     imgPath = 'images/original/'+string(images{targetIndex});
     image = imread(imgPath);
 
     %% Process image
-    outImage = process_image(image, debug);
+    try
+        outImage = process_image(image, debug);
+    catch exception
+        disp(" Error" + targetIndex);
+    end
     
     %% Save results
     name = split(string(images{targetIndex}), '.');

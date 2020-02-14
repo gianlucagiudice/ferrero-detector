@@ -4,7 +4,7 @@ function out_edge = image_to_edge(target_image, debug)
     F5 = fspecial('gaussian', 5, 3);
     target_image_smooth  = imfilter(target_image_filtered , F5, 'replicate');
     %% Find edges 
-    [out_edge, t] = edge(target_image_smooth, 'Canny'); 
+    [out_edge, t] = edge(target_image_smooth, 'Canny', 0.02, 3); 
 
     if debug
         figure(2);
