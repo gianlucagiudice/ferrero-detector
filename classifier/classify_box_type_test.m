@@ -19,7 +19,7 @@ feature2 = lenEdges(:, 2) ./ lenEdges(:, 3);
 %% Feature 3 - Ratio edges outermost
 feature3 = lenEdges(:, 1) ./ lenEdges(:, 4);
 
-% Remove outlier
+%% Remove outlier
 c1 = feature3(labels == 1);
 c1 = sort(c1);
 c2 = feature3(labels == 2);

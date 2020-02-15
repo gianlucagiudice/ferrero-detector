@@ -2,6 +2,7 @@ clear all
 
 addpath(genpath('../functions/'));
 path = "../images/cuts/";
+save = false;
 
 %% Classes
 T = readtable('../data/cuts.csv', 'HeaderLines', 0);
@@ -86,4 +87,6 @@ cuts.descriptors = descriptors;
 cuts.labels = zipLabels';
 
 %% Save descriptor
-save('../data/cuts.mat', 'cuts');
+if save
+    save('../data/cuts.mat', 'cuts');
+end

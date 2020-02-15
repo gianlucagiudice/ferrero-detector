@@ -5,6 +5,7 @@ addpath(genpath(relPath + 'functions/'));
 scaleFactor = 0.5;
 paddingSize = 300;
 processImages = true;
+saveClassifier = false;
 
 %% Process all images
 if processImages
@@ -18,10 +19,15 @@ if processImages
     tic
     disp("Start reading images . . .");
     parfor targetIndex = 1:length(images)
-        % Read image
+        %% Read image
         imgPath = relPath + 'images/original/'+string(images{targetIndex});
-        [~, ~, targetImage] = ...
-            read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 2);
+        image = im2double(imread(imgPath));
+        %% Scale image
+        scaledImage = imresize(image, scaleFactor);
+
+        %% Get target color space
+        targetImage = manipulate(scaledImage, @rgb2ycbcr, 3, false);
+        
         imgs{targetIndex} = targetImage;
 
         disp("Read " + targetIndex + " - " + length(images));
@@ -53,9 +59,10 @@ if processImages
     %% Save descriptor
     edges.descriptors = lenEdges;
     edges.labels = labels;
-    save(relPath + 'data/edges.mat', 'edges');
+    if saveClassifier
+        save(relPath + 'data/edges.mat', 'edges');
+    end
 end
-
 
 %% Load data
 load(relPath + 'data/edges.mat', 'edges');
