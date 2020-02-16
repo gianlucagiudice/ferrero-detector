@@ -1,3 +1,6 @@
+%% Image to edge
+% Apply filtering and edge detection on the input image
+
 function out_edge = image_to_edge(target_image, debug)
     %% Image enhancement
     target_image_filtered = medfilt2(target_image, [15 15]);
