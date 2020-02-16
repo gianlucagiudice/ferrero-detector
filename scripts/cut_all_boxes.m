@@ -1,3 +1,6 @@
+%% Cut all boxes
+% load cropped images and separate all ROI into the images/cuts folder
+
 relPath = "../";
 
 addpath(genpath(relPath + 'functions/'));
