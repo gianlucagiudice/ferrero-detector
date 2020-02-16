@@ -1,3 +1,6 @@
+%% Color spaces
+% Displays the input image in rgb, hsv, ycbcr and lab color spaces
+    
 function color_spaces(target_image)
 
     rgb = target_image;
