@@ -1,3 +1,6 @@
+%% Edges length
+% Compute the length between all vertices
+
 function edgesLength = edges_length(vertices)
     edgesLength = zeros(1, length(vertices));
 
