@@ -1,3 +1,6 @@
+%% Classify box type
+% given 4 vertices, returns if the box is square (1) or rectangular (2)
+
 function boxType = classify_box_type(vertices, classifier, debug)
     typeFeature = compute_type_feature(vertices);
     boxType = classifier.predict(typeFeature);
