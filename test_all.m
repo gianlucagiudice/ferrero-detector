@@ -11,7 +11,7 @@ debug = false;
 tic
 disp('Start processing . . .');
 
-for targetIndex = 1 : numel(images)
+parfor targetIndex = 1 : numel(images)
     %% Read image
     imgPath = 'images/original/'+string(images{targetIndex});
     image = imread(imgPath);

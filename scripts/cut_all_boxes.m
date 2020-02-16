@@ -1,7 +1,9 @@
-addpath(genpath('functions/'));
+relPath = "../";
+
+addpath(genpath(relPath + 'functions/'));
 
 %% Get list of images
-images = readlist('data/images.list');
+images = readlist(relPath + 'data/images.list');
 imgPadding = 300;
 scaleFactor = 0.5;
 debug = false;
@@ -10,10 +12,10 @@ debug = false;
 N = numel(images);
 
 tic
-for targetIndex = 1 : N
+parfor targetIndex = 1 : N
 
     name = split(string(images{targetIndex}), '.');
-    path = "images/cropEnhanced/" + name(1);
+    path = relPath + "images/cropEnhanced/" + name(1);
     imgPath = path + ".jpg";
 
     img = imread(imgPath);
@@ -33,7 +35,7 @@ for targetIndex = 1 : N
         for j = 1 : 6
             name = split(string(images{targetIndex}), '.');
             fileName = name(1) + "-" + k; 
-            path = "images/cuts/" + fileName + ".jpg";
+            path = relPath + "images/cuts/" + fileName + ".jpg";
             imwrite(choccolates{i, j}.value, path);
             k = k + 1;
         end

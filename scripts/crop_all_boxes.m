@@ -1,9 +1,11 @@
+relPath = "../";
+
 %% Load files
-addpath(genpath('functions/'));
-boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
+addpath(genpath(relPath + 'functions/'));
+boxTypeClassifier = load(relPath + "classifier/boxTypeClassifier.mat").boxTypeClassifier;
 
 %% Parameters
-images = readlist('data/images.list');
+images = readlist(relPath + 'data/images.list');
 scaleFactor = 0.5;
 paddingSize = 300;
 debug = false;
@@ -13,9 +15,9 @@ tic
 disp('Start processing . . .');
 
 N = numel(images);
-for targetIndex = 1:N
+parfor targetIndex = 1:N
     %% Read image
-    imgPath = 'images/original/'+string(images{targetIndex});
+    imgPath = relPath + 'images/original/'+string(images{targetIndex});
 
     %% Convert image to double
     image = im2double(imread(imgPath));
@@ -46,7 +48,7 @@ for targetIndex = 1:N
 
     %% Save results
     name = split(string(images{targetIndex}), '.');
-    path = "images/cropEnhanced/"+name(1);
+    path = relPath + "images/cropEnhanced/"+name(1);
     imwrite(cropEnhanced, path + ".jpg");
 
     disp("Processed "+targetIndex + "-" + N);

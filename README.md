@@ -13,10 +13,9 @@ in/
 2. Execute
  
 ```
-compute_in.m/
+main.m/
 ```
-3. Look output in
+3. Evaluate output in
 ```
 out/
 ```
-4. Enjoy

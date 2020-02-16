@@ -1,21 +1,30 @@
 clear all
 
-addpath(genpath('functions'));
-
 %% Get list of images
-images = readlist('data/images.list');
-
+files = dir('in/');
+images = {files.name};
+% Skip "./" and "../" folders
+images = images(3 : numel(images));
 %% Parameters
-targetIndex = 32;
 debug = false;
 
-%% Read image
-imgPath = 'images/original/'+string(images{targetIndex});
-image = imread(imgPath);
+%% Start processing
+tic
+disp('Start processing . . .');
+parfor targetIndex = 1 : numel(images)
+    %% Read image
+    imgPath = 'in/'+string(images{targetIndex});
+    image = imread(imgPath);
 
-%% Out image
-outImage = process_image(image, debug);
+    %% Process image
+    outImage = process_image(image, debug);
+    
+    %% Save results
+    name = split(string(images{targetIndex}), '.');
+    path = "out/"+name(1);
+    imwrite(outImage, path + ".jpg");
 
-%% Show output image
-figure(99);
-imshow(outImage);
+    %% Processing status
+    disp("Processed " + targetIndex + "-" + numel(images));
+end
+toc

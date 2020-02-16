@@ -1,8 +1,5 @@
 %% Function
 function outImage = process_image(image, debug)
-    %% Load functions
-    addpath(genpath('functions/'));
-
     %% Load classifier
     boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
     cutClassifier = load("classifier/cutClassifier.mat").cutClassifier;
