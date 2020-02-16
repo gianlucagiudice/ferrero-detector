@@ -1,3 +1,5 @@
+%% Cut type 1
+% Cut the square box in a list of 24 regions
 function regions = cut_type1(image, debug)
    [w, ~] = size(image);
    regions = cell(24, 1);
