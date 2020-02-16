@@ -1,4 +1,5 @@
 %% Function
+% Process the image passed as parameter and return the processed image. Set debug = true to display the intermediate steps
 function outImage = process_image(image, debug)
     %% Load classifier
     boxTypeClassifier = load("classifier/boxTypeClassifier.mat").boxTypeClassifier;
