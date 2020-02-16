@@ -1,3 +1,6 @@
+%% Crop enhancement
+% removes a padding around the box
+
 function [boxEnhanced, padding] = crop_enhancement(img, debug)
     p1 = 0.05;
     p2 = 0.04;
