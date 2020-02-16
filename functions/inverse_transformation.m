@@ -1,3 +1,7 @@
+%% Inverse Trasformation
+% Applies the nonlinear transofmration calculated during the perspective correction to
+% realign points from the cropped image, to the original image
+
 function outV = inverse_transformation(T, errors, padding)
     outV = [];
     
