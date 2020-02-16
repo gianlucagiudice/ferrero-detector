@@ -2,21 +2,21 @@
 
 #### Entry point 
 ```
-/compute_in.m
+/process_input_images.m
 ```
 #### How to use
 1. Place images to process in
 
 ```
-/in
+in/
 ```
 2. Execute
  
 ```
-/compute_in.m
+compute_in.m/
 ```
 3. Look output in
 ```
-/out
+out/
 ```
 4. Enjoy

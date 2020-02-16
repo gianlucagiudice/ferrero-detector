@@ -13,11 +13,18 @@ tic
 disp('Start processing . . .');
 
 N = numel(images);
-parfor targetIndex = 1:N
+for targetIndex = 1:N
     %% Read image
     imgPath = 'images/original/'+string(images{targetIndex});
-    [originalImage, scaledImage, targetImage] = ...
-        read_and_manipulate(imgPath, scaleFactor, @rgb2ycbcr, 3, debug);
+
+    %% Convert image to double
+    image = im2double(imread(imgPath));
+
+    %% Scale image
+    scaledImage = imresize(image, scaleFactor);
+
+    %% Get target color space
+    targetImage = manipulate(scaledImage, @rgb2ycbcr, 3, debug);
 
     %% Find edges
     cannyEdge = image_to_edge(targetImage, debug);

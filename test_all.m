@@ -20,7 +20,7 @@ for targetIndex = 1 : numel(images)
     try
         outImage = process_image(image, debug);
     catch exception
-        disp(" Error" + targetIndex);
+        disp("Error: " + targetIndex);
         continue
     end
     
@@ -31,7 +31,6 @@ for targetIndex = 1 : numel(images)
 
     %% Processing status
     disp("Processed "+targetIndex + "-" + numel(images));
-
 end
 
 toc

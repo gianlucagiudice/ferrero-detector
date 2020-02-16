@@ -10,11 +10,11 @@ debug = false;
 N = numel(images);
 
 tic
-parfor targetIndex = 1 : N
+for targetIndex = 1 : N
 
     name = split(string(images{targetIndex}), '.');
     path = "images/cropEnhanced/" + name(1);
-    imgPath = path + ".png";
+    imgPath = path + ".jpg";
 
     img = imread(imgPath);
     [r, c, ~] = size(img);
@@ -33,7 +33,7 @@ parfor targetIndex = 1 : N
         for j = 1 : 6
             name = split(string(images{targetIndex}), '.');
             fileName = name(1) + "-" + k; 
-            path = "images/cuts/" + fileName + ".png";
+            path = "images/cuts/" + fileName + ".jpg";
             imwrite(choccolates{i, j}.value, path);
             k = k + 1;
         end
