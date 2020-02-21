@@ -1,5 +1,8 @@
 clear all
 
+%% Import functions
+addpath(genpath('functions'));
+
 %% Get list of images
 files = dir('in/');
 images = {files.name};
