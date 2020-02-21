@@ -1,3 +1,6 @@
+%% Normalize resolution
+% Resize all images to a fixed height
+
 function outImage = normalize_resolution(image)
     % Dataset original height resolution
     fixedRow = 2592;

@@ -1,3 +1,6 @@
+%% Process single image
+% Process a single image in the given dataset
+
 clear all
 
 relPath = "./";

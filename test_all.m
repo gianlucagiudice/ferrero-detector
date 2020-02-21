@@ -1,3 +1,6 @@
+%% Test all
+% Test all images inside the images/original folder, save the processed output into the images/processed folder
+
 clear all
 
 addpath(genpath('functions'));

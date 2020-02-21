@@ -1,3 +1,7 @@
+%% Crop all boxes
+% this scripts crops all boxes in the images/original folder and saves the cropped
+% output in the images/cropEnhanced folder
+
 relPath = "../";
 
 %% Load files

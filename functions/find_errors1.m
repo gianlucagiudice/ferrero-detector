@@ -1,3 +1,6 @@
+%% Find errors 1
+% Detect errors in square box
+
 function errors = find_errors1(cuts, classifier, debug)
     % Assume image is valid
     errors = [];

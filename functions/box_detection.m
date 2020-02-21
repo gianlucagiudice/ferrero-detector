@@ -1,3 +1,6 @@
+%% Box detection
+% Returns the binarized image of the box, with an added padding
+
 function boxOpened = box_detection(cannyEdge, paddingSize, debug)
     %% Label edges
     [r, c] = size(cannyEdge);

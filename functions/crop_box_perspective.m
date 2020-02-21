@@ -1,3 +1,6 @@
+%% Crop box perspective
+% Adjust the perspective and crop the image using vertices as control points
+
 function [boxCropped, tForm] = crop_box_perspective(image, imgPadding, vertices, type, debug)
     vertices = vertices - imgPadding;
 

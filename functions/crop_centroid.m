@@ -1,3 +1,6 @@
+%% Crop centroid
+% Returns the center and a mask of pixels around a given center with the given radius
+
 function pixels = crop_centroid(image, center, radius)
    [r, c, ~] = size(image);
    image = im2double(image);

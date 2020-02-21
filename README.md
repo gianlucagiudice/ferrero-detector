@@ -2,20 +2,22 @@
 
 #### Entry point 
 ```
-/process_input_images.m
+/main.m
 ```
 #### How to use
-1. Place images to process in
+1. Create folders /in and /out
+
+2. Place images to process in
 
 ```
 in/
 ```
-2. Execute
+3. Execute
  
 ```
-main.m/
+/main.m
 ```
-3. Evaluate output in
+4. Evaluate output in
 ```
 out/
 ```

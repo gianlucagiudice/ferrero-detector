@@ -1,3 +1,6 @@
+%% Find errors 2
+% Detects errors in rectangle box
+
 function errorsPosition = find_errors2(cuts, classifier, debug)
     %% Valid masks
     valid1 = [2 2 2 2 2 2;

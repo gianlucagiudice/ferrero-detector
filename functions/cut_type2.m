@@ -1,3 +1,6 @@
+%% Cut Type2
+% Cuts the rectangle box in 24 regions
+
 function regions = cut_type2(image, debug)
     [r, c, ~] = size(image);
     cols  = floor(c / 6);
