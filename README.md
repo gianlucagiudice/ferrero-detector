@@ -5,19 +5,17 @@
 /main.m
 ```
 #### How to use
-1. Create folders /in and /out
-
-2. Place images to process in
+1. Place images to process in
 
 ```
 in/
 ```
-3. Execute
+2. Execute
  
 ```
 /main.m
 ```
-4. Evaluate output in
+3. Evaluate output in
 ```
 out/
 ```
